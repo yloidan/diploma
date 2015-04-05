@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.database.Cursor;
+import android.widget.TextView;
 
 
 public class MyActivity extends ActionBarActivity {
@@ -62,23 +63,28 @@ public class MyActivity extends ActionBarActivity {
         @SuppressWarnings("unused")
         String title = "";
         @SuppressWarnings("unused")
-        String url = "";
+        String message = "";
 
         if (mCur.moveToFirst() && mCur.getCount() > 0) {
             boolean cont = true;
             while (mCur.isAfterLast() == false && cont) {
                 title = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.TITLE));
-                url = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL));
+                message = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL));
                 // Do something with title and url
-                mCur.moveToNext();
+                intent.putExtra(EXTRA_MESSAGE, message);
+                startActivity(intent);
+
+
+//axristo gia mena                mCur.moveToNext();
             }
         }
 
-        String message =url;
 
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
 
+/* se alli thesi pio panw
+       intent.putExtra(EXTRA_MESSAGE, message);
+       startActivity(intent);
+*/
 
 
     }
