@@ -1,12 +1,15 @@
 package com.example.ylois.dummyapp;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.Browser;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.database.Cursor;
 
 
 public class MyActivity extends ActionBarActivity {
@@ -45,12 +48,39 @@ public class MyActivity extends ActionBarActivity {
     public void sendMessage(View view) {
         // Do something in response to button
         Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.edit_message);
-        String message = editText.getText().toString();
+    //axristo    EditText editText = (EditText) findViewById(R.id.edit_message);
+    //axristo    String message = editText.getText().toString();
+     //   Browser historyUrl = new Browser ();
+     /*   final Uri BOOKMARKS_URI_CHROME = Uri.parse("content://com.android.chrome.browser/bookmarks");
+        String pinakas = HISTORY_PROJECTION.getBookmarkColumns.URL(1);
+    */
+        String[] proj = new String[] { Browser.BookmarkColumns.TITLE,Browser.BookmarkColumns.URL };
+        Uri uriCustom = Uri.parse("content://com.android.chrome.browser/bookmarks");
+        String sel = Browser.BookmarkColumns.BOOKMARK + " = 0"; // 0 = history, 1 = bookmark
+        Cursor mCur = getContentResolver().query(uriCustom, proj, sel, null, null);
+        mCur.moveToFirst();
+        @SuppressWarnings("unused")
+        String title = "";
+        @SuppressWarnings("unused")
+        String url = "";
+
+        if (mCur.moveToFirst() && mCur.getCount() > 0) {
+            boolean cont = true;
+            while (mCur.isAfterLast() == false && cont) {
+                title = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.TITLE));
+                url = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL));
+                // Do something with title and url
+                mCur.moveToNext();
+            }
+        }
+
+        String message =url;
+
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
 
 
 
     }
+
 }
