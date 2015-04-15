@@ -3,7 +3,7 @@
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Terms of last browser search</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_display_message">MyMessage</string>
+    <string name="title_activity_display_message">Terms</string>
 
     <string name="hello_world">Hello world!</string>
 </resources>

@@ -23,7 +23,7 @@ public class DisplayMessageActivity extends ActionBarActivity {
         // Create the text view
 
         TextView textView = new TextView(this);
-        textView.setTextSize(100);
+        textView.setTextSize(14);
         textView.setText(message);
 
         //setting textview as the root view of the activity’s layout
