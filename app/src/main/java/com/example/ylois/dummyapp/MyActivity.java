@@ -133,7 +133,10 @@ public class MyActivity extends ActionBarActivity {
                     }
 
                 String resu = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20contentanalysis.analyze%20where%20url%3D%27"+url+"%27%3B&format=json&diagnostics=true&callback=";
-               HttpGet httpGet = new HttpGet(resu);
+
+
+                //edw xekinaei to GET =/= POST
+                HttpGet httpGet = new HttpGet(resu);
                 String text = null;
                 try {
 
