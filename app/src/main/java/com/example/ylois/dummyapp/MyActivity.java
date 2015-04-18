@@ -132,7 +132,8 @@ public class MyActivity extends ActionBarActivity {
                         return e1.getLocalizedMessage();
                     }
 
-                HttpGet httpGet = new HttpGet("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20contentanalysis.analyze%20where%20url%3D'" +url+ "'%3B&format=json&diagnostics=true&callback=");
+                String resu = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20contentanalysis.analyze%20where%20url%3D%27"+url+"%27%3B&format=json&diagnostics=true&callback=";
+               HttpGet httpGet = new HttpGet(resu);
                 String text = null;
                 try {
 
@@ -145,8 +146,14 @@ public class MyActivity extends ActionBarActivity {
                 } catch (Exception e) {
                     return e.getLocalizedMessage();
                 }
-                    return text;
+                finally {
+                    // When HttpClient instance is no longer needed,
+                    // shut down the connection manager to ensure
+                    // immediate deallocation of all system resources
+                    httpClient.getConnectionManager().shutdown();
+                }
 
+                 return text;
             }
 
 
