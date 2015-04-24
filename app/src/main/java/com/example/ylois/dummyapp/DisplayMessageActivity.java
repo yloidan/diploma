@@ -13,9 +13,9 @@ public class DisplayMessageActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-//CRASHAREI        TextView textView = (TextView) findViewById(R.id.my_txt_view);
+//      TextView textView = (TextView) findViewById(R.id.my_txt_view);
         TextView textView = new TextView(this);
-        textView.setTextSize(14);
+        textView.setTextSize(18);
         setContentView(textView);
 
 

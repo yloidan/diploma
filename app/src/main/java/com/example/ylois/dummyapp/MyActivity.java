@@ -34,6 +34,18 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
     public final static String EXTRA_MESSAGE = "com.example.ylois.dummyapp.MESSAGE";
 
+
+     //       JSON Node names
+    private static final String TAG_ENTITY ="entity";
+    private static final String TAG_CONTENT="content";
+    private static final String TAG_TEXT="text";
+    private static final String TAG_QUERY="query";
+    private static final String TAG_RESULTS="results";
+    private static final String TAG_ENTITIES="entities";
+
+
+    //final String TAG_WIKI_URL="wiki_url";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +107,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
         @Override
         protected String doInBackground(Void... params) {
 
+
+
             //xml  https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20contentanalysis.analyze%20where%20url%3D'http%3A%2F%2Fwww.cnn.com%2F2011%2F11%2F11%2Fworld%2Feurope%2Fgreece-main%2Findex.html'%3B&diagnostics=true
             //json https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20contentanalysis.analyze%20where%20url%3D'http%3A%2F%2Fwww.cnn.com%2F2011%2F11%2F11%2Fworld%2Feurope%2Fgreece-main%2Findex.html'%3B&format=json&diagnostics=true&callback=
 
@@ -128,6 +142,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 //axristo gia mena                mCur.moveToNext();
 //axristo gia mena
             }
+            mCur.close();
             try {
                 url = URLEncoder.encode(message, "UTF-8");
             } catch (UnsupportedEncodingException e1) {
@@ -157,13 +172,10 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                 httpClient.getConnectionManager().shutdown();
             }
 //adding parsing here
-            //       JSON Node names
-            final String TAG_ENTITY ="entity";
-            final String TAG_CONTENT="content";
-            final String TAG_TEXT="text";
-            //final String TAG_WIKI_URL="wiki_url";
 
-            //       DEBUGGING
+
+
+            //      DEBUGGING
 
 
             // Construct a JSONObject from a source JSON text string.
@@ -174,42 +186,41 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
             // and values, and commas between the values and names.
 
+
             String result="";
+            StringBuilder sb = new StringBuilder();
+
 
             try {
                 JSONObject jo = new JSONObject(text);
                 JSONArray ja;
+                JSONObject query = jo.getJSONObject(TAG_QUERY);
+                JSONObject results = query.getJSONObject(TAG_RESULTS);
+                JSONObject entities = results.getJSONObject(TAG_ENTITIES);
+                ja = entities.getJSONArray(TAG_ENTITY);
 
+          //        Toast toast= Toast.makeText(this, "len: " + ja.length(), LENGTH_LONG).show();
+          //        String  myArray[]=new String[ja.length()];
 
-                //arrayname = entity SIGOURA ?? nai!
-                ja = jo.getJSONArray(TAG_ENTITY);
-
-                //        Toast toast= Toast.makeText(this, "len: " + ja.length(), LENGTH_LONG).show();
-
-                //           String  myArray[]=new String[ja.length()];
-                StringBuilder sb = new StringBuilder();
                 boolean appendSeparator = false;
-                for (int i = 0; i < ja.length(); i++)
-                {
+             for (int i = 0; i < ja.length(); i++)
+           {
                     JSONObject resultObject = ja.getJSONObject(i);
                     JSONObject textObj = resultObject.getJSONObject(TAG_TEXT);
                     String name = textObj.getString(TAG_CONTENT);
 
                     if (appendSeparator) {
-                        sb.append(','); // a comma
+                        sb.append(","); // a comma
                         sb.append("\n");
                     }
                     appendSeparator = true;
                     sb.append(name);
-
-
 //               sb.append(ja.get(i));
 //               myArray[i]=name;
 //               TextView.append(myArray[i]);
 //               TextView.append("\n");
-                }
+             }
                  result=sb.toString();
-
 
             }
             catch ( JSONException e2){
@@ -219,7 +230,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
                 return result;
 
-//DEBUGGING
+//DEBUGGING return text;
 
             }
 
