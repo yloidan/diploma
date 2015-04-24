@@ -20,6 +20,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -153,8 +156,70 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                 // immediate deallocation of all system resources
                 httpClient.getConnectionManager().shutdown();
             }
+//adding parsing here
+            //       JSON Node names
+            final String TAG_ENTITY ="entity";
+            final String TAG_CONTENT="content";
+            final String TAG_TEXT="text";
+            //final String TAG_WIKI_URL="wiki_url";
 
-            return text;
+            //       DEBUGGING
+
+
+            // Construct a JSONObject from a source JSON text string.
+
+            // A JSONObject is an unordered collection of name/value pairs. Its external
+
+            // form is a string wrapped in curly braces with colons between the names
+
+            // and values, and commas between the values and names.
+
+            String result="";
+
+            try {
+                JSONObject jo = new JSONObject(text);
+                JSONArray ja;
+
+
+                //arrayname = entity SIGOURA ?? nai!
+                ja = jo.getJSONArray(TAG_ENTITY);
+
+                //        Toast toast= Toast.makeText(this, "len: " + ja.length(), LENGTH_LONG).show();
+
+                //           String  myArray[]=new String[ja.length()];
+                StringBuilder sb = new StringBuilder();
+                boolean appendSeparator = false;
+                for (int i = 0; i < ja.length(); i++)
+                {
+                    JSONObject resultObject = ja.getJSONObject(i);
+                    JSONObject textObj = resultObject.getJSONObject(TAG_TEXT);
+                    String name = textObj.getString(TAG_CONTENT);
+
+                    if (appendSeparator) {
+                        sb.append(','); // a comma
+                        sb.append("\n");
+                    }
+                    appendSeparator = true;
+                    sb.append(name);
+
+
+//               sb.append(ja.get(i));
+//               myArray[i]=name;
+//               TextView.append(myArray[i]);
+//               TextView.append("\n");
+                }
+                 result=sb.toString();
+
+
+            }
+            catch ( JSONException e2){
+                System.err.println("JSONException " + e2.getMessage());
+            }
+
+
+                return result;
+
+//DEBUGGING
 
             }
 
