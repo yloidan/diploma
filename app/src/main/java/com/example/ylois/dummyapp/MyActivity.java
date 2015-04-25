@@ -42,9 +42,9 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
     private static final String TAG_QUERY="query";
     private static final String TAG_RESULTS="results";
     private static final String TAG_ENTITIES="entities";
-
-
-    //final String TAG_WIKI_URL="wiki_url";
+    //private static final String TAG_WIKI_URL="wiki_url";
+    private static final String TAG_DOCSENTIMENT="docSentiment";
+    private static final String TAG_TYPE="type";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +110,6 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
 
             //xml  https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20contentanalysis.analyze%20where%20url%3D'http%3A%2F%2Fwww.cnn.com%2F2011%2F11%2F11%2Fworld%2Feurope%2Fgreece-main%2Findex.html'%3B&diagnostics=true
-            //json https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20contentanalysis.analyze%20where%20url%3D'http%3A%2F%2Fwww.cnn.com%2F2011%2F11%2F11%2Fworld%2Feurope%2Fgreece-main%2Findex.html'%3B&format=json&diagnostics=true&callback=
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpContext localContext = new BasicHttpContext();
@@ -121,9 +120,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             String sel = Browser.BookmarkColumns.BOOKMARK + " = 0"; // 0 = history, 1 = bookmark
             Cursor mCur = getContentResolver().query(uriCustom, proj, sel, null, null);
             mCur.moveToFirst();
-            // @SuppressWarnings("unused")
             String title = "";
-            // @SuppressWarnings("unused")
             String message = "";
 
 
@@ -132,15 +129,12 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             if (mCur.moveToLast() && mCur.getCount() > 0)
 
             {
-//axristo gia mena           while (!mCur.isAfterLast()) {
+//axristo gia twra           while (!mCur.isAfterLast()) {
                 title = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.TITLE));
                 message = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL));
-                // Do something with title and url
-//                message = doInBackground(message);
 
+//axristo gia twra                mCur.moveToNext();
 
-//axristo gia mena                mCur.moveToNext();
-//axristo gia mena
             }
             mCur.close();
             try {
@@ -151,8 +145,6 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
             String resu = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20contentanalysis.analyze%20where%20url%3D%27" + url + "%27%3B&format=json&diagnostics=true&callback=";
 
-
-            //edw xekinaei to GET =/= POST
             HttpGet httpGet = new HttpGet(resu);
             String text = null;
             try {
@@ -165,7 +157,21 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
             } catch (Exception e) {
                 return e.getLocalizedMessage();
-            } finally {
+            }
+            String alchemy="http://access.alchemyapi.com/calls/url/URLGetTextSentiment?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" +url +"&outputMode=json";
+            HttpGet httpGet2 = new HttpGet(alchemy);
+            String sentiment="";
+            try {
+
+                HttpResponse response = httpClient.execute(httpGet2, localContext);
+
+                HttpEntity entity = response.getEntity();
+
+                sentiment = getASCIIContentFromEntity(entity);
+
+            } catch (Exception e) {
+                return e.getLocalizedMessage();
+            }finally {
                 // When HttpClient instance is no longer needed,
                 // shut down the connection manager to ensure
                 // immediate deallocation of all system resources
@@ -177,18 +183,9 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
             //      DEBUGGING
 
-
-            // Construct a JSONObject from a source JSON text string.
-
-            // A JSONObject is an unordered collection of name/value pairs. Its external
-
-            // form is a string wrapped in curly braces with colons between the names
-
-            // and values, and commas between the values and names.
-
-
             String result="";
             StringBuilder sb = new StringBuilder();
+            sb.append("Your last visit was: ").append(title).append(", ").append("and the terms were: ").append("\n");
 
 
             try {
@@ -199,9 +196,6 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                 JSONObject entities = results.getJSONObject(TAG_ENTITIES);
                 ja = entities.getJSONArray(TAG_ENTITY);
 
-          //        Toast toast= Toast.makeText(this, "len: " + ja.length(), LENGTH_LONG).show();
-          //        String  myArray[]=new String[ja.length()];
-
                 boolean appendSeparator = false;
              for (int i = 0; i < ja.length(); i++)
            {
@@ -209,25 +203,32 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                     JSONObject textObj = resultObject.getJSONObject(TAG_TEXT);
                     String name = textObj.getString(TAG_CONTENT);
 
-                    if (appendSeparator) {
-                        sb.append(","); // a comma
+                    if (appendSeparator)
                         sb.append("\n");
-                    }
+
                     appendSeparator = true;
                     sb.append(name);
-//               sb.append(ja.get(i));
-//               myArray[i]=name;
-//               TextView.append(myArray[i]);
-//               TextView.append("\n");
+
              }
-                 result=sb.toString();
+//prs2                 result=sb.toString();
 
             }
             catch ( JSONException e2){
                 System.err.println("JSONException " + e2.getMessage());
             }
 
+            sb.append("\n").append("\n").append("The sentiment for this url is: ");
+            try {
+              JSONObject json =new JSONObject(sentiment);
+                JSONObject docSentiment=json.getJSONObject(TAG_DOCSENTIMENT);
+                String type=docSentiment.getString(TAG_TYPE);
+                sb.append(type);
+            }
+            catch ( JSONException e3){
+                System.err.println("JSONException " + e3.getMessage());
+            }
 
+                result=sb.toString();
                 return result;
 
 //DEBUGGING return text;
