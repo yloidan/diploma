@@ -185,7 +185,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
             String result="";
             StringBuilder sb = new StringBuilder();
-            sb.append("Your last visit was: ").append(title).append(", ").append("and the terms were: ").append("\n");
+            sb.append("Your last visit was: ").append(title).append("\n").append("The terms were: ").append("\n");
 
 
             try {
