@@ -35,7 +35,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
     public final static String EXTRA_MESSAGE = "com.example.ylois.dummyapp.MESSAGE";
 
 
-     //       JSON Node names
+     /*      JSON Node names YAHOO
     private static final String TAG_ENTITY ="entity";
     private static final String TAG_CONTENT="content";
     private static final String TAG_TEXT="text";
@@ -43,8 +43,15 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
     private static final String TAG_RESULTS="results";
     private static final String TAG_ENTITIES="entities";
     //private static final String TAG_WIKI_URL="wiki_url";
+    */
     private static final String TAG_DOCSENTIMENT="docSentiment";
     private static final String TAG_TYPE="type";
+    //json node names for category
+    private static final String TAG_CATEGORY="category";
+    //json node names for alchemy term
+    private static final String TAG_KEYWORDS="keywords";
+    private static final String TAG_TEXT="text";
+    private static final String TAG_RELEVANCE="relevance";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +120,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpContext localContext = new BasicHttpContext();
-            String url = null;
+            String url = "";
 
             String[] proj = new String[]{Browser.BookmarkColumns.TITLE, Browser.BookmarkColumns.URL};
             Uri uriCustom = Uri.parse("content://com.android.chrome.browser/bookmarks");
@@ -142,11 +149,26 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             } catch (UnsupportedEncodingException e1) {
                 return e1.getLocalizedMessage();
             }
-
+/*      YAHOO KEY EXTRACTION - REPLACED WITH ALCHEMY TERM EXTRACTION
             String resu = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20contentanalysis.analyze%20where%20url%3D%27" + url + "%27%3B&format=json&diagnostics=true&callback=";
 
             HttpGet httpGet = new HttpGet(resu);
-            String text = null;
+            String text = "";
+            try {
+
+                HttpResponse response = httpClient.execute(httpGet, localContext);
+
+                HttpEntity entity = response.getEntity();
+
+                text = getASCIIContentFromEntity(entity);
+
+            } catch (Exception e) {
+                return e.getLocalizedMessage();
+            }   http://access.alchemyapi.com/calls/url/URLGetRankedKeywords
+ */
+            String termAlchemy="http://access.alchemyapi.com/calls/url/URLGetRankedKeywords?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" +url +"&outputMode=json";
+            HttpGet httpGet = new HttpGet(termAlchemy);
+            String text="";
             try {
 
                 HttpResponse response = httpClient.execute(httpGet, localContext);
@@ -158,6 +180,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             } catch (Exception e) {
                 return e.getLocalizedMessage();
             }
+
             String alchemy="http://access.alchemyapi.com/calls/url/URLGetTextSentiment?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" +url +"&outputMode=json";
             HttpGet httpGet2 = new HttpGet(alchemy);
             String sentiment="";
@@ -171,7 +194,24 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
             } catch (Exception e) {
                 return e.getLocalizedMessage();
-            }finally {
+            }
+
+
+            String CatAlchemy="http://access.alchemyapi.com/calls/url/URLGetCategory?url=" +url +"&apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&outputMode=json";
+            HttpGet httpGet3 = new HttpGet(CatAlchemy);
+            String categories="";
+            try {
+
+                HttpResponse response = httpClient.execute(httpGet3, localContext);
+
+                HttpEntity entity = response.getEntity();
+
+                categories = getASCIIContentFromEntity(entity);
+
+            } catch (Exception e) {
+                return e.getLocalizedMessage();
+            }
+        finally {
                 // When HttpClient instance is no longer needed,
                 // shut down the connection manager to ensure
                 // immediate deallocation of all system resources
@@ -185,10 +225,10 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
             String result="";
             StringBuilder sb = new StringBuilder();
-            sb.append("Your last visit was: ").append(title).append("\n").append("The terms were: ").append("\n");
+            sb.append("Your last visit was: ").append(title).append("\n").append("\n").append("The terms with more than 70% relevance were: ").append("\n");
 
 
-            try {
+/* YAHOO TERM TRY BLOCK            try {
                 JSONObject jo = new JSONObject(text);
                 JSONArray ja;
                 JSONObject query = jo.getJSONObject(TAG_QUERY);
@@ -216,6 +256,29 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             catch ( JSONException e2){
                 System.err.println("JSONException " + e2.getMessage());
             }
+YAHOO TERM */
+            try {
+                JSONObject json=new JSONObject(text);
+                JSONArray ja;
+                ja =json.getJSONArray(TAG_KEYWORDS);
+                boolean appendSeparator = false;
+                for (int i = 0; i < ja.length(); i++) {
+                    JSONObject resultObject = ja.getJSONObject(i);
+                    String name = resultObject.getString(TAG_TEXT);
+                    String comparison = resultObject.getString(TAG_RELEVANCE);
+                    Float foo=Float.parseFloat(comparison.trim());
+
+                    if (foo > 0.7) {
+                        if (appendSeparator)
+                            sb.append("\n");
+                        appendSeparator = true;
+                        sb.append(name);
+                    }
+                }
+                }
+            catch ( JSONException e2){
+                System.err.println("JSONException " + e2.getMessage());
+            }
 
             sb.append("\n").append("\n").append("The sentiment for this url is: ");
             try {
@@ -227,6 +290,18 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             catch ( JSONException e3){
                 System.err.println("JSONException " + e3.getMessage());
             }
+
+    // STILL FIXING
+            sb.append("\n").append("\n").append("The url belongs into the category of: ");
+            try {
+                JSONObject json =new JSONObject(categories);
+                String categ=json.getString(TAG_CATEGORY);
+                sb.append(categ);
+            }
+            catch ( JSONException e4){
+                System.err.println("JSONException " + e4.getMessage());
+            }
+
 
                 result=sb.toString();
                 return result;
