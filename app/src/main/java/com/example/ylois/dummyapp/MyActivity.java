@@ -1,5 +1,6 @@
 package com.example.ylois.dummyapp;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -157,11 +158,17 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             HttpClient httpClient = new DefaultHttpClient();
             HttpContext localContext = new BasicHttpContext();
             String url = "";
-
+/*
+            Long start=System.currentTimeMillis()-604800000; //last week in milliseconds
+            Long end=System.currentTimeMillis();
+            String startdate=Long.toString(start);
+            String enddate=Long.toString(end);
+*/
             String[] proj = new String[]{Browser.BookmarkColumns.TITLE, Browser.BookmarkColumns.URL};
             Uri uriCustom = Uri.parse("content://com.android.chrome.browser/bookmarks");
-            String sel = Browser.BookmarkColumns.BOOKMARK + " = 0"; // 0 = history, 1 = bookmark
-            Cursor mCur = getContentResolver().query(uriCustom, proj, sel, null, null);
+            String sel = Browser.BookmarkColumns.BOOKMARK + " = 0" ; // 0 = history, 1 = bookmark , + " AND " + Browser.BookmarkColumns.DATE + "BETWEEN ? AND ?"
+            ContentResolver cr = getContentResolver();
+            Cursor mCur = cr.query(uriCustom, proj, sel, null, null); // new String[]{startdate, enddate}
             mCur.moveToFirst();
             String title = "";
             String message = "";
@@ -175,7 +182,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 //axristo gia twra           while (!mCur.isAfterLast()) {
                 title = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.TITLE));
                 message = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL));
-
+                Browser.deleteFromHistory(cr, mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL)));
+//                cr.delete(uriCustom, mCur.getString(mCur.getPosition())  ,null);
 //axristo gia twra                mCur.moveToNext();
 
             }
@@ -249,6 +257,13 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             } catch (Exception e) {
                 return e.getLocalizedMessage();
             }
+//creating json object for title
+            StringBuilder sbt = new StringBuilder();
+            sbt.append("{title:'");
+            sbt.append(title);
+            sbt.append("'}");
+            title=sbt.toString();
+
 
 //refining text results for 70% relativity
 
@@ -281,7 +296,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             } catch (JSONException e6) {
                 System.err.println("JSONException " + e6.getMessage());
             }
-//refinining category results
+//refining category results
             StringBuilder sb3 = new StringBuilder();
             sb3.append("{category:'");
             try {
@@ -312,10 +327,12 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                 JSONObject obj1 = new JSONObject(text);
                 JSONObject obj2 = new JSONObject(sentiment);
                 JSONObject obj3 = new JSONObject(categories);
+                JSONObject obj4 = new JSONObject(title);
                 combined = new JSONObject();
                 combined.put("textres", obj1);
                 combined.put("sentimentres", obj2);
                 combined.put("categoryres", obj3);
+                combined.put("titleres", obj4);
             } catch (Exception e) {
                 return e.getLocalizedMessage();
             }
@@ -331,8 +348,10 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
 //upload json obj to mongolab -> executeHttpPut
             String myuri ="https://api.mongolab.com/api/1/databases/dummydb/collections/myself?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
+          //unused string just for debugging reasons (returns the document from the db including ID)
+            String returns="";
             try {
-                executeHttpPost(myuri, combined);
+               returns= executeHttpPost(myuri, combined);
             }
             catch (Exception e9){
                 return e9.getLocalizedMessage();
@@ -431,7 +450,7 @@ YAHOO TERM
             DEBUGGING ---------------------------------------------------------------------------------
             */
  //debug 2           return result;
-            return combined.toString();
+            return returns;
 
 
 
