@@ -17,6 +17,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
@@ -24,8 +26,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -90,7 +94,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
     }
 
     /**
-     * Called when the user clicks the Send button
+     * Called when the user clicks the button
      */
     private class LongRunningGetIO extends AsyncTask<Void, Void, String> {
 
@@ -111,9 +115,41 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             return out.toString();
         }
 
+        //tryout for uploading to mongolab
+        public  String executeHttpPost(String url, JSONObject json) throws Exception {
+            BufferedReader in = null;
+            try {
+                HttpClient client = new DefaultHttpClient();
+                HttpPost request = new HttpPost(url);
+
+                request.setEntity(new ByteArrayEntity(json.toString().getBytes("UTF-8")));
+                request.setHeader( "Content-Type", "application/json");
+                HttpResponse response = client.execute(request);
+                in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+                StringBuilder sb = new StringBuilder("");
+                String line = "";
+                String NL = System.getProperty("line.separator");
+                while ((line = in.readLine()) != null) {
+                    sb.append(line);
+                    sb.append(NL);
+                }
+                in.close();
+                return sb.toString();
+
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
         @Override
         protected String doInBackground(Void... params) {
-
 
 
             //xml  https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20contentanalysis.analyze%20where%20url%3D'http%3A%2F%2Fwww.cnn.com%2F2011%2F11%2F11%2Fworld%2Feurope%2Fgreece-main%2Findex.html'%3B&diagnostics=true
@@ -164,11 +200,13 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
             } catch (Exception e) {
                 return e.getLocalizedMessage();
-            }   http://access.alchemyapi.com/calls/url/URLGetRankedKeywords
+            }
+
  */
-            String termAlchemy="http://access.alchemyapi.com/calls/url/URLGetRankedKeywords?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" +url +"&outputMode=json";
+            //http://access.alchemyapi.com/calls/url/URLGetRankedKeywords
+            String termAlchemy = "http://access.alchemyapi.com/calls/url/URLGetRankedKeywords?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" + url + "&outputMode=json&keywordExtractMode=strict";
             HttpGet httpGet = new HttpGet(termAlchemy);
-            String text="";
+            String text = "";
             try {
 
                 HttpResponse response = httpClient.execute(httpGet, localContext);
@@ -181,9 +219,9 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                 return e.getLocalizedMessage();
             }
 
-            String alchemy="http://access.alchemyapi.com/calls/url/URLGetTextSentiment?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" +url +"&outputMode=json";
+            String alchemy = "http://access.alchemyapi.com/calls/url/URLGetTextSentiment?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" + url + "&outputMode=json";
             HttpGet httpGet2 = new HttpGet(alchemy);
-            String sentiment="";
+            String sentiment = "";
             try {
 
                 HttpResponse response = httpClient.execute(httpGet2, localContext);
@@ -197,9 +235,9 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             }
 
 
-            String CatAlchemy="http://access.alchemyapi.com/calls/url/URLGetCategory?url=" +url +"&apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&outputMode=json";
+            String CatAlchemy = "http://access.alchemyapi.com/calls/url/URLGetCategory?url=" + url + "&apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&outputMode=json";
             HttpGet httpGet3 = new HttpGet(CatAlchemy);
-            String categories="";
+            String categories = "";
             try {
 
                 HttpResponse response = httpClient.execute(httpGet3, localContext);
@@ -211,19 +249,101 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             } catch (Exception e) {
                 return e.getLocalizedMessage();
             }
-        finally {
+
+//refining text results for 70% relativity
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("{text:'");
+            try {
+                JSONObject json = new JSONObject(text);
+                JSONArray ja;
+                ja = json.getJSONArray(TAG_KEYWORDS);
+                boolean appendSeparator = false;
+                for (int i = 0; i < ja.length(); i++) {
+                    JSONObject resultObject = ja.getJSONObject(i);
+                    String name = resultObject.getString(TAG_TEXT);
+                    String comparison = resultObject.getString(TAG_RELEVANCE);
+                    Float foo = Float.parseFloat(comparison.trim());
+
+                    if (foo > 0.7) {
+                        if (appendSeparator)
+                            sb.append(", ");
+                        appendSeparator = true;
+                        sb.append(name);
+
+
+                    }
+                }
+                sb.append("'");
+                sb.append("}");
+
+                text=sb.toString();
+            } catch (JSONException e6) {
+                System.err.println("JSONException " + e6.getMessage());
+            }
+//refinining category results
+            StringBuilder sb3 = new StringBuilder();
+            sb3.append("{category:'");
+            try {
+                JSONObject json = new JSONObject(categories);
+                String categ = json.getString(TAG_CATEGORY);
+                sb3.append(categ);
+                sb3.append("'}");
+                categories=sb3.toString();
+            } catch (JSONException e7) {
+                System.err.println("JSONException " + e7.getMessage());
+            }
+//refining sentiment results
+            StringBuilder sb2 = new StringBuilder();
+            sb2.append("{sentiment:'");
+            try {
+                JSONObject json = new JSONObject(sentiment);
+                JSONObject docSentiment = json.getJSONObject(TAG_DOCSENTIMENT);
+                String type = docSentiment.getString(TAG_TYPE);
+                sb2.append(type);
+                sb2.append("'}");
+                sentiment=sb2.toString();
+            } catch (JSONException e5) {
+                System.err.println("JSONException " + e5.getMessage());
+            }
+//merge the json objects to one
+            JSONObject combined=null;
+            try {
+                JSONObject obj1 = new JSONObject(text);
+                JSONObject obj2 = new JSONObject(sentiment);
+                JSONObject obj3 = new JSONObject(categories);
+                combined = new JSONObject();
+                combined.put("textres", obj1);
+                combined.put("sentimentres", obj2);
+                combined.put("categoryres", obj3);
+            } catch (Exception e) {
+                return e.getLocalizedMessage();
+            }
+            finally {
                 // When HttpClient instance is no longer needed,
                 // shut down the connection manager to ensure
                 // immediate deallocation of all system resources
                 httpClient.getConnectionManager().shutdown();
             }
+
+
+
+
+//upload json obj to mongolab -> executeHttpPut
+            String myuri ="https://api.mongolab.com/api/1/databases/dummydb/collections/myself?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
+            try {
+                executeHttpPost(myuri, combined);
+            }
+            catch (Exception e9){
+                return e9.getLocalizedMessage();
+            }
+
+
+
+ /* DEBUGGING -----------------------------------------------------------------------------------------
 //adding parsing here
 
-
-
-            //      DEBUGGING
-
-            String result="";
+            String result = "";
             StringBuilder sb = new StringBuilder();
             sb.append("Your last visit was: ").append(title).append("\n").append("\n").append("The terms with more than 70% relevance were: ").append("\n");
 
@@ -256,17 +376,19 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             catch ( JSONException e2){
                 System.err.println("JSONException " + e2.getMessage());
             }
-YAHOO TERM */
+YAHOO TERM
             try {
-                JSONObject json=new JSONObject(text);
+                JSONObject json = new JSONObject(text);
+                //add next line in parsing for new combined jsonobject and changed next line to reflect the change
+                String textres = json.getString("textres");
                 JSONArray ja;
-                ja =json.getJSONArray(TAG_KEYWORDS);
+                ja = textres.getJSONArray(TAG_KEYWORDS);
                 boolean appendSeparator = false;
                 for (int i = 0; i < ja.length(); i++) {
                     JSONObject resultObject = ja.getJSONObject(i);
                     String name = resultObject.getString(TAG_TEXT);
                     String comparison = resultObject.getString(TAG_RELEVANCE);
-                    Float foo=Float.parseFloat(comparison.trim());
+                    Float foo = Float.parseFloat(comparison.trim());
 
                     if (foo > 0.7) {
                         if (appendSeparator)
@@ -275,40 +397,45 @@ YAHOO TERM */
                         sb.append(name);
                     }
                 }
-                }
-            catch ( JSONException e2){
+            } catch (JSONException e2) {
                 System.err.println("JSONException " + e2.getMessage());
             }
 
             sb.append("\n").append("\n").append("The sentiment for this url is: ");
             try {
-              JSONObject json =new JSONObject(sentiment);
-                JSONObject docSentiment=json.getJSONObject(TAG_DOCSENTIMENT);
-                String type=docSentiment.getString(TAG_TYPE);
+                JSONObject json = new JSONObject(sentiment);
+                //add next line in parsing for new combined jsonobject and changed next line to reflect the change
+                JSONObject sentimentres = json.getJSONObject("sentimentres");
+                JSONObject docSentiment = sentimentres.getJSONObject(TAG_DOCSENTIMENT);
+                String type = docSentiment.getString(TAG_TYPE);
                 sb.append(type);
-            }
-            catch ( JSONException e3){
+            } catch (JSONException e3) {
                 System.err.println("JSONException " + e3.getMessage());
             }
 
-    // STILL FIXING
+
             sb.append("\n").append("\n").append("The url belongs into the category of: ");
             try {
-                JSONObject json =new JSONObject(categories);
-                String categ=json.getString(TAG_CATEGORY);
+                JSONObject json = new JSONObject(categories);
+                //add next line in parsing for new combined jsonobject and changed next line to reflect the change
+                String categoryres = json.getString("categoryres");
+                String categ = categoryres.getString(TAG_CATEGORY);
                 sb.append(categ);
-            }
-            catch ( JSONException e4){
+            } catch (JSONException e4) {
                 System.err.println("JSONException " + e4.getMessage());
             }
 
 
-                result=sb.toString();
-                return result;
+            result = sb.toString();
 
-//DEBUGGING return text;
+            DEBUGGING ---------------------------------------------------------------------------------
+            */
+ //debug 2           return result;
+            return combined.toString();
 
-            }
+
+
+        }
 
         protected void onPostExecute(String message) {
             Intent intent = new Intent(MyActivity.this, DisplayMessageActivity.class);
@@ -321,3 +448,4 @@ YAHOO TERM */
         }
     }
 }
+
