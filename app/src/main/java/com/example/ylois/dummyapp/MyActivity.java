@@ -34,6 +34,8 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MyActivity extends ActionBarActivity implements OnClickListener{
@@ -626,29 +628,61 @@ YAHOO TERM
         protected String doInBackground(Void... params) {
 
 //q="sentiment":positive&c=true&
-            String url="";
-            String myuri ="https://api.mongolab.com/api/1/databases/dummydb/collections/myself?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
+
+
+            String text="https://api.mongolab.com/api/1/databases/dummydb/collections/myself?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
             try {
-                url = URLEncoder.encode(myuri, "UTF-8");
-            } catch (UnsupportedEncodingException e1) {
-                return e1.getLocalizedMessage();
-            }
-            String text="";
-            try {
-                text = executeHttpGet(url);
+                text = executeHttpGet(text);
             } catch (Exception e9) {
                 return e9.getLocalizedMessage();
             }
-                return text;
+
+            Pattern p = Pattern.compile("\"positive\"");
+            Matcher m = p.matcher(text);
+            int count = 0;
+            while (m.find()){
+                count +=1;
+            }
+          String cpos =Integer.toString(count);
+
+            Pattern p2 = Pattern.compile("\"negative\"");
+            Matcher m2 = p2.matcher(text);
+            int count2 = 0;
+            while (m2.find()){
+                count2 +=1;
+            }
+            String cneg =Integer.toString(count2);
+
+            Pattern p3 = Pattern.compile("\"neutral\"");
+            Matcher m3 = p3.matcher(text);
+            int count3 = 0;
+            while (m3.find()){
+                count3 +=1;
+            }
+            String cneut =Integer.toString(count3);
+
+
+
+
+
+            return new StringBuilder().append(cpos).append(" ").append(cneg).append(" ").append(cneut).toString();
+
         }
 
         protected void onPostExecute(String message) {
-            Intent intent = new Intent(MyActivity.this, DisplayMessageActivity.class);
+
+           // SentimentActivity effort = new SentimentActivity();
+          Intent effortIntent = new Intent(MyActivity.this, SentimentActivity.class);
+          effortIntent.putExtra(EXTRA_MESSAGE, message);
+          startActivity(effortIntent);
+
+
+ /*           Intent intent = new Intent(MyActivity.this, DisplayMessageActivity.class);
             intent.putExtra(EXTRA_MESSAGE, message);
             Button b = (Button)findViewById(R.id.b2);
             b.setClickable(true);
             startActivity(intent);
-
+*/
         }
     }
 }
