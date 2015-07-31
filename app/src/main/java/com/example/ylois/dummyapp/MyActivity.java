@@ -32,16 +32,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
 
 
 public class MyActivity extends ActionBarActivity implements OnClickListener{
 // implements OnClickListener removed from public class MyActivity
     public final static String EXTRA_MESSAGE = "com.example.ylois.dummyapp.MESSAGE";
-    public final static String b1 = "b1";
+
+
+
+/*  public final static String b1 = "b1";
     public final static String b2 = "b2";
     public final static String b3 = "b3";
-
+*/
 
      /*      JSON Node names YAHOO
     private static final String TAG_ENTITY ="entity";
@@ -83,7 +87,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
                 new LongRunningGetIO().execute();
                 break;
             case R.id.b2:
-
+                new LongRunningGetIO2().execute();
                 break;
             case R.id.b3:
                 break;
@@ -567,5 +571,85 @@ YAHOO TERM
         }
     }
 
+
+
+    private class LongRunningGetIO2 extends AsyncTask<Void, Void, String> {
+        protected String getASCIIContentFromEntity(HttpEntity entity) throws IllegalStateException, IOException {
+
+            InputStream in = entity.getContent();
+
+            StringBuilder out = new StringBuilder();
+            int n = 1;
+            while (n > 0) {
+                byte[] b = new byte[4096];
+
+                n = in.read(b);
+
+                if (n > 0) out.append(new String(b, 0, n));
+
+            }
+            return out.toString();
+        }
+        public String executeHttpGet(String url) throws Exception {
+            BufferedReader in = null;
+            String data = null;
+
+            try {
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(url));
+                HttpResponse response = client.execute(request);
+                response.getStatusLine().getStatusCode();
+
+                in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuffer sb = new StringBuffer("");
+                String l = "";
+                String nl = System.getProperty("line.separator");
+                while ((l = in.readLine()) !=null){
+                    sb.append(l + nl);
+                }
+                in.close();
+                data = sb.toString();
+                return data;
+            } finally{
+                if (in != null){
+                    try{
+                        in.close();
+                        return data;
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        @Override
+        protected String doInBackground(Void... params) {
+
+//q="sentiment":positive&c=true&
+            String url="";
+            String myuri ="https://api.mongolab.com/api/1/databases/dummydb/collections/myself?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
+            try {
+                url = URLEncoder.encode(myuri, "UTF-8");
+            } catch (UnsupportedEncodingException e1) {
+                return e1.getLocalizedMessage();
+            }
+            String text="";
+            try {
+                text = executeHttpGet(url);
+            } catch (Exception e9) {
+                return e9.getLocalizedMessage();
+            }
+                return text;
+        }
+
+        protected void onPostExecute(String message) {
+            Intent intent = new Intent(MyActivity.this, DisplayMessageActivity.class);
+            intent.putExtra(EXTRA_MESSAGE, message);
+            Button b = (Button)findViewById(R.id.b2);
+            b.setClickable(true);
+            startActivity(intent);
+
+        }
+    }
 }
 
