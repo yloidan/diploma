@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
 
     <Button
@@ -10,13 +10,28 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="@string/button_send"
-        android:id="@+id/my_button"/>
+        android:id="@+id/b1"/>
 <!--   den xreiazetai me OnClickListener     android:onClick="sendMessage"    -->
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/b1"
+       android:text="@string/button_sentiment"
+       android:id="@+id/b2"/>
+    <!--   android:layout_centerInParent="true"  -->
+
+   <Button
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_centerInParent="true"
+       android:layout_below="@+id/b2"
+       android:text="@string/button_category"
+       android:id="@+id/b3"/>
+    <!--    android:layout_centerInParent="true"  -->
 
 
-
-
-    </RelativeLayout>
+   </RelativeLayout>
 
 
