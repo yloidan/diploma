@@ -173,6 +173,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             String title = "";
             String message = "";
             String returns = "";
+            JSONObject combined = null;
+ //           String replaced="";
 
             //allagmeno se moveToLast gia to pio prosfato history item, sto while ean usaristei thelei beforeFirst
 
@@ -184,12 +186,14 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                     message = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL));
                     Browser.deleteFromHistory(cr, mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL)));
 //                cr.delete(uriCustom, mCur.getString(mCur.getPosition())  ,null);
+                    if (message != null && !message.isEmpty()) {
 
-                    try {
-                        url = URLEncoder.encode(message, "UTF-8");
-                    } catch (UnsupportedEncodingException e1) {
-                        return e1.getLocalizedMessage();
-                    }
+
+                        try {
+                            url = URLEncoder.encode(message, "UTF-8");
+                        } catch (UnsupportedEncodingException e1) {
+                            return e1.getLocalizedMessage();
+                        }
 /*      YAHOO KEY EXTRACTION - REPLACED WITH ALCHEMY TERM EXTRACTION
             String resu = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20contentanalysis.analyze%20where%20url%3D%27" + url + "%27%3B&format=json&diagnostics=true&callback=";
 
@@ -208,55 +212,55 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             }
 
  */
-                    //http://access.alchemyapi.com/calls/url/URLGetRankedKeywords
-                    String termAlchemy = "http://access.alchemyapi.com/calls/url/URLGetRankedKeywords?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" + url + "&outputMode=json&keywordExtractMode=strict";
-                    HttpGet httpGet = new HttpGet(termAlchemy);
-                    String text = "";
-                    try {
+                        //http://access.alchemyapi.com/calls/url/URLGetRankedKeywords
+                        String termAlchemy = "http://access.alchemyapi.com/calls/url/URLGetRankedKeywords?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" + url + "&outputMode=json&keywordExtractMode=strict";
+                        HttpGet httpGet = new HttpGet(termAlchemy);
+                        String text = "";
+                        try {
 
-                        HttpResponse response = httpClient.execute(httpGet, localContext);
+                            HttpResponse response = httpClient.execute(httpGet, localContext);
 
-                        HttpEntity entity = response.getEntity();
+                            HttpEntity entity = response.getEntity();
 
-                        text = getASCIIContentFromEntity(entity);
+                            text = getASCIIContentFromEntity(entity);
 
-                    } catch (Exception e) {
-                        return e.getLocalizedMessage();
-                    }
+                        } catch (Exception e) {
+                            return e.getLocalizedMessage();
+                        }
 
-                    String alchemy = "http://access.alchemyapi.com/calls/url/URLGetTextSentiment?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" + url + "&outputMode=json";
-                    HttpGet httpGet2 = new HttpGet(alchemy);
-                    String sentiment = "";
-                    try {
+                        String alchemy = "http://access.alchemyapi.com/calls/url/URLGetTextSentiment?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" + url + "&outputMode=json";
+                        HttpGet httpGet2 = new HttpGet(alchemy);
+                        String sentiment = "";
+                        try {
 
-                        HttpResponse response = httpClient.execute(httpGet2, localContext);
+                            HttpResponse response = httpClient.execute(httpGet2, localContext);
 
-                        HttpEntity entity = response.getEntity();
+                            HttpEntity entity = response.getEntity();
 
-                        sentiment = getASCIIContentFromEntity(entity);
+                            sentiment = getASCIIContentFromEntity(entity);
 
-                    } catch (Exception e) {
-                        return e.getLocalizedMessage();
-                    }
+                        } catch (Exception e) {
+                            return e.getLocalizedMessage();
+                        }
 
 
-                    String CatAlchemy = "http://access.alchemyapi.com/calls/url/URLGetCategory?url=" + url + "&apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&outputMode=json";
-                    HttpGet httpGet3 = new HttpGet(CatAlchemy);
-                    String categories = "";
-                    try {
+                        String CatAlchemy = "http://access.alchemyapi.com/calls/url/URLGetCategory?url=" + url + "&apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&outputMode=json";
+                        HttpGet httpGet3 = new HttpGet(CatAlchemy);
+                        String categories = "";
+                        try {
 
-                        HttpResponse response = httpClient.execute(httpGet3, localContext);
+                            HttpResponse response = httpClient.execute(httpGet3, localContext);
 
-                        HttpEntity entity = response.getEntity();
+                            HttpEntity entity = response.getEntity();
 
-                        categories = getASCIIContentFromEntity(entity);
+                            categories = getASCIIContentFromEntity(entity);
 
-                    } catch (Exception e) {
-                        return e.getLocalizedMessage();
-                    }
+                        } catch (Exception e) {
+                            return e.getLocalizedMessage();
+                        }
 //creating json object for title
-                    StringBuilder sbt = new StringBuilder();
-                    sbt.append("{title:'");
+ //1                       StringBuilder sbt = new StringBuilder();
+ //1                       sbt.append("{title:'");
  /*        char[] arr=title.toCharArray();
                     for (int i=0; i<arr.length; i++)
                     {
@@ -265,95 +269,114 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                     }
                     title=arr.toString();
   */
-  //                  title = title.replaceAll("'","(quotation marks)");
-                    sbt.append(title);
-                    sbt.append("'}");
-                    title = sbt.toString();
-
-
-//refining text results for 70% relativity
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("{text:'");
-                    try {
-                        JSONObject json = new JSONObject(text);
-                        JSONArray ja;
-                        ja = json.getJSONArray(TAG_KEYWORDS);
-                        boolean appendSeparator = false;
-                        for (int i = 0; i < ja.length(); i++) {
-                            JSONObject resultObject = ja.getJSONObject(i);
-                            String name = resultObject.getString(TAG_TEXT);
-                            String comparison = resultObject.getString(TAG_RELEVANCE);
-                            Float foo = Float.parseFloat(comparison.trim());
-
-                            if (foo > 0.7) {
-                                if (appendSeparator)
-                                    sb.append(", ");
-                                appendSeparator = true;
-                                sb.append(name);
-
-
+  //1                      title = title.trim().replace("'","").replace('"',' ');
+    //1                    sbt.append(title);
+       //1                 sbt.append("'}");
+          //1              title = sbt.toString();
+                        if (title!=null && !title.isEmpty()) {
+                            title = title.trim().replace('\'', ' ').replace('"', ' ');
+                            try {
+                                title = new JSONObject().put("title", title).toString();
+                            } catch (JSONException e1) {
+                                System.err.println("JSONException " + e1.getMessage());
                             }
                         }
-                        sb.append("'");
-                        sb.append("}");
+                       else {
+                            title = "Browser did not have enough time to save title in history";
+                            try {
+                                title = new JSONObject().put("title", title).toString();
+                            } catch (JSONException e1) {
+                                System.err.println("JSONException " + e1.getMessage());
+                            }
+                        }
+//refining text results for 70% relativity
 
-                        text = sb.toString();
-                    } catch (JSONException e6) {
-                        System.err.println("JSONException " + e6.getMessage());
-                    }
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("{text:'");
+                        try {
+                            JSONObject json = new JSONObject(text);
+                            JSONArray ja;
+                            ja = json.getJSONArray(TAG_KEYWORDS);
+                            boolean appendSeparator = false;
+                            for (int i = 0; i < ja.length(); i++) {
+                                JSONObject resultObject = ja.getJSONObject(i);
+                                String name = resultObject.getString(TAG_TEXT);
+                                String comparison = resultObject.getString(TAG_RELEVANCE);
+                                Float foo = Float.parseFloat(comparison.trim());
+
+                                if (foo > 0.7) {
+                                    if (appendSeparator)
+                                        sb.append(", ");
+                                    appendSeparator = true;
+                                    sb.append(name);
+
+
+                                }
+                            }
+                            sb.append("'");
+                            sb.append("}");
+
+                            text = sb.toString();
+                        } catch (JSONException e6) {
+                            System.err.println("JSONException " + e6.getMessage());
+                        }
 //refining category results
-                    StringBuilder sb3 = new StringBuilder();
-                    sb3.append("{category:'");
-                    try {
-                        JSONObject json = new JSONObject(categories);
-                        String categ = json.getString(TAG_CATEGORY);
-                        sb3.append(categ);
-                        sb3.append("'}");
-                        categories = sb3.toString();
-                    } catch (JSONException e7) {
-                        System.err.println("JSONException " + e7.getMessage());
-                    }
+                        StringBuilder sb3 = new StringBuilder();
+                        sb3.append("{category:'");
+                        try {
+                            JSONObject json = new JSONObject(categories);
+                            String categ = json.getString(TAG_CATEGORY);
+                            sb3.append(categ);
+                            sb3.append("'}");
+                            categories = sb3.toString();
+                        } catch (JSONException e7) {
+                            System.err.println("JSONException " + e7.getMessage());
+                        }
 //refining sentiment results
-                    StringBuilder sb2 = new StringBuilder();
-                    sb2.append("{sentiment:'");
-                    try {
-                        JSONObject json = new JSONObject(sentiment);
-                        JSONObject docSentiment = json.getJSONObject(TAG_DOCSENTIMENT);
-                        String type = docSentiment.getString(TAG_TYPE);
-                        sb2.append(type);
-                        sb2.append("'}");
-                        sentiment = sb2.toString();
-                    } catch (JSONException e5) {
-                        System.err.println("JSONException " + e5.getMessage());
-                    }
+                        StringBuilder sb2 = new StringBuilder();
+                        sb2.append("{sentiment:'");
+                        try {
+                            JSONObject json = new JSONObject(sentiment);
+                            JSONObject docSentiment = json.getJSONObject(TAG_DOCSENTIMENT);
+                            String type = docSentiment.getString(TAG_TYPE);
+                            sb2.append(type);
+                            sb2.append("'}");
+                            sentiment = sb2.toString();
+                        } catch (JSONException e5) {
+                            System.err.println("JSONException " + e5.getMessage());
+                        }
 //merge the json objects to one
-                    JSONObject combined = null;
-                    try {
-                        JSONObject obj1 = new JSONObject(text);
-                        JSONObject obj2 = new JSONObject(sentiment);
-                        JSONObject obj3 = new JSONObject(categories);
-                        JSONObject obj4 = new JSONObject(title);
-                        combined = new JSONObject();
-                        combined.put("textres", obj1);
-                        combined.put("sentimentres", obj2);
-                        combined.put("categoryres", obj3);
-                        combined.put("titleres", obj4);
-                    } catch (Exception e) {
-                        return e.getLocalizedMessage();
-                    }
+
+                        try {
+                            JSONObject obj1 = new JSONObject(text);
+                            JSONObject obj2 = new JSONObject(sentiment);
+                            JSONObject obj3 = new JSONObject(categories);
+                            JSONObject obj4 = new JSONObject(title);
+                            combined = new JSONObject();
+                            combined.put("textres", obj1);
+                            combined.put("sentimentres", obj2);
+                            combined.put("categoryres", obj3);
+                            combined.put("titleres", obj4);
+                        } catch (Exception e) {
+                            return e.getLocalizedMessage();
+                        }
 
 
 //upload json obj to mongolab -> executeHttpPut
-                    String myuri = "https://api.mongolab.com/api/1/databases/dummydb/collections/myself?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
-                    //unused string just for debugging reasons (returns the document from the db including ID)
+                        String myuri = "https://api.mongolab.com/api/1/databases/dummydb/collections/myself?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
+                        //unused string just for debugging reasons (returns the document from the db including ID)
 
-                    try {
-                        returns = executeHttpPost(myuri, combined);
-                    } catch (Exception e9) {
-                        return e9.getLocalizedMessage();
+                        try {
+                            returns = executeHttpPost(myuri, combined);
+                        } catch (Exception e9) {
+                            return e9.getLocalizedMessage();
+                        }
+                        mCur.moveToNext();
                     }
-                    mCur.moveToNext();
+                    else {
+                        returns="There is no browser history";
+                        break;
+                    }
                 }
             }
 
@@ -364,7 +387,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
             mCur.close();
 
- /* DEBUGGING -----------------------------------------------------------------------------------------
+ /* DEBUGGING --------------------------------------------------------------------------------------------------
 //adding parsing here
 
             String result = "";
@@ -452,9 +475,58 @@ YAHOO TERM
 
             result = sb.toString();
 
-            DEBUGGING ---------------------------------------------------------------------------------
+            DEBUGGING -----------------------------------------------------------------------------------------
             */
  //debug 2           return result;
+            StringBuilder sb = new StringBuilder();
+            String titlef="";
+            String textf="";
+            try {
+                JSONObject json = new JSONObject(returns);
+                //add next line in parsing for new combined jsonobject and changed next line to reflect the change
+                JSONObject titleres = json.getJSONObject("titleres");
+                titlef = titleres.getString("title");
+
+            } catch (JSONException e8) {
+                System.err.println("JSONException " + e8.getMessage());
+            }
+
+
+            sb.append("Your last visit was: ").append(titlef).append("\n").append("\n").append("The terms with more than 70% relevance were: ").append("\n");
+            try {
+                JSONObject json = new JSONObject(returns);
+                JSONObject textres = json.getJSONObject("textres");
+                textf = textres.getString("text");
+                sb.append(textf);
+
+            } catch (JSONException e2) {
+                System.err.println("JSONException " + e2.getMessage());
+            }
+
+            sb.append("\n").append("\n").append("The sentiment for this url is: ");
+            try {
+                JSONObject json = new JSONObject(returns);
+                //add next line in parsing for new combined jsonobject and changed next line to reflect the change
+                JSONObject sentimentres = json.getJSONObject("sentimentres");
+         //       JSONObject docSentiment = sentimentres.getJSONObject(TAG_DOCSENTIMENT);
+                String type = sentimentres.getString("sentiment");
+                sb.append(type);
+            } catch (JSONException e3) {
+                System.err.println("JSONException " + e3.getMessage());
+            }
+
+
+            sb.append("\n").append("\n").append("The url belongs into the category of: ");
+            try {
+                JSONObject json = new JSONObject(returns);
+                //add next line in parsing for new combined jsonobject and changed next line to reflect the change
+                JSONObject categoryres = json.getJSONObject("categoryres");
+                String categ = categoryres.getString(TAG_CATEGORY);
+                sb.append(categ);
+            } catch (JSONException e4) {
+                System.err.println("JSONException " + e4.getMessage());
+            }
+            returns = sb.toString();
             return returns;
 
 
