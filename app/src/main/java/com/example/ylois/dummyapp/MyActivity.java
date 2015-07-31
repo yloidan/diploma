@@ -35,9 +35,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 
-public class MyActivity extends ActionBarActivity implements OnClickListener {
-
+public class MyActivity extends ActionBarActivity implements OnClickListener{
+// implements OnClickListener removed from public class MyActivity
     public final static String EXTRA_MESSAGE = "com.example.ylois.dummyapp.MESSAGE";
+    public final static String b1 = "b1";
+    public final static String b2 = "b2";
+    public final static String b3 = "b3";
 
 
      /*      JSON Node names YAHOO
@@ -59,17 +62,33 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
     private static final String TAG_RELEVANCE="relevance";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
-        findViewById(R.id.my_button).setOnClickListener(this);
+        Button b1 = (Button) findViewById(R.id.b1);
+        Button b2 = (Button) findViewById(R.id.b2);
+        Button b3 = (Button) findViewById(R.id.b3);
+        b1.setOnClickListener(this);
+        b2.setOnClickListener(this);
+        b3.setOnClickListener(this);
+//        findViewById(R.id.my_button).setOnClickListener(this);
+ //       findViewById(R.id.sentiment_analysis).setOnClickListener(this);
+  //      findViewById(R.id.category_analysis).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        Button b = (Button) findViewById(R.id.my_button);
-        b.setClickable(false);
-        new LongRunningGetIO().execute();
+        switch (v.getId()) {
+            case R.id.b1:
+                new LongRunningGetIO().execute();
+                break;
+            case R.id.b2:
+
+                break;
+            case R.id.b3:
+                break;
+
+    }
     }
 
     @Override
@@ -186,7 +205,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                     message = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL));
                     Browser.deleteFromHistory(cr, mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL)));
 //                cr.delete(uriCustom, mCur.getString(mCur.getPosition())  ,null);
-                    if (message != null && !message.isEmpty()) {
+
 
 
                         try {
@@ -372,12 +391,12 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                             return e9.getLocalizedMessage();
                         }
                         mCur.moveToNext();
-                    }
-                    else {
-                        returns="There is no browser history";
-                        break;
+
+
                     }
                 }
+        else {
+            returns="There is no browser history.";
             }
 
                 // When HttpClient instance is no longer needed,
@@ -478,55 +497,59 @@ YAHOO TERM
             DEBUGGING -----------------------------------------------------------------------------------------
             */
  //debug 2           return result;
-            StringBuilder sb = new StringBuilder();
-            String titlef="";
-            String textf="";
-            try {
-                JSONObject json = new JSONObject(returns);
-                //add next line in parsing for new combined jsonobject and changed next line to reflect the change
-                JSONObject titleres = json.getJSONObject("titleres");
-                titlef = titleres.getString("title");
 
-            } catch (JSONException e8) {
-                System.err.println("JSONException " + e8.getMessage());
+            if (returns!="There is no browser history." ) {
+
+                StringBuilder sb = new StringBuilder();
+                String titlef = "";
+                String textf = "";
+                try {
+                    JSONObject json = new JSONObject(returns);
+                    //add next line in parsing for new combined jsonobject and changed next line to reflect the change
+                    JSONObject titleres = json.getJSONObject("titleres");
+                    titlef = titleres.getString("title");
+
+                } catch (JSONException e8) {
+                    System.err.println("JSONException " + e8.getMessage());
+                }
+
+
+                sb.append("Your last visit was: ").append(titlef).append("\n").append("\n").append("The terms with more than 70% relevance were: ").append("\n");
+                try {
+                    JSONObject json = new JSONObject(returns);
+                    JSONObject textres = json.getJSONObject("textres");
+                    textf = textres.getString("text");
+                    sb.append(textf);
+
+                } catch (JSONException e2) {
+                    System.err.println("JSONException " + e2.getMessage());
+                }
+
+                sb.append("\n").append("\n").append("The sentiment for this url is: ");
+                try {
+                    JSONObject json = new JSONObject(returns);
+                    //add next line in parsing for new combined jsonobject and changed next line to reflect the change
+                    JSONObject sentimentres = json.getJSONObject("sentimentres");
+                    //       JSONObject docSentiment = sentimentres.getJSONObject(TAG_DOCSENTIMENT);
+                    String type = sentimentres.getString("sentiment");
+                    sb.append(type);
+                } catch (JSONException e3) {
+                    System.err.println("JSONException " + e3.getMessage());
+                }
+
+
+                sb.append("\n").append("\n").append("The url belongs into the category of: ");
+                try {
+                    JSONObject json = new JSONObject(returns);
+                    //add next line in parsing for new combined jsonobject and changed next line to reflect the change
+                    JSONObject categoryres = json.getJSONObject("categoryres");
+                    String categ = categoryres.getString(TAG_CATEGORY);
+                    sb.append(categ);
+                } catch (JSONException e4) {
+                    System.err.println("JSONException " + e4.getMessage());
+                }
+                returns = sb.toString();
             }
-
-
-            sb.append("Your last visit was: ").append(titlef).append("\n").append("\n").append("The terms with more than 70% relevance were: ").append("\n");
-            try {
-                JSONObject json = new JSONObject(returns);
-                JSONObject textres = json.getJSONObject("textres");
-                textf = textres.getString("text");
-                sb.append(textf);
-
-            } catch (JSONException e2) {
-                System.err.println("JSONException " + e2.getMessage());
-            }
-
-            sb.append("\n").append("\n").append("The sentiment for this url is: ");
-            try {
-                JSONObject json = new JSONObject(returns);
-                //add next line in parsing for new combined jsonobject and changed next line to reflect the change
-                JSONObject sentimentres = json.getJSONObject("sentimentres");
-         //       JSONObject docSentiment = sentimentres.getJSONObject(TAG_DOCSENTIMENT);
-                String type = sentimentres.getString("sentiment");
-                sb.append(type);
-            } catch (JSONException e3) {
-                System.err.println("JSONException " + e3.getMessage());
-            }
-
-
-            sb.append("\n").append("\n").append("The url belongs into the category of: ");
-            try {
-                JSONObject json = new JSONObject(returns);
-                //add next line in parsing for new combined jsonobject and changed next line to reflect the change
-                JSONObject categoryres = json.getJSONObject("categoryres");
-                String categ = categoryres.getString(TAG_CATEGORY);
-                sb.append(categ);
-            } catch (JSONException e4) {
-                System.err.println("JSONException " + e4.getMessage());
-            }
-            returns = sb.toString();
             return returns;
 
 
@@ -536,12 +559,13 @@ YAHOO TERM
         protected void onPostExecute(String message) {
             Intent intent = new Intent(MyActivity.this, DisplayMessageActivity.class);
             intent.putExtra(EXTRA_MESSAGE, message);
-            Button b = (Button)findViewById(R.id.my_button);
+            Button b = (Button)findViewById(R.id.b1);
             b.setClickable(true);
             startActivity(intent);
 
 
         }
     }
+
 }
 
