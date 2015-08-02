@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.model.CategorySeries;
@@ -20,10 +21,13 @@ public class CategoryActivity extends ActionBarActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sentiment);
+        setContentView(R.layout.activity_category);
+
+ //
         openChart();
 
-        
+
+
 
 
     }
@@ -91,8 +95,12 @@ public class CategoryActivity extends ActionBarActivity {
 
         // this part is used to display graph on the xml
         LinearLayout chartContainer = (LinearLayout) findViewById(R.id.chart);
+
+
+
+
         // remove any views before u paint the chart
-        chartContainer.removeAllViews();
+//        chartContainer.removeAllViews();
         // drawing pie chart
         mChart = ChartFactory.getPieChartView(getBaseContext(),
                 distributionSeries, defaultRenderer);
@@ -100,6 +108,134 @@ public class CategoryActivity extends ActionBarActivity {
 
         chartContainer.addView(mChart);
 
+
+
+
+        //add textview
+        parts = message.split(" ");
+        int[] values = new int[parts.length];
+        for (int n = 0; n < parts.length; n++) {
+            values[n] = Integer.parseInt(parts[n]);
+        }
+
+        int max = values[0];
+        int cnt = 0;
+        int[] cnt2={};
+        //finding max value
+        for (int i=0; i<values.length; i++)
+        {
+            if(max < values[i]) {
+                max = values[i];
+                cnt=i;
+            }
+        }
+        //finding equal to max value; WILL NOT USE IT
+        int m=0;
+
+        for (int k=0; k<values.length; k++)
+        {
+            if (max==values[k] && k!=cnt)
+            {
+                cnt2[m]=k;
+                m++;
+            }
+        }
+
+        String category="";
+        StringBuilder sb = new StringBuilder();
+        String url1="";
+        String url2="";
+        String url3="";
+
+        switch (cnt)
+        {
+            case 0:
+                category ="Arts & Entertainment";
+                url1="http://www.forbes.com/arts-entertainment/";
+                url2="http://www.cbc.ca/news/arts";
+                url3="http://www.bbc.com/news/entertainment_and_arts";
+                break;
+            case 1:
+                category ="Business";
+                url1="http://www.bbc.com/news/business";
+                url2="http://uk.reuters.com/business";
+                url3="http://www.bloomberg.com/europe";
+                break;
+            case 2:
+                category ="Computers & Internet";
+                url1="http://www.cnet.com/news/";
+                url2="http://edition.cnn.com/tech";
+                url3="http://www.sciencedaily.com/news/computers_math/computers_and_internet/";
+                break;
+            case 3:
+                category ="Culture & Politics";
+                url1="http://www.bbc.com/news/politics";
+                url2="http://www.huffingtonpost.com/news/politics-news/";
+                url3="http://www.economist.com/topics/culture-and-lifestyle";
+                break;
+            case 4:
+                category ="Gaming";
+                url1="http://www.mmo-champion.com/content/";
+                url2="http://www.gamespot.com/news/";
+                url3="http://www.pcgamer.com/news/";
+                break;
+            case 5:
+                category ="Health";
+                url1="http://www.nytimes.com/pages/health/index.html";
+                url2="http://edition.cnn.com/health";
+                url3="http://www.foxnews.com/health/index.html";
+                break;
+            case 6:
+                category ="Law & Crime";
+                url1="http://edition.cnn.com/specials/us/crime-and-justice";
+                url2="http://www.theguardian.com/law/criminal-justice";
+                url3="http://legalnews.findlaw.com/crime-news.html";
+                break;
+            case 7:
+                category ="Religion";
+                url1="http://www.religionnews.com/";
+                url2="http://www.huffingtonpost.com/religion/";
+                url3="http://www.theguardian.com/world/religion";
+                break;
+            case 8:
+                category ="Recreation";
+                url1="http://www.sciencedaily.com/news/science_society/travel_and_recreation/";
+                url2="http://recreationnews.com/";
+                url3="http://greece.angloinfo.com/lifestyle/sports-and-leisure/";
+                break;
+            case 9:
+                category ="Science & Technology";
+                url1="https://www.sciencenews.org/";
+                url2="http://www.huffingtonpost.com/science/";
+                url3="http://www.bbc.com/news/technology";
+                break;
+            case 10:
+                category ="Sports";
+                url1="http://sports.yahoo.com/";
+                url2="http://www.skysports.com/latest-news/";
+                url3="http://www.bbc.com/sport/0/";
+                break;
+            case 11:
+                category ="Weather";
+                url1="http://www.accuweather.com/en/weather-news";
+                url2="http://www.weather.com/";
+                url3="http://www.bbc.com/weather/";
+                break;
+            default:
+                category ="error1";
+                url1="error2";
+                url2="error3";
+                url3="error4";
+                break;
+        }
+
+        sb.append("Your most visited category was: ").append(category).append(". \n Here are some link that will probably interest you: \n").append(url1).append("\n").append(url2).append("\n").append(url3);
+
+        TextView text = (TextView) findViewById(R.id.btn_chart);
+
+        text.setText(sb.toString());
+
+        return;
     }
 
 
