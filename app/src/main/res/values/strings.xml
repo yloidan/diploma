@@ -1,9 +1,17 @@
 <resources>
     <string name="app_name">Dummy App</string>
     <string name="edit_message">Enter a message</string>
-    <string name="button_send">Get terms and sentiment on last history item</string>
+
+    <string name="button_send">Analyse last browser history item</string>
+
+    <string name="button_sentiment">Sentiment Analysis</string>
+    <string name="button_category">Category Analysis</string>
+
     <string name="action_settings">Settings</string>
-    <string name="title_activity_display_message">Terms and sentiment of last browser visit</string>
+
+    <string name="title_activity_display_message">Last browser history item analysis</string>
 
     <string name="hello_world">Blank! Oops!</string>
+    <string name="title_activity_sentiment">Sentiment Analysis</string>
+    <string name="title_activity_category">CategoryActivity</string>
 </resources>

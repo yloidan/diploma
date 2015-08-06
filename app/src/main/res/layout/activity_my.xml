@@ -2,33 +2,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:padding="10dp"
+    android:orientation="vertical"
+    android:background="@drawable/b1"
+    >
 
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_above="@+id/b2"
+        android:layout_marginBottom="60dp"
         android:text="@string/button_send"
-        android:id="@+id/b1"/>
+        android:id="@+id/b1"
+        android:background="@drawable/blue_button"
+        style="@style/blue_button"
+
+        />
 <!--   den xreiazetai me OnClickListener     android:onClick="sendMessage"    -->
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_below="@+id/b1"
-       android:text="@string/button_sentiment"
-       android:id="@+id/b2"/>
+        android:background="@drawable/blue_button"
+        style="@style/blue_button"
+        android:text="@string/button_sentiment"
+        android:id="@+id/b2"
+        />
     <!--   android:layout_centerInParent="true"  -->
 
    <Button
-       android:layout_width="wrap_content"
+       android:layout_width="500dp"
        android:layout_height="wrap_content"
        android:layout_centerInParent="true"
        android:layout_below="@+id/b2"
+       android:layout_marginTop="60dp"
        android:text="@string/button_category"
-       android:id="@+id/b3"/>
+       android:id="@+id/b3"
+       android:background="@drawable/blue_button"
+       style="@style/blue_button"
+      />
     <!--    android:layout_centerInParent="true"  -->
 
 

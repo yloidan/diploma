@@ -39,15 +39,8 @@ import java.util.regex.Pattern;
 
 
 public class MyActivity extends ActionBarActivity implements OnClickListener{
-// implements OnClickListener removed from public class MyActivity
+
     public final static String EXTRA_MESSAGE = "com.example.ylois.dummyapp.MESSAGE";
-
-
-
-/*  public final static String b1 = "b1";
-    public final static String b2 = "b2";
-    public final static String b3 = "b3";
-*/
 
      /*      JSON Node names YAHOO
     private static final String TAG_ENTITY ="entity";
@@ -56,8 +49,10 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
     private static final String TAG_QUERY="query";
     private static final String TAG_RESULTS="results";
     private static final String TAG_ENTITIES="entities";
-    //private static final String TAG_WIKI_URL="wiki_url";
+    private static final String TAG_WIKI_URL="wiki_url";
     */
+
+    //json node names for text extraction
     private static final String TAG_DOCSENTIMENT="docSentiment";
     private static final String TAG_TYPE="type";
     //json node names for category
@@ -77,9 +72,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
         b1.setOnClickListener(this);
         b2.setOnClickListener(this);
         b3.setOnClickListener(this);
-//        findViewById(R.id.my_button).setOnClickListener(this);
- //       findViewById(R.id.sentiment_analysis).setOnClickListener(this);
-  //      findViewById(R.id.category_analysis).setOnClickListener(this);
+
     }
 
     @Override
@@ -92,6 +85,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
                 new LongRunningGetIO2().execute();
                 break;
             case R.id.b3:
+                new LongRunningGetIO3().execute();
                 break;
 
     }
@@ -177,9 +171,6 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
         @Override
         protected String doInBackground(Void... params) {
 
-
-            //xml  https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20contentanalysis.analyze%20where%20url%3D'http%3A%2F%2Fwww.cnn.com%2F2011%2F11%2F11%2Fworld%2Feurope%2Fgreece-main%2Findex.html'%3B&diagnostics=true
-
             HttpClient httpClient = new DefaultHttpClient();
             HttpContext localContext = new BasicHttpContext();
             String url = "";
@@ -194,25 +185,37 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
             String sel = Browser.BookmarkColumns.BOOKMARK + " = 0" ; // 0 = history, 1 = bookmark , + " AND " + Browser.BookmarkColumns.DATE + "BETWEEN ? AND ?"
             ContentResolver cr = getContentResolver();
             Cursor mCur = cr.query(uriCustom, proj, sel, null, null); // new String[]{startdate, enddate}
-            mCur.moveToFirst();
+
             String title = "";
             String message = "";
             String returns = "";
             JSONObject combined = null;
- //           String replaced="";
 
-            //allagmeno se moveToLast gia to pio prosfato history item, sto while ean usaristei thelei beforeFirst
+            /*
+            try {
+                mCur.moveToFirst();
+            }
+            catch (Exception e11)
+            {
+                returns="There is no browser history.";
+                return returns;
+            }
+
+
+*/
+
+
+            //allagi se moveToLast gia to pio prosfato history item, sto while ean usaristei thelei beforeFirst
 
             if (mCur.moveToFirst() && mCur.getCount() > 0)
 
             {
+                mCur.moveToFirst();
+
                 while (!mCur.isAfterLast()) {
                     title = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.TITLE));
                     message = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL));
                     Browser.deleteFromHistory(cr, mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL)));
-//                cr.delete(uriCustom, mCur.getString(mCur.getPosition())  ,null);
-
-
 
                         try {
                             url = URLEncoder.encode(message, "UTF-8");
@@ -237,7 +240,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
             }
 
  */
-                        //http://access.alchemyapi.com/calls/url/URLGetRankedKeywords
+
                         String termAlchemy = "http://access.alchemyapi.com/calls/url/URLGetRankedKeywords?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" + url + "&outputMode=json&keywordExtractMode=strict";
                         HttpGet httpGet = new HttpGet(termAlchemy);
                         String text = "";
@@ -284,20 +287,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
                             return e.getLocalizedMessage();
                         }
 //creating json object for title
- //1                       StringBuilder sbt = new StringBuilder();
- //1                       sbt.append("{title:'");
- /*        char[] arr=title.toCharArray();
-                    for (int i=0; i<arr.length; i++)
-                    {
-                        if (arr[i]=='\'')
-                            arr[i]=' ';
-                    }
-                    title=arr.toString();
-  */
-  //1                      title = title.trim().replace("'","").replace('"',' ');
-    //1                    sbt.append(title);
-       //1                 sbt.append("'}");
-          //1              title = sbt.toString();
+
                         if (title!=null && !title.isEmpty()) {
                             title = title.trim().replace('\'', ' ').replace('"', ' ');
                             try {
@@ -345,6 +335,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
                         } catch (JSONException e6) {
                             System.err.println("JSONException " + e6.getMessage());
                         }
+
 //refining category results
                         StringBuilder sb3 = new StringBuilder();
                         sb3.append("{category:'");
@@ -357,6 +348,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
                         } catch (JSONException e7) {
                             System.err.println("JSONException " + e7.getMessage());
                         }
+
 //refining sentiment results
                         StringBuilder sb2 = new StringBuilder();
                         sb2.append("{sentiment:'");
@@ -370,8 +362,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
                         } catch (JSONException e5) {
                             System.err.println("JSONException " + e5.getMessage());
                         }
-//merge the json objects to one
 
+//merge the json objects to one
                         try {
                             JSONObject obj1 = new JSONObject(text);
                             JSONObject obj2 = new JSONObject(sentiment);
@@ -386,10 +378,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
                             return e.getLocalizedMessage();
                         }
 
-
 //upload json obj to mongolab -> executeHttpPut
                         String myuri = "https://api.mongolab.com/api/1/databases/dummydb/collections/myself?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
-                        //unused string just for debugging reasons (returns the document from the db including ID)
 
                         try {
                             returns = executeHttpPost(myuri, combined);
@@ -576,22 +566,7 @@ YAHOO TERM
 
 
     private class LongRunningGetIO2 extends AsyncTask<Void, Void, String> {
-        protected String getASCIIContentFromEntity(HttpEntity entity) throws IllegalStateException, IOException {
 
-            InputStream in = entity.getContent();
-
-            StringBuilder out = new StringBuilder();
-            int n = 1;
-            while (n > 0) {
-                byte[] b = new byte[4096];
-
-                n = in.read(b);
-
-                if (n > 0) out.append(new String(b, 0, n));
-
-            }
-            return out.toString();
-        }
         public String executeHttpGet(String url) throws Exception {
             BufferedReader in = null;
             String data = null;
@@ -627,9 +602,6 @@ YAHOO TERM
         @Override
         protected String doInBackground(Void... params) {
 
-//q="sentiment":positive&c=true&
-
-
             String text="https://api.mongolab.com/api/1/databases/dummydb/collections/myself?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
             try {
                 text = executeHttpGet(text);
@@ -661,10 +633,6 @@ YAHOO TERM
             }
             String cneut =Integer.toString(count3);
 
-
-
-
-
             return new StringBuilder().append(cpos).append(" ").append(cneg).append(" ").append(cneut).toString();
 
         }
@@ -676,13 +644,159 @@ YAHOO TERM
           effortIntent.putExtra(EXTRA_MESSAGE, message);
           startActivity(effortIntent);
 
+        }
+    }
+    private class LongRunningGetIO3 extends AsyncTask<Void, Void, String> {
 
- /*           Intent intent = new Intent(MyActivity.this, DisplayMessageActivity.class);
-            intent.putExtra(EXTRA_MESSAGE, message);
-            Button b = (Button)findViewById(R.id.b2);
-            b.setClickable(true);
-            startActivity(intent);
-*/
+        public String executeHttpGet(String url) throws Exception {
+            BufferedReader in = null;
+            String data = null;
+
+            try {
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(url));
+                HttpResponse response = client.execute(request);
+                response.getStatusLine().getStatusCode();
+
+                in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuffer sb = new StringBuffer("");
+                String l = "";
+                String nl = System.getProperty("line.separator");
+                while ((l = in.readLine()) !=null){
+                    sb.append(l + nl);
+                }
+                in.close();
+                data = sb.toString();
+                return data;
+            } finally{
+                if (in != null){
+                    try{
+                        in.close();
+                        return data;
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String text="https://api.mongolab.com/api/1/databases/dummydb/collections/myself?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
+            try {
+                text = executeHttpGet(text);
+            } catch (Exception e9) {
+                return e9.getLocalizedMessage();
+            }
+
+            Pattern p = Pattern.compile("\"arts_entertainment\"");
+            Matcher m = p.matcher(text);
+            int count = 0;
+            while (m.find()){
+                count +=1;
+            }
+            String c1 =Integer.toString(count);
+
+            Pattern p2 = Pattern.compile("\"business\"");
+            Matcher m2 = p2.matcher(text);
+            int count2 = 0;
+            while (m2.find()){
+                count2 +=1;
+            }
+            String c2 =Integer.toString(count2);
+
+            Pattern p3 = Pattern.compile("\"computer_internet\"");
+            Matcher m3 = p3.matcher(text);
+            int count3 = 0;
+            while (m3.find()){
+                count3 +=1;
+            }
+            String c3 =Integer.toString(count3);
+
+            Pattern p4 = Pattern.compile("\"culture_politics\"");
+            Matcher m4 = p4.matcher(text);
+            int count4 = 0;
+            while (m4.find()){
+                count4 +=1;
+            }
+            String c4 =Integer.toString(count4);
+
+            Pattern p5 = Pattern.compile("\"gaming\"");
+            Matcher m5 = p5.matcher(text);
+            int count5 = 0;
+            while (m5.find()){
+                count5 +=1;
+            }
+            String c5 =Integer.toString(count5);
+
+            Pattern p6 = Pattern.compile("\"health\"");
+            Matcher m6 = p6.matcher(text);
+            int count6 = 0;
+            while (m6.find()){
+                count6 +=1;
+            }
+            String c6 =Integer.toString(count6);
+
+            Pattern p7 = Pattern.compile("\"law_crime\"");
+            Matcher m7 = p7.matcher(text);
+            int count7 = 0;
+            while (m7.find()){
+                count7 +=1;
+            }
+            String c7 =Integer.toString(count7);
+
+            Pattern p8 = Pattern.compile("\"religion\"");
+            Matcher m8 = p8.matcher(text);
+            int count8 = 0;
+            while (m8.find()){
+                count8 +=1;
+            }
+            String c8 =Integer.toString(count8);
+
+            Pattern p9 = Pattern.compile("\"recreation\"");
+            Matcher m9 = p9.matcher(text);
+            int count9 = 0;
+            while (m9.find()){
+                count9 +=1;
+            }
+            String c9 =Integer.toString(count9);
+
+            Pattern pa = Pattern.compile("\"science_technology\"");
+            Matcher ma = pa.matcher(text);
+            int counta = 0;
+            while (ma.find()){
+                counta +=1;
+            }
+            String ca =Integer.toString(counta);
+
+            Pattern pb = Pattern.compile("\"sports\"");
+            Matcher mb = pb.matcher(text);
+            int countb = 0;
+            while (mb.find()){
+                countb +=1;
+            }
+            String cb =Integer.toString(countb);
+
+            Pattern pc = Pattern.compile("\"weather\"");
+            Matcher mc = pc.matcher(text);
+            int countc = 0;
+            while (mc.find()){
+                countc +=1;
+            }
+            String cc =Integer.toString(countc);
+
+            return new StringBuilder().append(c1).append(" ").append(c2).append(" ").append(c3).append(" ").append(c4).append(" ").append(c5).append(" ").append(c6).append(" ").append(c7).append(" ").append(c8).append(" ").append(c9).append(" ").append(ca).append(" ").append(cb).append(" ").append(cc).toString();
+
+        }
+
+        protected void onPostExecute(String message) {
+
+            Intent effortIntent = new Intent(MyActivity.this, CategoryActivity.class);
+            effortIntent.putExtra(EXTRA_MESSAGE, message);
+            startActivity(effortIntent);
+
         }
     }
 }
