@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Dummy App</string>
-    <string name="edit_message">Enter a message</string>
+
 
     <string name="button_send">Analyse last browser history item</string>
     <string name="button_sentiment">Sentiment Analysis</string>
@@ -18,5 +18,17 @@
     at the Department of Electrical and Computer Engineering of the Aristotle University of Thessaloniki (AUTH), under the
     supervision of Assistant Professor, Andreas L. Symeonidis.</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="no_title">Browser did not have enough time to save title in history.</string>
+    <string name="no_history">Browser history is empty.</string>
+
+    <string name="sb_1">Your last visit was:\u0020 </string>
+    <string name="sb_2">The terms with more than 70% relevance were:\u0020 </string>
+    <string name="sb_3">The sentiment for this url is:\u0020 </string>
+    <string name="sb_4">The url belongs into the category of:\u0020 </string>
+
+
+    <string name="sbc_1">Your most visited category was:\u0020 </string>
+    <string name="sbc_2">Here are some link that will probably interest you:\u0020 </string>
+
+
 </resources>

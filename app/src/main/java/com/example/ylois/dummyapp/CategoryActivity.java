@@ -224,7 +224,7 @@ public class CategoryActivity extends ActionBarActivity {
                 break;
         }
 
-        sb.append("Your most visited category was: ").append(category).append(". \n Here are some link that will probably interest you: \n").append(url1).append("\n").append(url2).append("\n").append(url3);
+        sb.append(getApplicationContext().getString(R.string.sbc_1)).append(category).append(".\n").append(getApplicationContext().getString(R.string.sbc_2)).append("\n").append(url1).append("\n").append(url2).append("\n").append(url3);
 
         TextView text = (TextView) findViewById(R.id.btn_chart);
 

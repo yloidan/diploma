@@ -197,6 +197,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
             String message = "";
             String returns = "";
             JSONObject combined = null;
+            String text = "";
+            String text2="";
 
             /*
             try {
@@ -250,7 +252,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
 
                         String termAlchemy = "http://access.alchemyapi.com/calls/url/URLGetRankedKeywords?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" + url + "&outputMode=json&keywordExtractMode=strict";
                         HttpGet httpGet = new HttpGet(termAlchemy);
-                        String text = "";
+
                         try {
 
                             HttpResponse response = httpClient.execute(httpGet, localContext);
@@ -304,7 +306,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
                             }
                         }
                        else {
-                            title = "Browser did not have enough time to save title in history";
+                            title = getApplicationContext().getString(R.string.no_title);
                             try {
                                 title = new JSONObject().put("title", title).toString();
                             } catch (JSONException e1) {
@@ -338,7 +340,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
                             sb.append("'");
                             sb.append("}");
 
-                            text = sb.toString();
+                            text2 = sb.toString();
                         } catch (JSONException e6) {
                             System.err.println("JSONException " + e6.getMessage());
                         }
@@ -372,7 +374,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
 
 //merge the json objects to one
                         try {
-                            JSONObject obj1 = new JSONObject(text);
+                            JSONObject obj1 = new JSONObject(text2);
                             JSONObject obj2 = new JSONObject(sentiment);
                             JSONObject obj3 = new JSONObject(categories);
                             JSONObject obj4 = new JSONObject(title);
@@ -399,7 +401,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
                     }
                 }
         else {
-            returns="There is no browser history.";
+            returns=getApplicationContext().getString(R.string.no_history);
             }
 
                 // When HttpClient instance is no longer needed,
@@ -501,11 +503,12 @@ YAHOO TERM
             */
  //debug 2           return result;
 
-            if (returns!="There is no browser history." ) {
+            if (returns!=getApplicationContext().getString(R.string.no_history) ) {
 
                 StringBuilder sb = new StringBuilder();
                 String titlef = "";
-                String textf = "";
+                String textf="";
+
                 try {
                     JSONObject json = new JSONObject(returns);
                     //add next line in parsing for new combined jsonobject and changed next line to reflect the change
@@ -517,18 +520,9 @@ YAHOO TERM
                 }
 
 
-                sb.append("Your last visit was: ").append(titlef).append("\n").append("\n").append("The terms with more than 70% relevance were: ").append("\n");
-                try {
-                    JSONObject json = new JSONObject(returns);
-                    JSONObject textres = json.getJSONObject("textres");
-                    textf = textres.getString("text");
-                    sb.append(textf);
+                sb.append(getApplicationContext().getString(R.string.sb_1)).append(titlef);
 
-                } catch (JSONException e2) {
-                    System.err.println("JSONException " + e2.getMessage());
-                }
-
-                sb.append("\n").append("\n").append("The sentiment for this url is: ");
+                sb.append("\n").append("\n").append(getApplicationContext().getString(R.string.sb_3));
                 try {
                     JSONObject json = new JSONObject(returns);
                     //add next line in parsing for new combined jsonobject and changed next line to reflect the change
@@ -541,7 +535,7 @@ YAHOO TERM
                 }
 
 
-                sb.append("\n").append("\n").append("The url belongs into the category of: ");
+                sb.append("\n").append("\n").append(getApplicationContext().getString(R.string.sb_4));
                 try {
                     JSONObject json = new JSONObject(returns);
                     //add next line in parsing for new combined jsonobject and changed next line to reflect the change
@@ -551,6 +545,18 @@ YAHOO TERM
                 } catch (JSONException e4) {
                     System.err.println("JSONException " + e4.getMessage());
                 }
+
+                sb.append("\n").append("\n").append(getApplicationContext().getString(R.string.sb_2)).append("\n");
+                try {
+                    JSONObject json = new JSONObject(returns);
+                    JSONObject textres = json.getJSONObject("textres");
+                    textf = textres.getString("text");
+                    sb.append(textf);
+
+                } catch (JSONException e2) {
+                    System.err.println("JSONException " + e2.getMessage());
+                }
+
                 returns = sb.toString();
             }
             return returns;
@@ -586,7 +592,7 @@ YAHOO TERM
                 response.getStatusLine().getStatusCode();
 
                 in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                StringBuffer sb = new StringBuffer("");
+                StringBuilder sb = new StringBuilder("");
                 String l = "";
                 String nl = System.getProperty("line.separator");
                 while ((l = in.readLine()) !=null){
@@ -667,7 +673,7 @@ YAHOO TERM
                 response.getStatusLine().getStatusCode();
 
                 in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                StringBuffer sb = new StringBuffer("");
+                StringBuilder sb = new StringBuilder("");
                 String l = "";
                 String nl = System.getProperty("line.separator");
                 while ((l = in.readLine()) !=null){

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dummy App</string>
+
+
+    <string name="button_send">Ανάλυση τελευταίας επίσκεψης του φυλλομετρητή</string>
+    <string name="button_sentiment">Ανάλυση αισθήματος</string>
+    <string name="button_category">Ανάλυση κατηγορίας</string>
+    <string name="about_button">Σχετικά με την εφαρμογή</string>
+
+    <string name="action_settings">Ρυθμίσεις</string>
+
+    <string name="title_activity_display_message">Ανάλυση τελευταίας επίσκεψης του φυλλομετρητή</string>
+    <string name="title_activity_sentiment">Ανάλυση αισθήματος</string>
+    <string name="title_activity_category">Ανάλυση κατηγορίας</string>
+    <string name="title_activity_about">Σχετικά με την εφαρμογή</string>
+
+    <string name="about_content">Το Dummy App είναι μια εφαρμογή για Android OS. Δημιουργήθηκε από το Λώλη Βασίλειο στα πλαίσια της διπλωματικής του εργασίας
+    στο τμήμα των Ηλεκτρολόγων Μηχανικών και Μηχανικών Η/Υ του Αριστοτελείου Πανεπιστημίου Θεσσαλονίκης (ΑΠΘ), υπό την επίβλεψη του
+    Αναπληρωτή Καθηγητή, Ανδρέα Λ. Συμεωνίδη.</string>
+
+    <string name="no_title">Ο φυλλομετρητής δεν πρόλαβε να αποθηκεύσει τον τίτλο.</string>
+    <string name="no_history">Το ιστορικό του φυλλομετρητή είναι άδειο.</string>
+
+    <string name="sb_1">Η τελευταία σας επίσκεψη ήταν:\u0020 </string>
+    <string name="sb_2">Οι όροι με μεγαλύτερη συσχέτιση από 70% ήταν:\u0020 </string>
+    <string name="sb_3">Το αίσθημα για τα περιεχόμενα της ιστοσελίδας ήταν:\u0020 </string>
+    <string name="sb_4">Η ιστοσελίδα ανήκει στην κατηγορία:\u0020 </string>
+
+
+    <string name="sbc_1">Οι περισσότερές σας επισκέψεις άνηκαν στην κατηγορία:\u0020 </string>
+    <string name="sbc_2">Κάποιοι σύνδεσμοι που θα σας ενδιέφεραν είναι οι εξής:\u0020 </string>
+
+
+</resources>
