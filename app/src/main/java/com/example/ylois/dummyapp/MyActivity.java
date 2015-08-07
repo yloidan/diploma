@@ -69,9 +69,11 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
         Button b1 = (Button) findViewById(R.id.b1);
         Button b2 = (Button) findViewById(R.id.b2);
         Button b3 = (Button) findViewById(R.id.b3);
+        Button b4 = (Button) findViewById(R.id.b4);
         b1.setOnClickListener(this);
         b2.setOnClickListener(this);
         b3.setOnClickListener(this);
+        b4.setOnClickListener(this);
 
     }
 
@@ -87,7 +89,12 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
             case R.id.b3:
                 new LongRunningGetIO3().execute();
                 break;
-
+            case R.id.b4:
+            {
+                Intent aboutIntent = new Intent(this, AboutActivity.class);
+                startActivity(aboutIntent);
+            }
+                break;
     }
     }
 
@@ -799,5 +806,6 @@ YAHOO TERM
 
         }
     }
+
 }
 

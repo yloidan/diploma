@@ -23,12 +23,7 @@ public class CategoryActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
- //
         openChart();
-
-
-
-
 
     }
 

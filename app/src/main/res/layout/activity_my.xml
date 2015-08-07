@@ -44,6 +44,18 @@
        android:background="@drawable/blue_button"
        style="@style/blue_button"
       />
+
+    <Button
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/b3"
+        android:layout_marginTop="60dp"
+        android:text="@string/about_button"
+        android:id="@+id/b4"
+        android:background="@drawable/blue_button"
+        style="@style/blue_button"
+        />
     <!--    android:layout_centerInParent="true"  -->
 
 
