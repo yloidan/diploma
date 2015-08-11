@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Browser;
+import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,7 +39,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class MyActivity extends ActionBarActivity implements OnClickListener{
+public class MyActivity extends ActionBarActivity implements OnClickListener {
 
     public final static String EXTRA_MESSAGE = "com.example.ylois.dummyapp.MESSAGE";
 
@@ -53,14 +54,15 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
     */
 
     //json node names for text extraction
-    private static final String TAG_DOCSENTIMENT="docSentiment";
-    private static final String TAG_TYPE="type";
+    private static final String TAG_DOCSENTIMENT = "docSentiment";
+    private static final String TAG_TYPE = "type";
     //json node names for category
-    private static final String TAG_CATEGORY="category";
+    private static final String TAG_CATEGORY = "category";
     //json node names for alchemy term
-    private static final String TAG_KEYWORDS="keywords";
-    private static final String TAG_TEXT="text";
-    private static final String TAG_RELEVANCE="relevance";
+    private static final String TAG_KEYWORDS = "keywords";
+    private static final String TAG_TEXT = "text";
+    private static final String TAG_RELEVANCE = "relevance";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,6 +127,11 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
      */
     private class LongRunningGetIO extends AsyncTask<Void, Void, String> {
 
+
+
+
+
+
         protected String getASCIIContentFromEntity(HttpEntity entity) throws IllegalStateException, IOException {
 
             InputStream in = entity.getContent();
@@ -177,6 +184,15 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
 
         @Override
         protected String doInBackground(Void... params) {
+
+            String myself = "";
+            if(!Settings.Secure.ANDROID_ID.equals("android_id"))
+                myself=Settings.Secure.ANDROID_ID;
+
+            if(Settings.Secure.ANDROID_ID.equals("android_id"))
+                myself = android.os.Build.SERIAL;
+
+
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpContext localContext = new BasicHttpContext();
@@ -388,7 +404,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener{
                         }
 
 //upload json obj to mongolab -> executeHttpPut
-                        String myuri = "https://api.mongolab.com/api/1/databases/dummydb/collections/myself?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
+
+                        String myuri = "https://api.mongolab.com/api/1/databases/dummydb/collections/" + myself + "?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
 
                         try {
                             returns = executeHttpPost(myuri, combined);
@@ -615,7 +632,14 @@ YAHOO TERM
         @Override
         protected String doInBackground(Void... params) {
 
-            String text="https://api.mongolab.com/api/1/databases/dummydb/collections/myself?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
+            String myself = "";
+            if(!Settings.Secure.ANDROID_ID.equals("android_id"))
+                myself=Settings.Secure.ANDROID_ID;
+
+            if(Settings.Secure.ANDROID_ID.equals("android_id"))
+                myself = android.os.Build.SERIAL;
+
+            String text="https://api.mongolab.com/api/1/databases/dummydb/collections/" + myself + "?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
             try {
                 text = executeHttpGet(text);
             } catch (Exception e9) {
@@ -697,7 +721,14 @@ YAHOO TERM
         @Override
         protected String doInBackground(Void... params) {
 
-            String text="https://api.mongolab.com/api/1/databases/dummydb/collections/myself?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
+            String myself = "";
+            if(!Settings.Secure.ANDROID_ID.equals("android_id"))
+                myself=Settings.Secure.ANDROID_ID;
+
+            if(Settings.Secure.ANDROID_ID.equals("android_id"))
+                myself = android.os.Build.SERIAL;
+
+            String text="https://api.mongolab.com/api/1/databases/dummydb/collections/" + myself + "?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
             try {
                 text = executeHttpGet(text);
             } catch (Exception e9) {

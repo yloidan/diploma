@@ -40,25 +40,21 @@ public class DisplayMessageActivity extends ActionBarActivity {
 /*
         String segments[]=message.split(getApplicationContext().getString(R.string.sb_2));
         String substring = segments[segments.length - 1];
-
 //                (message.substring(message.lastIndexOf(getApplicationContext().getString(R.string.sb_2))+ 1));
         message =message.replace(substring,"");
         Cloud cloud = new Cloud();
         cloud.setMaxWeight(38.0); //max font size
         cloud.setTagCase(Cloud.Case.CAPITALIZATION);
-
         String [] items =substring.split(",");
         for (int i=0; i<items.length; i++) {
             // creation date is 4th parameter, current time by default, weights are 3rd parameter
             Tag tag = new Tag(items[i],"http://www.google.com/search?q="+items[i] );
             cloud.addTag(tag); // adds it to the cloud
         }
-
         ListView listView = (ListView) findViewById(R.id.list);
         List <Tag> list = cloud.tags();
         ArrayAdapter adapter = new ArrayAdapter <Tag>(this, android.R.layout.simple_list_item_1, list);
         listView.setAdapter(adapter);
-
 */
 
 
@@ -87,11 +83,11 @@ public class DisplayMessageActivity extends ActionBarActivity {
 
         if (count==0)
         {
-        Pattern p2 = Pattern.compile(getApplicationContext().getString(R.string.sb_3) + "neutral");
-        Matcher m2 = p2.matcher(message);
-        if (m2.find()){
-            count =3;
-        }
+            Pattern p2 = Pattern.compile(getApplicationContext().getString(R.string.sb_3) + "neutral");
+            Matcher m2 = p2.matcher(message);
+            if (m2.find()){
+                count =3;
+            }
         }
 
         switch (count){
@@ -129,8 +125,8 @@ public class DisplayMessageActivity extends ActionBarActivity {
 
 
 
-     //not needed
-     //setContentView(R.layout.activity_display_message);
+    //not needed
+    //setContentView(R.layout.activity_display_message);
 
 
     @Override
