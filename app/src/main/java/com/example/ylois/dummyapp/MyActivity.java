@@ -1,8 +1,13 @@
 package com.example.ylois.dummyapp;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -79,17 +84,70 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
     }
 
+    //elegxos an einai connected sto internet
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.b1:
-                new LongRunningGetIO().execute();
+                if (isNetworkAvailable())
+                {
+                    new LongRunningGetIO().execute();
+            }
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage(getApplicationContext().getString(R.string.warning))
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
                 break;
-            case R.id.b2:
+            case R.id.b2: if (isNetworkAvailable())
+            {
                 new LongRunningGetIO2().execute();
+            }
+            else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(getApplicationContext().getString(R.string.warning))
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
                 break;
-            case R.id.b3:
+            case R.id.b3: if (isNetworkAvailable())
+            {
                 new LongRunningGetIO3().execute();
+            }
+            else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(getApplicationContext().getString(R.string.warning))
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
                 break;
             case R.id.b4:
             {
@@ -198,7 +256,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             HttpContext localContext = new BasicHttpContext();
             String url = "";
 /*
-            Long start=System.currentTimeMillis()-604800000; //last week in milliseconds
+            Long start=System.currentTimeMillis()-604800000L; //last week in milliseconds
             Long end=System.currentTimeMillis();
             String startdate=Long.toString(start);
             String enddate=Long.toString(end);
@@ -831,7 +889,8 @@ YAHOO TERM
             }
             String cc =Integer.toString(countc);
 
-            return new StringBuilder().append(c1).append(" ").append(c2).append(" ").append(c3).append(" ").append(c4).append(" ").append(c5).append(" ").append(c6).append(" ").append(c7).append(" ").append(c8).append(" ").append(c9).append(" ").append(ca).append(" ").append(cb).append(" ").append(cc).toString();
+            return new StringBuilder().append(c1).append(" ").append(c2).append(" ").append(c3).append(" ").append(c4).append(" ").append(c5).append(" ")
+                    .append(c6).append(" ").append(c7).append(" ").append(c8).append(" ").append(c9).append(" ").append(ca).append(" ").append(cb).append(" ").append(cc).toString();
 
         }
 
