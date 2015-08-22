@@ -67,9 +67,9 @@ public class CategoryActivity extends ActionBarActivity {
             defaultRenderer.setApplyBackgroundColor(true);
             // Adding a renderer for a slice
             defaultRenderer.addSeriesRenderer(seriesRenderer);
-            defaultRenderer.setLabelsTextSize(40);
+            defaultRenderer.setLabelsTextSize(20);
             defaultRenderer.setLabelsColor(Color.BLACK);
-            defaultRenderer.setLegendTextSize(30);
+            defaultRenderer.setLegendTextSize(20);
             defaultRenderer.setDisplayValues(true);
 
 
@@ -77,7 +77,7 @@ public class CategoryActivity extends ActionBarActivity {
 
         defaultRenderer
                 .setChartTitle("Category Analysis ");
-        defaultRenderer.setChartTitleTextSize(40);
+        defaultRenderer.setChartTitleTextSize(20);
         defaultRenderer.setZoomButtonsVisible(false);
 
         // Creating an intent to plot bar chart using dataset and
@@ -249,32 +249,27 @@ public class CategoryActivity extends ActionBarActivity {
 }
 
     /*
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_category, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

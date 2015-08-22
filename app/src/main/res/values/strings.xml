@@ -6,6 +6,7 @@
     <string name="button_sentiment">Sentiment Analysis</string>
     <string name="button_category">Category Analysis</string>
     <string name="about_button">About</string>
+    <string name="warning">Please enable internet access to continue.</string>
 
     <string name="action_settings">Settings</string>
 

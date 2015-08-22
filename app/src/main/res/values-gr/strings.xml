@@ -7,6 +7,7 @@
     <string name="button_sentiment">Ανάλυση αισθήματος</string>
     <string name="button_category">Ανάλυση κατηγορίας</string>
     <string name="about_button">Σχετικά με την εφαρμογή</string>
+    <string name="warning">Παρακαλώ ενεργοποιήστε την πρόσβαση στο internet για να συνεχίσετε.</string>
 
     <string name="action_settings">Ρυθμίσεις</string>
 

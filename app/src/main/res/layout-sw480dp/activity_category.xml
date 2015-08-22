@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.ylois.dummyapp.CategoryActivity"
+    android:orientation="vertical"
+    android:weightSum="1"
+    >
+
+    <LinearLayout
+    android:id="@+id/chart"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:orientation="vertical"
+    android:layout_weight=".7"
+    >
+</LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/btn_chart"
+            android:gravity="center"
+            android:autoLink="web"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="16dp"
+
+            android:background="@android:color/black"
+            android:layout_weight=".3"
+
+
+            />
+
+
+
+
+
+
+
+</LinearLayout>
+<!--
+
+
+
+
+tools:ignore="Orientation"
+
+android:layout_centerHorizontal="true"
+android:layout_alignParentBottom="true"-->

@@ -64,8 +64,8 @@ public class SentimentActivity extends ActionBarActivity {
             defaultRenderer.setApplyBackgroundColor(true);
             // Adding a renderer for a slice
             defaultRenderer.addSeriesRenderer(seriesRenderer);
-            defaultRenderer.setLabelsTextSize(40);
-            defaultRenderer.setLegendTextSize(35);
+            defaultRenderer.setLabelsTextSize(20);
+            defaultRenderer.setLegendTextSize(20);
             defaultRenderer.setDisplayValues(true);
 
 
@@ -73,7 +73,7 @@ public class SentimentActivity extends ActionBarActivity {
 
         defaultRenderer
                 .setChartTitle("Sentiment Analysis ");
-        defaultRenderer.setChartTitleTextSize(40);
+        defaultRenderer.setChartTitleTextSize(20);
         defaultRenderer.setZoomButtonsVisible(false);
 
         // Creating an intent to plot bar chart using dataset and

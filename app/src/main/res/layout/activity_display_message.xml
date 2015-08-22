@@ -20,7 +20,15 @@
         android:layout_weight=".5"
         />
 
-    <ListView
+ <!-- kumo try  <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@drawable/b2"
+        android:layout_weight=".5"/>
+
+        -->
+
+ <!-- opencloud try  <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -29,6 +37,6 @@
         >
     </ListView>
 
-
+-->
 
 </LinearLayout>

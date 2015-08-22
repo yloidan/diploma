@@ -36,7 +36,7 @@ public class DisplayMessageActivity extends ActionBarActivity {
         Intent intent = getIntent();
         String message = intent.getStringExtra(MyActivity.EXTRA_MESSAGE);
 
-        //remove text and replace with word cloud
+        //OPENCLOUD remove text and replace with word cloud
 /*
         String segments[]=message.split(getApplicationContext().getString(R.string.sb_2));
         String substring = segments[segments.length - 1];
