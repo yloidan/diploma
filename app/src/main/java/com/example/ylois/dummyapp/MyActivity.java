@@ -47,6 +47,8 @@ import java.util.regex.Pattern;
 public class MyActivity extends ActionBarActivity implements OnClickListener {
 
     public final static String EXTRA_MESSAGE = "com.example.ylois.dummyapp.MESSAGE";
+//    ProgressBar pb;
+
 
      /*      JSON Node names YAHOO
     private static final String TAG_ENTITY ="entity";
@@ -73,6 +75,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+//        pb = (ProgressBar) findViewById(R.id.progressBar);
         Button b1 = (Button) findViewById(R.id.b1);
         Button b2 = (Button) findViewById(R.id.b2);
         Button b3 = (Button) findViewById(R.id.b3);
@@ -84,13 +87,14 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
     }
 
-    //elegxos an einai connected sto internet
+    //methodos elegxou an einai connected sto internet
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
 
 
 
@@ -101,7 +105,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                 if (isNetworkAvailable())
                 {
                     new LongRunningGetIO().execute();
-            }
+                }
                 else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setMessage(getApplicationContext().getString(R.string.warning))
@@ -115,11 +119,12 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                     alert.show();
                 }
                 break;
-            case R.id.b2: if (isNetworkAvailable())
-            {
+            case R.id.b2:
+                if (isNetworkAvailable())
+                {
                 new LongRunningGetIO2().execute();
-            }
-            else {
+                }
+                else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(getApplicationContext().getString(R.string.warning))
                         .setCancelable(false)
@@ -130,12 +135,13 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                         });
                 AlertDialog alert = builder.create();
                 alert.show();
-            }
+                }
                 break;
-            case R.id.b3: if (isNetworkAvailable())
-            {
+            case R.id.b3:
+                if (isNetworkAvailable())
+                {
                 new LongRunningGetIO3().execute();
-            }
+                }
             else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(getApplicationContext().getString(R.string.warning))
@@ -147,7 +153,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                         });
                 AlertDialog alert = builder.create();
                 alert.show();
-            }
+                }
                 break;
             case R.id.b4:
             {
@@ -183,7 +189,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
     /**
      * Called when the user clicks the button
      */
-    private class LongRunningGetIO extends AsyncTask<Void, Void, String> {
+    private class LongRunningGetIO extends AsyncTask<Void, Integer, String> {
 
 
 
@@ -290,6 +296,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
             //allagi se moveToLast gia to pio prosfato history item, sto while ean usaristei thelei beforeFirst
 
+//            int counter=1;
+//            int denom =mCur.getCount();
             if (mCur.moveToFirst() && mCur.getCount() > 0)
 
             {
@@ -470,7 +478,14 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                         } catch (Exception e9) {
                             return e9.getLocalizedMessage();
                         }
-                        mCur.moveToNext();
+
+                    //PROGRESS BAR
+/*                    int result = Math.round(counter*100/denom);
+                    publishProgress(result);
+                    counter++;
+
+*/
+                    mCur.moveToNext();
 
 
                     }
@@ -640,7 +655,23 @@ YAHOO TERM
 
         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+ //           Toast.makeText(getApplicationContext(),"Uploading data to database...",Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected void onProgressUpdate (Integer... progress) {
+            super.onProgressUpdate(progress);
+
+//            ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar);
+//            pb.setProgress(progress[0]);
+        }
+
+        @Override
         protected void onPostExecute(String message) {
+            super.onPostExecute(message);
             Intent intent = new Intent(MyActivity.this, DisplayMessageActivity.class);
             intent.putExtra(EXTRA_MESSAGE, message);
             Button b = (Button)findViewById(R.id.b1);

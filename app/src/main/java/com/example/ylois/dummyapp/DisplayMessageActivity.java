@@ -91,6 +91,9 @@ public class DisplayMessageActivity extends ActionBarActivity {
         }
 
         switch (count){
+            case 0:
+                textView.setText(message);
+                break;
             case 1:
                 setColor(textView, message, "negative", Color.MAGENTA);
                 break;

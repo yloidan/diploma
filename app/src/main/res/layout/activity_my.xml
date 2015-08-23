@@ -8,6 +8,8 @@
     >
 
 
+
+
     <Button
         android:layout_width="500dp"
         android:layout_height="wrap_content"
@@ -56,6 +58,8 @@
         android:background="@drawable/blue_button"
         style="@style/blue_button"
         />
+
+
     <!--    android:layout_centerInParent="true"  -->
 
 

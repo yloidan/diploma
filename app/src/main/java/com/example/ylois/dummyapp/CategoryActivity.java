@@ -115,7 +115,7 @@ public class CategoryActivity extends ActionBarActivity {
 
         int max = values[0];
         int cnt = 0;
-        int[] cnt2={};
+//        int[] cnt2={};
         //finding max value
         for (int i=0; i<values.length; i++)
         {
@@ -125,7 +125,7 @@ public class CategoryActivity extends ActionBarActivity {
             }
         }
         //finding equal to max value; WILL NOT USE IT
-        int m=0;
+/*        int m=0;
 
         for (int k=0; k<values.length; k++)
         {
@@ -135,7 +135,7 @@ public class CategoryActivity extends ActionBarActivity {
                 m++;
             }
         }
-
+*/
         String category="";
         StringBuilder sb = new StringBuilder();
         String url1="";
