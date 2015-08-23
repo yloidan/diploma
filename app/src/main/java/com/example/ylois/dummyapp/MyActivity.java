@@ -1,6 +1,7 @@
 package com.example.ylois.dummyapp;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -48,6 +49,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
     public final static String EXTRA_MESSAGE = "com.example.ylois.dummyapp.MESSAGE";
 //    ProgressBar pb;
+    ProgressDialog progressDialog;
 
 
      /*      JSON Node names YAHOO
@@ -658,6 +660,7 @@ YAHOO TERM
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progressDialog = ProgressDialog.show(MyActivity.this, "Wait", "Uploading to database...");
  //           Toast.makeText(getApplicationContext(),"Uploading data to database...",Toast.LENGTH_SHORT).show();
         }
 
@@ -672,6 +675,7 @@ YAHOO TERM
         @Override
         protected void onPostExecute(String message) {
             super.onPostExecute(message);
+            progressDialog.dismiss();
             Intent intent = new Intent(MyActivity.this, DisplayMessageActivity.class);
             intent.putExtra(EXTRA_MESSAGE, message);
             Button b = (Button)findViewById(R.id.b1);
