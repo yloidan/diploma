@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import org.apache.http.HttpEntity;
@@ -77,6 +78,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+
+
 //        pb = (ProgressBar) findViewById(R.id.progressBar);
         Button b1 = (Button) findViewById(R.id.b1);
         Button b2 = (Button) findViewById(R.id.b2);
@@ -106,6 +109,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             case R.id.b1:
                 if (isNetworkAvailable())
                 {
+                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                     new LongRunningGetIO().execute();
                 }
                 else {
@@ -676,6 +680,7 @@ YAHOO TERM
         protected void onPostExecute(String message) {
             super.onPostExecute(message);
             progressDialog.dismiss();
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             Intent intent = new Intent(MyActivity.this, DisplayMessageActivity.class);
             intent.putExtra(EXTRA_MESSAGE, message);
             Button b = (Button)findViewById(R.id.b1);
