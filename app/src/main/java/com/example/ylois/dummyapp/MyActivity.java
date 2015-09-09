@@ -1,6 +1,7 @@
 package com.example.ylois.dummyapp;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -14,7 +15,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Browser;
 import android.provider.Settings;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,9 +39,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -72,6 +77,22 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
     private static final String TAG_KEYWORDS = "keywords";
     private static final String TAG_TEXT = "text";
     private static final String TAG_RELEVANCE = "relevance";
+
+
+    //class for not connected to internet warning alert dialog
+    public static class NoInternetDialogFragment extends DialogFragment{
+        @Override
+        public Dialog onCreateDialog (Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.warning)
+            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+            return builder.create();
+        }
+    }
 
 
     @Override
@@ -113,16 +134,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                     new LongRunningGetIO().execute();
                 }
                 else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage(getApplicationContext().getString(R.string.warning))
-                            .setCancelable(false)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-                    AlertDialog alert = builder.create();
-                    alert.show();
+                    DialogFragment alert = new NoInternetDialogFragment();
+                    alert.show(getSupportFragmentManager(), "alert");
                 }
                 break;
             case R.id.b2:
@@ -131,16 +144,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                 new LongRunningGetIO2().execute();
                 }
                 else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(getApplicationContext().getString(R.string.warning))
-                        .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
+                    DialogFragment alert = new NoInternetDialogFragment();
+                    alert.show(getSupportFragmentManager(), "alert");
                 }
                 break;
             case R.id.b3:
@@ -149,16 +154,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                 new LongRunningGetIO3().execute();
                 }
             else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(getApplicationContext().getString(R.string.warning))
-                        .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
+                    DialogFragment alert = new NoInternetDialogFragment();
+                    alert.show(getSupportFragmentManager(), "alert");
                 }
                 break;
             case R.id.b4:
@@ -196,11 +193,6 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
      * Called when the user clicks the button
      */
     private class LongRunningGetIO extends AsyncTask<Void, Integer, String> {
-
-
-
-
-
 
         protected String getASCIIContentFromEntity(HttpEntity entity) throws IllegalStateException, IOException {
 
@@ -264,8 +256,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
 
 
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpContext localContext = new BasicHttpContext();
+
             String url = "";
 /*
             Long start=System.currentTimeMillis()-604800000L; //last week in milliseconds
@@ -273,11 +264,42 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             String startdate=Long.toString(start);
             String enddate=Long.toString(end);
 */
-            String[] proj = new String[]{Browser.BookmarkColumns.TITLE, Browser.BookmarkColumns.URL};
+            String[] proj = new String[]{Browser.BookmarkColumns.TITLE, Browser.BookmarkColumns.URL, Browser.BookmarkColumns.DATE};
             Uri uriCustom = Uri.parse("content://com.android.chrome.browser/bookmarks");
             String sel = Browser.BookmarkColumns.BOOKMARK + " = 0" ; // 0 = history, 1 = bookmark , + " AND " + Browser.BookmarkColumns.DATE + "BETWEEN ? AND ?"
             ContentResolver cr = getContentResolver();
             Cursor mCur = cr.query(uriCustom, proj, sel, null, null); // new String[]{startdate, enddate}
+
+
+            String dateCompare = "";
+
+            try {
+                InputStream inputStream = openFileInput("lastDate.txt");
+
+                if ( inputStream != null ) {
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    String receiveString = "";
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    while ( (receiveString = bufferedReader.readLine()) != null ) {
+                        stringBuilder.append(receiveString);
+                    }
+
+                    inputStream.close();
+                    dateCompare = stringBuilder.toString();
+                }
+                else {
+                    dateCompare = "0";
+                }
+            }
+            catch (FileNotFoundException e) {
+                Log.e("login activity", "File not found: " + e.toString());
+            } catch (IOException e) {
+                Log.e("login activity", "Can not read file: " + e.toString());
+            }
+
+
 
             String title = "";
             String message = "";
@@ -285,6 +307,9 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             JSONObject combined = null;
             String text = "";
             String text2="";
+            String date="";
+            String date2="";
+            int control=0;
 
             /*
             try {
@@ -307,12 +332,19 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             if (mCur.moveToFirst() && mCur.getCount() > 0)
 
             {
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpContext localContext = new BasicHttpContext();
                 mCur.moveToFirst();
 
                 while (!mCur.isAfterLast()) {
                     title = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.TITLE));
                     message = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL));
-                    Browser.deleteFromHistory(cr, mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL)));
+                    date = mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.DATE));
+//remove deleting history items                    Browser.deleteFromHistory(cr, mCur.getString(mCur.getColumnIndex(Browser.BookmarkColumns.URL)));
+//reference later                    Long timestamp = Long.parseLong(date);
+                    Long dateCompare2 = Long.parseLong(dateCompare);
+                    Long dateC = Long.parseLong(date);
+                    if (dateCompare2 < dateC) {
 
                         try {
                             url = URLEncoder.encode(message, "UTF-8");
@@ -385,15 +417,14 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                         }
 //creating json object for title
 
-                        if (title!=null && !title.isEmpty()) {
+                        if (title != null && !title.isEmpty()) {
                             title = title.trim().replace('\'', ' ').replace('"', ' ');
                             try {
                                 title = new JSONObject().put("title", title).toString();
                             } catch (JSONException e1) {
                                 System.err.println("JSONException " + e1.getMessage());
                             }
-                        }
-                       else {
+                        } else {
                             title = getApplicationContext().getString(R.string.no_title);
                             try {
                                 title = new JSONObject().put("title", title).toString();
@@ -459,6 +490,14 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                         } catch (JSONException e5) {
                             System.err.println("JSONException " + e5.getMessage());
                         }
+//creating json object for date
+
+                        try {
+                            date2 = new JSONObject().put("date", date).toString();
+                        } catch (JSONException e10) {
+                            System.err.println("JSONException " + e10.getMessage());
+                        }
+
 
 //merge the json objects to one
                         try {
@@ -466,11 +505,13 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                             JSONObject obj2 = new JSONObject(sentiment);
                             JSONObject obj3 = new JSONObject(categories);
                             JSONObject obj4 = new JSONObject(title);
+                            JSONObject obj5 = new JSONObject(date2);
                             combined = new JSONObject();
                             combined.put("textres", obj1);
                             combined.put("sentimentres", obj2);
                             combined.put("categoryres", obj3);
                             combined.put("titleres", obj4);
+                            combined.put("dateres", obj5);
                         } catch (Exception e) {
                             return e.getLocalizedMessage();
                         }
@@ -485,25 +526,39 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                             return e9.getLocalizedMessage();
                         }
 
-                    //PROGRESS BAR
+                        //PROGRESS BAR
 /*                    int result = Math.round(counter*100/denom);
                     publishProgress(result);
                     counter++;
 
 */
-                    mCur.moveToNext();
-
+                        control++;
 
                     }
+                    mCur.moveToNext();
                 }
-        else {
-            returns=getApplicationContext().getString(R.string.no_history);
-            }
 
+                try {
+                    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("lastDate.txt", Context.MODE_PRIVATE));
+                    outputStreamWriter.write(date);
+                    outputStreamWriter.close();
+                } catch (IOException e) {
+                    Log.e("Exception", "File write failed: " + e.toString());
+                }
                 // When HttpClient instance is no longer needed,
                 // shut down the connection manager to ensure
                 // immediate deallocation of all system resources
                 httpClient.getConnectionManager().shutdown();
+
+                if (control == 0) {
+                    returns = getApplicationContext().getString(R.string.no_new_history);
+                }
+            }
+        else {
+            returns=getApplicationContext().getString(R.string.no_history);
+            }
+
+
 
             mCur.close();
 
@@ -599,7 +654,7 @@ YAHOO TERM
             */
  //debug 2           return result;
 
-            if (returns!=getApplicationContext().getString(R.string.no_history) ) {
+            if (returns!=getApplicationContext().getString(R.string.no_history) && returns!=getApplicationContext().getString(R.string.no_new_history))  {
 
                 StringBuilder sb = new StringBuilder();
                 String titlef = "";

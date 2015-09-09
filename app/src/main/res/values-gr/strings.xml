@@ -22,6 +22,7 @@
 
     <string name="no_title">Ο φυλλομετρητής δεν πρόλαβε να αποθηκεύσει τον τίτλο.</string>
     <string name="no_history">Το ιστορικό του φυλλομετρητή είναι άδειο.</string>
+    <string name="no_new_history">Το ιστορικό του φυλλομετρητή έχει ήδη αναλυθεί.</string>
 
     <string name="sb_1">Η τελευταία σας επίσκεψη ήταν:\u0020 </string>
     <string name="sb_2">Οι όροι με μεγαλύτερη συσχέτιση από 70% ήταν:\u0020 </string>

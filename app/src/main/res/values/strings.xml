@@ -21,6 +21,7 @@
 
     <string name="no_title">Browser did not have enough time to save title in history.</string>
     <string name="no_history">Browser history is empty.</string>
+    <string name="no_new_history">Browser history is already analysed.</string>
 
     <string name="sb_1">Your last visit was:\u0020 </string>
     <string name="sb_2">The terms with more than 70% relevance were:\u0020 </string>
