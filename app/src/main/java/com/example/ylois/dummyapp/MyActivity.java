@@ -303,6 +303,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 
             String title = "";
             String message = "";
+//            String message2= "";
             String returns = "";
             JSONObject combined = null;
             String text = "";
@@ -498,7 +499,12 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                             System.err.println("JSONException " + e10.getMessage());
                         }
 
-
+//creating json object for url
+                        try {
+                            message = new JSONObject().put("url", message).toString();
+                        }catch (JSONException e11) {
+                            System.err.println("JSONException " + e11.getMessage());
+                        }
 //merge the json objects to one
                         try {
                             JSONObject obj1 = new JSONObject(text2);
@@ -506,12 +512,14 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                             JSONObject obj3 = new JSONObject(categories);
                             JSONObject obj4 = new JSONObject(title);
                             JSONObject obj5 = new JSONObject(date2);
+                            JSONObject obj6 = new JSONObject(message);
                             combined = new JSONObject();
                             combined.put("textres", obj1);
                             combined.put("sentimentres", obj2);
                             combined.put("categoryres", obj3);
                             combined.put("titleres", obj4);
                             combined.put("dateres", obj5);
+                            combined.put("urlres", obj6);
                         } catch (Exception e) {
                             return e.getLocalizedMessage();
                         }
