@@ -3,8 +3,8 @@
     <string name="app_name">Dummy App</string>
 
 
-    <string name="button_send">Ανάλυση τελευταίας επίσκεψης του φυλλομετρητή</string>
-    <string name="button_sentiment">Ανάλυση αισθήματος</string>
+    <string name="button_send">Ανέβασμα στη βάση</string>
+    <string name="button_sentiment">Πίνακας δεδομένων</string>
     <string name="button_category">Ανάλυση κατηγορίας</string>
     <string name="about_button">Σχετικά με την εφαρμογή</string>
     <string name="warning">Παρακαλώ ενεργοποιήστε την πρόσβαση στο internet για να συνεχίσετε.</string>
@@ -24,6 +24,10 @@
     <string name="no_history">Το ιστορικό του φυλλομετρητή είναι άδειο.</string>
     <string name="no_new_history">Το ιστορικό του φυλλομετρητή έχει ήδη αναλυθεί.</string>
 
+    <string name="pdone">Παρακαλώ περιμένετε.</string>
+    <string name="pdtwo">Το ανέβασμα στη βάση είναι σε εξέλιξη...</string>
+    <string name="upload_complete">Το ανέβασμα στη βάση ολοκληρώθηκε.</string>
+
     <string name="sb_1">Η τελευταία σας επίσκεψη ήταν:\u0020 </string>
     <string name="sb_2">Οι όροι με μεγαλύτερη συσχέτιση από 70% ήταν:\u0020 </string>
     <string name="sb_3">Το αίσθημα για τα περιεχόμενα της ιστοσελίδας ήταν:\u0020 </string>
@@ -32,6 +36,10 @@
 
     <string name="sbc_1">Οι περισσότερές σας επισκέψεις άνηκαν στην κατηγορία:\u0020 </string>
     <string name="sbc_2">Κάποιοι σύνδεσμοι που θα σας ενδιέφεραν είναι οι εξής:\u0020 </string>
+
+    <string name="alert_dialog">Ανέβασμα στη βάση.</string>
+    <string name="alert_dialog_title">Θέλετε να ανεβάσετε το ιστορικό του Chrome στη βάση? </string>
+
 
 
 </resources>

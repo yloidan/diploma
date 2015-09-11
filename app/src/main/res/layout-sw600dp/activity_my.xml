@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_above="@+id/b2"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="90dp"
         android:text="@string/button_send"
         android:id="@+id/b1"
         android:background="@drawable/blue_button"
@@ -32,31 +32,31 @@
         android:id="@+id/b2"
         />
     <!--   android:layout_centerInParent="true"  -->
-
-   <Button
-       android:layout_width="500dp"
-       android:layout_height="wrap_content"
-       android:layout_centerInParent="true"
-       android:layout_below="@+id/b2"
-       android:layout_marginTop="60dp"
-       android:text="@string/button_category"
-       android:id="@+id/b3"
-       android:background="@drawable/blue_button"
-       style="@style/blue_button"
-      />
-
-    <Button
-        android:layout_width="500dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/b3"
-        android:layout_marginTop="60dp"
-        android:text="@string/about_button"
-        android:id="@+id/b4"
-        android:background="@drawable/blue_button"
-        style="@style/blue_button"
-        />
-    <!--    android:layout_centerInParent="true"  -->
+    <!--
+       <Button
+           android:layout_width="500dp"
+           android:layout_height="wrap_content"
+           android:layout_centerInParent="true"
+           android:layout_below="@+id/b2"
+           android:layout_marginTop="60dp"
+           android:text="@string/button_category"
+           android:id="@+id/b3"
+           android:background="@drawable/blue_button"
+           style="@style/blue_button"
+          />
+  -->
+        <Button
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/b2"
+            android:layout_marginTop="90dp"
+            android:text="@string/about_button"
+            android:id="@+id/b4"
+            android:background="@drawable/blue_button"
+            style="@style/blue_button"
+            />
+        <!--    android:layout_centerInParent="true"  -->
 
 
    </RelativeLayout>

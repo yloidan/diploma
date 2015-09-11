@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -104,11 +105,11 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 //        pb = (ProgressBar) findViewById(R.id.progressBar);
         Button b1 = (Button) findViewById(R.id.b1);
         Button b2 = (Button) findViewById(R.id.b2);
-        Button b3 = (Button) findViewById(R.id.b3);
+//version2 axristo        Button b3 = (Button) findViewById(R.id.b3);
         Button b4 = (Button) findViewById(R.id.b4);
         b1.setOnClickListener(this);
         b2.setOnClickListener(this);
-        b3.setOnClickListener(this);
+//version2 axristo        b3.setOnClickListener(this);
         b4.setOnClickListener(this);
 
     }
@@ -148,7 +149,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                     alert.show(getSupportFragmentManager(), "alert");
                 }
                 break;
-            case R.id.b3:
+/*versio2 axristo            case R.id.b3:
                 if (isNetworkAvailable())
                 {
                 new LongRunningGetIO3().execute();
@@ -158,6 +159,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                     alert.show(getSupportFragmentManager(), "alert");
                 }
                 break;
+  */
             case R.id.b4:
             {
                 Intent aboutIntent = new Intent(this, AboutActivity.class);
@@ -189,8 +191,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Called when the user clicks the button
+    /*
+      Called when the user clicks the first button
      */
     private class LongRunningGetIO extends AsyncTask<Void, Integer, String> {
 
@@ -727,7 +729,7 @@ YAHOO TERM
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = ProgressDialog.show(MyActivity.this, "Wait", "Uploading to database...");
+            progressDialog = ProgressDialog.show(MyActivity.this, getApplicationContext().getString(R.string.pdone), getApplicationContext().getString(R.string.pdtwo));
  //           Toast.makeText(getApplicationContext(),"Uploading data to database...",Toast.LENGTH_SHORT).show();
         }
 
@@ -740,15 +742,28 @@ YAHOO TERM
         }
 
         @Override
-        protected void onPostExecute(String message) {
-            super.onPostExecute(message);
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
             progressDialog.dismiss();
+            if (s ==getApplicationContext().getString(R.string.no_history)) {
+
+                Toast.makeText(getApplicationContext(), R.string.no_history, Toast.LENGTH_SHORT).show();
+            }
+            else {
+                if (s == getApplicationContext().getString(R.string.no_new_history)) {
+
+                    Toast.makeText(getApplicationContext(), R.string.no_new_history, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.upload_complete, Toast.LENGTH_SHORT).show();
+
+                }
+            }
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            Intent intent = new Intent(MyActivity.this, DisplayMessageActivity.class);
-            intent.putExtra(EXTRA_MESSAGE, message);
+//            Intent intent = new Intent(MyActivity.this, DisplayMessageActivity.class);
+//            intent.putExtra(EXTRA_MESSAGE, message);
             Button b = (Button)findViewById(R.id.b1);
             b.setClickable(true);
-            startActivity(intent);
+//            startActivity(intent);
 
 
         }

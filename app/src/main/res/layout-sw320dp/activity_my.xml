@@ -32,31 +32,31 @@
         android:id="@+id/b2"
         />
     <!--   android:layout_centerInParent="true"  -->
-
-   <Button
-       android:layout_width="300dp"
-       android:layout_height="wrap_content"
-       android:layout_centerInParent="true"
-       android:layout_below="@+id/b2"
-       android:layout_marginTop="20dp"
-       android:text="@string/button_category"
-       android:id="@+id/b3"
-       android:background="@drawable/blue_button"
-       style="@style/blue_button_small"
-      />
-
-    <Button
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/b3"
-        android:layout_marginTop="20dp"
-        android:text="@string/about_button"
-        android:id="@+id/b4"
-        android:background="@drawable/blue_button"
-        style="@style/blue_button_small"
-        />
-    <!--    android:layout_centerInParent="true"  -->
+    <!--
+       <Button
+           android:layout_width="300dp"
+           android:layout_height="wrap_content"
+           android:layout_centerInParent="true"
+           android:layout_below="@+id/b2"
+           android:layout_marginTop="20dp"
+           android:text="@string/button_category"
+           android:id="@+id/b3"
+           android:background="@drawable/blue_button"
+           style="@style/blue_button_small"
+          />
+   -->
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/b2"
+            android:layout_marginTop="20dp"
+            android:text="@string/about_button"
+            android:id="@+id/b4"
+            android:background="@drawable/blue_button"
+            style="@style/blue_button_small"
+            />
+        <!--    android:layout_centerInParent="true"  -->
 
 
    </RelativeLayout>
