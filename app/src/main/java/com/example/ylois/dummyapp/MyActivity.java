@@ -48,8 +48,6 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class MyActivity extends ActionBarActivity implements OnClickListener {
@@ -662,7 +660,8 @@ YAHOO TERM
 
             DEBUGGING -----------------------------------------------------------------------------------------
             */
- //debug 2           return result;
+
+/*version2 not needed
 
             if (returns!=getApplicationContext().getString(R.string.no_history) && returns!=getApplicationContext().getString(R.string.no_new_history))  {
 
@@ -722,8 +721,11 @@ YAHOO TERM
             }
             return returns;
 
-
-
+*/
+            if (returns!=getApplicationContext().getString(R.string.no_history) && returns!=getApplicationContext().getString(R.string.no_new_history))  {
+                returns = String.valueOf(control);
+            }
+            return returns;
         }
 
         @Override
@@ -754,7 +756,8 @@ YAHOO TERM
 
                     Toast.makeText(getApplicationContext(), R.string.no_new_history, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), R.string.upload_complete, Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(getApplicationContext(), s + getApplicationContext().getResources().getString(R.string.upload_complete), Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -821,7 +824,7 @@ YAHOO TERM
             } catch (Exception e9) {
                 return e9.getLocalizedMessage();
             }
-
+/*version2 not needed
             Pattern p = Pattern.compile("\"positive\"");
             Matcher m = p.matcher(text);
             int count = 0;
@@ -847,179 +850,19 @@ YAHOO TERM
             String cneut =Integer.toString(count3);
 
             return new StringBuilder().append(cpos).append(" ").append(cneg).append(" ").append(cneut).toString();
-
+*/
+            return text;
         }
 
         protected void onPostExecute(String message) {
 
-           // SentimentActivity effort = new SentimentActivity();
-          Intent effortIntent = new Intent(MyActivity.this, SentimentActivity.class);
+          Intent effortIntent = new Intent(MyActivity.this, DashboardActivity.class);
           effortIntent.putExtra(EXTRA_MESSAGE, message);
           startActivity(effortIntent);
 
         }
     }
-    private class LongRunningGetIO3 extends AsyncTask<Void, Void, String> {
 
-        public String executeHttpGet(String url) throws Exception {
-            BufferedReader in = null;
-            String data = null;
-
-            try {
-                HttpClient client = new DefaultHttpClient();
-                HttpGet request = new HttpGet();
-                request.setURI(new URI(url));
-                HttpResponse response = client.execute(request);
-                response.getStatusLine().getStatusCode();
-
-                in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                StringBuilder sb = new StringBuilder("");
-                String l = "";
-                String nl = System.getProperty("line.separator");
-                while ((l = in.readLine()) !=null){
-                    sb.append(l + nl);
-                }
-                in.close();
-                data = sb.toString();
-                return data;
-            } finally{
-                if (in != null){
-                    try{
-                        in.close();
-                        return data;
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-
-            String myself = "";
-            if(!Settings.Secure.ANDROID_ID.equals("android_id"))
-                myself=Settings.Secure.ANDROID_ID;
-
-            if(Settings.Secure.ANDROID_ID.equals("android_id"))
-                myself = android.os.Build.SERIAL;
-
-            String text="https://api.mongolab.com/api/1/databases/dummydb/collections/" + myself + "?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
-            try {
-                text = executeHttpGet(text);
-            } catch (Exception e9) {
-                return e9.getLocalizedMessage();
-            }
-
-            Pattern p = Pattern.compile("\"arts_entertainment\"");
-            Matcher m = p.matcher(text);
-            int count = 0;
-            while (m.find()){
-                count +=1;
-            }
-            String c1 =Integer.toString(count);
-
-            Pattern p2 = Pattern.compile("\"business\"");
-            Matcher m2 = p2.matcher(text);
-            int count2 = 0;
-            while (m2.find()){
-                count2 +=1;
-            }
-            String c2 =Integer.toString(count2);
-
-            Pattern p3 = Pattern.compile("\"computer_internet\"");
-            Matcher m3 = p3.matcher(text);
-            int count3 = 0;
-            while (m3.find()){
-                count3 +=1;
-            }
-            String c3 =Integer.toString(count3);
-
-            Pattern p4 = Pattern.compile("\"culture_politics\"");
-            Matcher m4 = p4.matcher(text);
-            int count4 = 0;
-            while (m4.find()){
-                count4 +=1;
-            }
-            String c4 =Integer.toString(count4);
-
-            Pattern p5 = Pattern.compile("\"gaming\"");
-            Matcher m5 = p5.matcher(text);
-            int count5 = 0;
-            while (m5.find()){
-                count5 +=1;
-            }
-            String c5 =Integer.toString(count5);
-
-            Pattern p6 = Pattern.compile("\"health\"");
-            Matcher m6 = p6.matcher(text);
-            int count6 = 0;
-            while (m6.find()){
-                count6 +=1;
-            }
-            String c6 =Integer.toString(count6);
-
-            Pattern p7 = Pattern.compile("\"law_crime\"");
-            Matcher m7 = p7.matcher(text);
-            int count7 = 0;
-            while (m7.find()){
-                count7 +=1;
-            }
-            String c7 =Integer.toString(count7);
-
-            Pattern p8 = Pattern.compile("\"religion\"");
-            Matcher m8 = p8.matcher(text);
-            int count8 = 0;
-            while (m8.find()){
-                count8 +=1;
-            }
-            String c8 =Integer.toString(count8);
-
-            Pattern p9 = Pattern.compile("\"recreation\"");
-            Matcher m9 = p9.matcher(text);
-            int count9 = 0;
-            while (m9.find()){
-                count9 +=1;
-            }
-            String c9 =Integer.toString(count9);
-
-            Pattern pa = Pattern.compile("\"science_technology\"");
-            Matcher ma = pa.matcher(text);
-            int counta = 0;
-            while (ma.find()){
-                counta +=1;
-            }
-            String ca =Integer.toString(counta);
-
-            Pattern pb = Pattern.compile("\"sports\"");
-            Matcher mb = pb.matcher(text);
-            int countb = 0;
-            while (mb.find()){
-                countb +=1;
-            }
-            String cb =Integer.toString(countb);
-
-            Pattern pc = Pattern.compile("\"weather\"");
-            Matcher mc = pc.matcher(text);
-            int countc = 0;
-            while (mc.find()){
-                countc +=1;
-            }
-            String cc =Integer.toString(countc);
-
-            return new StringBuilder().append(c1).append(" ").append(c2).append(" ").append(c3).append(" ").append(c4).append(" ").append(c5).append(" ")
-                    .append(c6).append(" ").append(c7).append(" ").append(c8).append(" ").append(c9).append(" ").append(ca).append(" ").append(cb).append(" ").append(cc).toString();
-
-        }
-
-        protected void onPostExecute(String message) {
-
-            Intent effortIntent = new Intent(MyActivity.this, CategoryActivity.class);
-            effortIntent.putExtra(EXTRA_MESSAGE, message);
-            startActivity(effortIntent);
-
-        }
-    }
 
 }
 

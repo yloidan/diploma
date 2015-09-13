@@ -3,14 +3,19 @@
 
 
     <string name="button_send">Upload to Database</string>
-    <string name="button_sentiment">Dashboard</string>
+    <string name="button_dashboard">Dashboard</string>
     <string name="button_category">Category Analysis</string>
+    <string name="button_sentiment">Sentiment Analysis</string>
     <string name="about_button">About</string>
     <string name="warning">Please enable internet access to continue.</string>
+
+    <string name="button_most_positive">View</string>
+
 
     <string name="action_settings">Settings</string>
 
     <string name="title_activity_display_message">Last browser history item analysis</string>
+    <string name="title_activity_dashboard">Dashboard</string>
     <string name="title_activity_sentiment">Sentiment Analysis</string>
     <string name="title_activity_category">CategoryActivity</string>
     <string name="title_activity_about">About</string>
@@ -25,7 +30,7 @@
 
     <string name="pdone">Please wait.</string>
     <string name="pdtwo">Uploading to database...</string>
-    <string name="upload_complete">Upload is complete.</string>
+    <string name="upload_complete"> \u0020 history items have been uploaded.</string>
 
     <string name="sb_1">Your last visit was:\u0020 </string>
     <string name="sb_2">The terms with more than 70% relevance were:\u0020 </string>
@@ -33,13 +38,18 @@
     <string name="sb_4">The url belongs into the category of:\u0020 </string>
 
 
+
     <string name="sbc_1">Your most visited category was:\u0020 </string>
     <string name="sbc_2">Here are some link that will probably interest you:\u0020 </string>
+    <string name="sbc_3">The category with the most positive results is:\u0020 </string>
+    <string name="sbc_4">Your results are:\u0020 </string>
+
     <string name="title_activity_boot">BootActivity</string>
 
     <string name="hello_world">Hello world!</string>
 
     <string name="alert_dialog">Upload to database.</string>
     <string name="alert_dialog_title">Do you want to upload your Chrome history urls to database? </string>
+
 
 </resources>

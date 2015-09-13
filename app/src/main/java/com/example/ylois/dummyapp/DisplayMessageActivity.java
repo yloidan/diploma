@@ -1,7 +1,6 @@
 package com.example.ylois.dummyapp;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Spannable;
@@ -9,9 +8,6 @@ import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class DisplayMessageActivity extends ActionBarActivity {
@@ -35,6 +31,16 @@ public class DisplayMessageActivity extends ActionBarActivity {
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(MyActivity.EXTRA_MESSAGE);
+        String message2 [] = message.split("\n");
+        StringBuilder sb = new StringBuilder("");
+        sb.append(R.string.sbc_4).append("\n").append("\n");
+        for (int i=0; i<message2.length; i++)
+        {
+            sb.append(i+1).append(".").append("").append(message2[i]).append("\n");
+        }
+
+        textView.setText(sb.toString());
+    }
 
         //OPENCLOUD remove text and replace with word cloud
 /*
@@ -60,7 +66,7 @@ public class DisplayMessageActivity extends ActionBarActivity {
 
 
 
-
+/*version2 not needed since its only debugging activity
 
 
 
@@ -106,8 +112,9 @@ public class DisplayMessageActivity extends ActionBarActivity {
             default:
                 break;
         }
-//replaced by setColor method        textView.setText(message);
+
     }
+    */
 
         /*
         String[] parts = message.split(" ");
@@ -124,12 +131,11 @@ public class DisplayMessageActivity extends ActionBarActivity {
 
 
 
-//textView.setText(result);
 
 
 
-    //not needed
-    //setContentView(R.layout.activity_display_message);
+
+
 
 
     @Override

@@ -4,14 +4,18 @@
 
 
     <string name="button_send">Ανέβασμα στη βάση</string>
-    <string name="button_sentiment">Πίνακας δεδομένων</string>
+    <string name="button_dashboard">Πίνακας δεδομένων</string>
+    <string name="button_sentiment">Ανάλυση συναισθήματος</string>
     <string name="button_category">Ανάλυση κατηγορίας</string>
     <string name="about_button">Σχετικά με την εφαρμογή</string>
     <string name="warning">Παρακαλώ ενεργοποιήστε την πρόσβαση στο internet για να συνεχίσετε.</string>
 
+    <string name="button_most_positive">Μετάβαση.</string>
+
     <string name="action_settings">Ρυθμίσεις</string>
 
     <string name="title_activity_display_message">Ανάλυση τελευταίας επίσκεψης του φυλλομετρητή</string>
+    <string name="title_activity_dashboard">Πίνακας δεδομένων</string>
     <string name="title_activity_sentiment">Ανάλυση αισθήματος</string>
     <string name="title_activity_category">Ανάλυση κατηγορίας</string>
     <string name="title_activity_about">Σχετικά με την εφαρμογή</string>
@@ -26,7 +30,7 @@
 
     <string name="pdone">Παρακαλώ περιμένετε.</string>
     <string name="pdtwo">Το ανέβασμα στη βάση είναι σε εξέλιξη...</string>
-    <string name="upload_complete">Το ανέβασμα στη βάση ολοκληρώθηκε.</string>
+    <string name="upload_complete"> \u0020 σελίδες από το ιστορικό ανέβηκαν στη βάση.</string>
 
     <string name="sb_1">Η τελευταία σας επίσκεψη ήταν:\u0020 </string>
     <string name="sb_2">Οι όροι με μεγαλύτερη συσχέτιση από 70% ήταν:\u0020 </string>
@@ -36,6 +40,8 @@
 
     <string name="sbc_1">Οι περισσότερές σας επισκέψεις άνηκαν στην κατηγορία:\u0020 </string>
     <string name="sbc_2">Κάποιοι σύνδεσμοι που θα σας ενδιέφεραν είναι οι εξής:\u0020 </string>
+    <string name="sbc_3">Η κατηγορία με τα περισσότερα θετικά αποτελέσματα είναι:\u0020 </string>
+    <string name="sbc_4">Τα αποτελέσματά σας είναι:\u0020 </string>
 
     <string name="alert_dialog">Ανέβασμα στη βάση.</string>
     <string name="alert_dialog_title">Θέλετε να ανεβάσετε το ιστορικό του Chrome στη βάση? </string>
