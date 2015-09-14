@@ -46,7 +46,7 @@ public class CategoryActivity extends ActionBarActivity {
 //renamed      double[] distribution = {};
 
         // Color of each Pie Chart Sections
-        int[] colors = { Color.BLUE, Color.GREEN, Color.RED, Color.BLUE, Color.GREEN, Color.RED,Color.BLUE, Color.GREEN, Color.RED,Color.BLUE, Color.GREEN, Color.RED};
+        int[] colors = { Color.BLUE, Color.GREEN, Color.RED, Color.MAGENTA, Color.CYAN, Color.YELLOW,Color.WHITE, Color.GRAY, Color.RED,Color.GREEN, Color.BLUE, Color.MAGENTA};
 
         // Instantiating CategorySeries to plot Pie Chart
         CategorySeries distributionSeries = new CategorySeries(

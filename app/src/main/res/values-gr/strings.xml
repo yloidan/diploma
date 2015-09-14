@@ -10,11 +10,11 @@
     <string name="about_button">Σχετικά με την εφαρμογή</string>
     <string name="warning">Παρακαλώ ενεργοποιήστε την πρόσβαση στο internet για να συνεχίσετε.</string>
 
-    <string name="button_most_positive">Μετάβαση.</string>
+    <string name="button_most_positive">Προβολή.</string>
 
     <string name="action_settings">Ρυθμίσεις</string>
 
-    <string name="title_activity_display_message">Ανάλυση τελευταίας επίσκεψης του φυλλομετρητή</string>
+    <string name="title_activity_display_message">Αποτελέσματα</string>
     <string name="title_activity_dashboard">Πίνακας δεδομένων</string>
     <string name="title_activity_sentiment">Ανάλυση αισθήματος</string>
     <string name="title_activity_category">Ανάλυση κατηγορίας</string>
@@ -36,6 +36,8 @@
     <string name="sb_2">Οι όροι με μεγαλύτερη συσχέτιση από 70% ήταν:\u0020 </string>
     <string name="sb_3">Το αίσθημα για τα περιεχόμενα της ιστοσελίδας ήταν:\u0020 </string>
     <string name="sb_4">Η ιστοσελίδα ανήκει στην κατηγορία:\u0020 </string>
+
+    <string name="sb_5">Οι σύνδεσμοι δεν είναι διαθέσιμοι για προβολή. </string>
 
 
     <string name="sbc_1">Οι περισσότερές σας επισκέψεις άνηκαν στην κατηγορία:\u0020 </string>

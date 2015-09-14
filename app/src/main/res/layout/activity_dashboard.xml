@@ -86,6 +86,8 @@
             android:layout_below="@+id/b5"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@+id/sentImage"
+            android:layout_toEndOf="@+id/sentImage"
             android:id="@+id/MPosCat"
             android:textColor="@android:color/white"
             android:textStyle="bold"
@@ -101,6 +103,8 @@
             android:layout_alignParentEnd="true"
             android:text="@string/button_most_positive"
             android:id="@+id/b7"
+            android:layout_toRightOf="@+id/sentImage"
+            android:layout_toEndOf="@+id/sentImage"
             />
 
 

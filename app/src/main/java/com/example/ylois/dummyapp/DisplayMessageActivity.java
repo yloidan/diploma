@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Spannable;
+import android.text.method.ScrollingMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,19 +28,29 @@ public class DisplayMessageActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_display_message);
         TextView textView = (TextView) findViewById(R.id.my_txt_view);
+        textView.setMovementMethod(new ScrollingMovementMethod());
 
 
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MyActivity.EXTRA_MESSAGE);
-        String message2 [] = message.split("\n");
         StringBuilder sb = new StringBuilder("");
-        sb.append(R.string.sbc_4).append("\n").append("\n");
+        String message = intent.getStringExtra(DashboardActivity.EXTRA_MESSAGE);
+
+
+        if (!message.equals(getApplicationContext().getResources().getString(R.string.fail_flag))) {
+        String message2 [] = message.split("\n");
+
+        sb.append(getApplicationContext().getResources().getString(R.string.sbc_4)).append("\n").append("\n");
         for (int i=0; i<message2.length; i++)
         {
-            sb.append(i+1).append(".").append("").append(message2[i]).append("\n");
+            sb.append(i+1).append(".").append(" ").append(message2[i]).append("\n");
+        }
+        }
+        else {
+            sb.append(getApplicationContext().getResources().getString(R.string.sb_5));
         }
 
         textView.setText(sb.toString());
+
     }
 
         //OPENCLOUD remove text and replace with word cloud

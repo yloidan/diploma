@@ -45,7 +45,7 @@ import java.util.regex.Pattern;
 public class DashboardActivity extends ActionBarActivity implements View.OnClickListener {
 
     public final static String EXTRA_MESSAGE = "com.example.ylois.dummyapp.MESSAGE";
-    public String returns = "";
+
 
     //class for not connected to internet warning alert dialog
     public static class NoInternetDialogFragment extends DialogFragment{
@@ -85,6 +85,12 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+
+
+
+
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -106,7 +112,7 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
                 break;
             case R.id.b7:
                 if (isNetworkAvailable()) {
-                    goToMPC(returns);
+                    new LongRunningGetIO4().execute();
                 } else {
                     DialogFragment alert = new NoInternetDialogFragment();
                     alert.show(getSupportFragmentManager(), "alert");
@@ -132,139 +138,143 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
         String message = intent.getStringExtra(MyActivity.EXTRA_MESSAGE);
         String[] parts = message.split("_id");
 
-        int AEnegarr[] = new int[]{};
-        int AEposarr[] = new int[]{};
-        int Busnegarr[] = new int[]{};
-        int Busposarr[] = new int[]{};
-        int CInegarr[] = new int[]{};
-        int CIposarr[] = new int[]{};
-        int CPnegarr[] = new int[]{};
-        int CPposarr[] = new int[]{};
-        int Ganegarr[] = new int[]{};
-        int Gaposarr[] = new int[]{};
-        int Henegarr[] = new int[]{};
-        int Heposarr[] = new int[]{};
-        int LCnegarr[] = new int[]{};
-        int LCposarr[] = new int[]{};
-        int Relnegarr[] = new int[]{};
-        int Relposarr[] = new int[]{};
-        int Recnegarr[] = new int[]{};
-        int Recposarr[] = new int[]{};
-        int STnegarr[] = new int[]{};
-        int STposarr[] = new int[]{};
-        int Spnegarr[] = new int[]{};
-        int Spposarr[] = new int[]{};
-        int Wenegarr[] = new int[]{};
-        int Weposarr[] = new int[]{};
+
+
+/* array FAILURE
+        int[] AEnegarr = new int[]{};
+        int[] AEposarr = new int[]{};
+        int[] Busnegarr = new int[]{};
+        int[] Busposarr = new int[]{};
+        int[] CInegarr = new int[]{};
+        int[] CIposarr = new int[]{};
+        int[] CPnegarr = new int[]{};
+        int[] CPposarr = new int[]{};
+        int[] Ganegarr = new int[]{};
+        int[] Gaposarr = new int[]{};
+        int[] Henegarr = new int[]{};
+        int[] Heposarr = new int[]{};
+        int[] LCnegarr = new int[]{};
+        int[] LCposarr = new int[]{};
+        int[] Relnegarr = new int[]{};
+        int[] Relposarr = new int[]{};
+        int[] Recnegarr = new int[]{};
+        int[] Recposarr = new int[]{};
+        int[] STnegarr = new int[]{};
+        int[] STposarr = new int[]{};
+        int[] Spnegarr = new int[]{};
+        int[] Spposarr = new int[]{};
+        int[] Wenegarr = new int[]{};
+        int[] Weposarr = new int[]{};
+        */
 
         for (int i = 0; i < parts.length; i++) {
             if (parts[i].contains("\"arts_entertainment\"") && parts[i].contains("\"negative\"")) {
-                AEnegarr[AEneg] = i;
+ //               AEnegarr.append(i).append("");
                 AEneg += 1;
             }
             if (parts[i].contains("\"arts_entertainment\"") && parts[i].contains("\"positive\"")) {
-                AEposarr[AEpos] = i;
+  //              AEposarr.append(i).append("");
                 AEpos += 1;
             }
 
             if (parts[i].contains("\"business\"") && parts[i].contains("\"negative\"")) {
-                Busnegarr[Busneg] = i;
+  //              Busnegarr.append(i).append("");
                 Busneg += 1;
             }
 
             if (parts[i].contains("\"business\"") && parts[i].contains("\"positive\"")) {
-                Busposarr[Buspos] = i;
+    //            Busposarr.append(i).append("");
                 Buspos += 1;
             }
 
 
             if (parts[i].contains("\"computer_internet\"") && parts[i].contains("\"negative\"")) {
-                CInegarr[CIneg] = i;
+ //               CInegarr.append(i).append("");
                 CIneg += 1;
             }
             if (parts[i].contains("\"computer_internet\"") && parts[i].contains("\"positive\"")) {
-                CIposarr[CIpos] = i;
+//                CIposarr.append(i).append("");
                 CIpos += 1;
             }
 
             if (parts[i].contains("\"culture_politics\"") && parts[i].contains("\"negative\"")) {
-                CPnegarr[CPneg] = i;
+//                CPnegarr.append(i).append("");
                 CPneg += 1;
             }
             if (parts[i].contains("\"culture_politics\"") && parts[i].contains("\"positive\"")) {
-                CPposarr[CPpos] = i;
+//                CPposarr.append(i).append("");
                 CPpos += 1;
             }
 
             if (parts[i].contains("\"gaming\"") && parts[i].contains("\"negative\"")) {
-                Ganegarr[Ganeg] = i;
+ //               Ganegarr.append(i).append("");
                 Ganeg += 1;
             }
             if (parts[i].contains("\"gaming\"") && parts[i].contains("\"positive\"")) {
-                Gaposarr[Gapos] = i;
+ //               Gaposarr.append(i).append("");
                 Gapos += 1;
             }
 
             if (parts[i].contains("\"health\"") && parts[i].contains("\"negative\"")) {
-                Henegarr[Heneg] = i;
+//                Henegarr.append(i).append("");
                 Heneg += 1;
             }
             if (parts[i].contains("\"health\"") && parts[i].contains("\"positive\"")) {
-                Heposarr[Hepos] = i;
+ //               Heposarr.append(i).append("");
                 Hepos += 1;
             }
 
             if (parts[i].contains("\"law_crime\"") && parts[i].contains("\"negative\"")) {
-                LCnegarr[LCneg] = i;
+  //              LCnegarr.append(i).append("");
                 LCneg += 1;
             }
             if (parts[i].contains("\"law_crime\"") && parts[i].contains("\"positive\"")) {
-                LCposarr[LCpos] = i;
+  //              LCposarr.append(i).append("");
                 LCpos += 1;
             }
 
             if (parts[i].contains("\"religion\"") && parts[i].contains("\"negative\"")) {
-                Relnegarr[Relneg] = i;
+//                Relnegarr.append(i).append("");
                 Relneg += 1;
             }
             if (parts[i].contains("\"religion\"") && parts[i].contains("\"positive\"")) {
-                Relposarr[Relpos] = i;
+  //              Relposarr.append(i).append("");
                 Relpos += 1;
             }
 
             if (parts[i].contains("\"recreation\"") && parts[i].contains("\"negative\"")) {
-                Recnegarr[Recneg] = i;
+//                Recnegarr.append(i).append("");
                 Recneg += 1;
             }
             if (parts[i].contains("\"recreation\"") && parts[i].contains("\"positive\"")) {
-                Recposarr[Recpos] = i;
+ //               Recposarr.append(i).append("");
                 Recpos += 1;
             }
 
             if (parts[i].contains("\"science_technology\"") && parts[i].contains("\"negative\"")) {
-                STnegarr[STneg] = i;
+  //              STnegarr.append(i).append("");
                 STneg += 1;
             }
             if (parts[i].contains("\"science_technology\"") && parts[i].contains("\"positive\"")) {
-                STposarr[STpos] = i;
+//                STposarr.append(i).append("");
                 STpos += 1;
             }
 
             if (parts[i].contains("\"sports\"") && parts[i].contains("\"negative\"")) {
-                Spnegarr[Spneg] = i;
+//                Spnegarr.append(i).append("");
                 Spneg += 1;
             }
             if (parts[i].contains("\"sports\"") && parts[i].contains("\"positive\"")) {
-                Spposarr[Sppos] = i;
+ //               Spposarr.append(i).append("");
                 Sppos += 1;
             }
 
             if (parts[i].contains("\"weather\"") && parts[i].contains("\"negative\"")) {
-                Wenegarr[Weneg] = i;
+ //               Wenegarr.append(i).append("");
                 Weneg += 1;
             }
             if (parts[i].contains("\"weather\"") && parts[i].contains("\"positive\"")) {
-                Weposarr[Wepos] = i;
+ //               Weposarr.append(i).append("");
                 Wepos += 1;
             }
 
@@ -422,95 +432,20 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
         int maxpos = 0;
         int mpc = 0;
         maxpos = positive[0];
-        for (int i = 0; i < positive.length; i++)
+        for (int i = 0; i < positive.length; i++) {
             if (maxpos < positive[i]) {
                 maxpos = positive[i];
                 mpc = i;
             }
+        }
+
         TextView mpctext = (TextView) findViewById(R.id.MPosCat);
         mpctext.setText(getApplicationContext().getResources().getString(R.string.sbc_3) + mCategories[mpc]);
 
 
-        StringBuilder sb = new StringBuilder("");
-        switch (mpc) {
-            case 0:
-                for (int i=0; i<AEposarr.length; i++)
-                {
-                   sb.append(parts[AEposarr[i]]).append("");
 
-                }
-                break;
-            case 1:
-                for (int i=0; i<Busposarr.length; i++)
-                {
-                    sb.append(parts[Busposarr[i]]).append("");
-                }
-                break;
-            case 2:
-                for (int i=0; i<CIposarr.length; i++)
-                {
-                    sb.append(parts[CIposarr[i]]).append("");;
-                }
-                break;
-            case 3:
-                for (int i=0; i<CPposarr.length; i++)
-                {
-                    sb.append(parts[CPposarr[i]]).append("");
-                }
-                break;
-            case 4:
-                for (int i=0; i<Gaposarr.length; i++)
-                {
-                    sb.append(parts[Gaposarr[i]]).append("");
-                }
-                break;
-            case 5:
-                for (int i=0; i<Heposarr.length; i++)
-                {
-                    sb.append(parts[Heposarr[i]]).append("");
-                }
-                break;
-            case 6:
-                for (int i=0; i<LCposarr.length; i++)
-                {
-                    sb.append(parts[LCposarr[i]]).append("");
-                }
-                break;
-            case 7:
-                for (int i=0; i<Relposarr.length; i++)
-                {
-                    sb.append(parts[Relposarr[i]]).append("");
-                }
-                break;
-            case 8:
-                for (int i=0; i<Recposarr.length; i++)
-                {
-                    sb.append(parts[Recposarr[i]]).append("");
-                }
-                break;
-            case 9:
-                for (int i=0; i<STposarr.length; i++)
-                {
-                    sb.append(parts[STposarr[i]]).append("");
-                }
-                break;
-            case 10:
-                for (int i=0; i<Spposarr.length; i++)
-                {
-                    sb.append(parts[Spposarr[i]]).append("");
-                }
-                break;
-            case 11:
-                for (int i=0; i<Weposarr.length; i++)
-                {
-                    sb.append(parts[Weposarr[i]]).append("");
-                }
-                break;
-            default:
-                break;
 
-        }
-        returns = sb.toString();
+
 
 
 
@@ -520,29 +455,8 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
 
     }
 
-    private void goToMPC(String MPCmessage){
-
-        String [] mpcarr = MPCmessage.split("urlres");
-        StringBuilder sb = new StringBuilder("");
-        String urlres = "";
-
-        for (int i=0; i<mpcarr.length; i++)
-        {
-            try {
-                JSONObject json = new JSONObject(mpcarr[i]);
-                urlres = json.getString("url");
-                sb.append(urlres).append("\n");
-
-            } catch (JSONException e) {
-                System.err.println("JSONException " + e.getMessage());
-            }
-        }
-        Intent effortIntent = new Intent(DashboardActivity.this, DisplayMessageActivity.class);
-        effortIntent.putExtra(EXTRA_MESSAGE, sb.toString());
-        startActivity(effortIntent);
 
 
-    }
 
 
 
@@ -816,6 +730,324 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
 
             Intent effortIntent = new Intent(DashboardActivity.this, CategoryActivity.class);
             effortIntent.putExtra(EXTRA_MESSAGE, message);
+            startActivity(effortIntent);
+
+        }
+    }
+
+
+
+    private class LongRunningGetIO4 extends AsyncTask<Void, Void, String> {
+
+        public String executeHttpGet(String url) throws Exception {
+            BufferedReader in = null;
+            String data = null;
+
+            try {
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(url));
+                HttpResponse response = client.execute(request);
+                response.getStatusLine().getStatusCode();
+
+                in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuilder sb = new StringBuilder("");
+                String l = "";
+                String nl = System.getProperty("line.separator");
+                while ((l = in.readLine()) !=null){
+                    sb.append(l + nl);
+                }
+                in.close();
+                data = sb.toString();
+                return data;
+            } finally{
+                if (in != null){
+                    try{
+                        in.close();
+                        return data;
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        //methodos retrieve Most Positive Category
+        private String mpcSwitch (String message, String[] parts) {
+
+            String[] strarr = (message.split("SPLITHERE"));
+            int[] intarr = new int [strarr.length];
+            StringBuilder sb = new StringBuilder("");
+
+            for (int i=0; i<strarr.length; i++) {
+                if (strarr[i] != null && !strarr[i].isEmpty()) {
+                    intarr[i] = Integer.parseInt(strarr[i]);
+                    sb.append(parts[intarr[i]]).append("");
+                }
+            }
+
+            return sb.toString();
+        }
+
+        //methodos retrieve Most Positive Category URL
+        private String goToMPC(String MPCmessage){
+//"recreation"
+            String [] mpcarr = MPCmessage.split("\"urlres\" :");
+            StringBuilder sb = new StringBuilder("");
+
+            String message="";
+
+            for (int i=0; i<mpcarr.length; i++)
+            {
+                try {
+                    String urlres = "";
+                    JSONObject json = new JSONObject(mpcarr[i]);
+                    urlres = json.getString("url");
+                    if (urlres!=null && !urlres.isEmpty()) {
+                        sb.append(urlres).append("\n");
+                    }
+
+                } catch (JSONException e) {
+                    System.err.println("JSONException " + e.getMessage());
+                }
+            }
+            if (sb.toString()!=null && !sb.toString().isEmpty()) {
+                message = sb.toString();
+            }
+            else {
+                message = getApplicationContext().getResources().getString(R.string.fail_flag);
+            }
+            return message;
+
+
+
+
+        }
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String returns = "";
+
+            String myself = "";
+            if(!Settings.Secure.ANDROID_ID.equals("android_id"))
+                myself=Settings.Secure.ANDROID_ID;
+
+            if(Settings.Secure.ANDROID_ID.equals("android_id"))
+                myself = android.os.Build.SERIAL;
+
+            String text="https://api.mongolab.com/api/1/databases/dummydb/collections/" + myself + "?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
+            try {
+                text = executeHttpGet(text);
+            } catch (Exception e9) {
+                return e9.getLocalizedMessage();
+            }
+
+            String[] parts = text.split("_id");
+
+            int AEneg, AEpos, Busneg, Buspos, CIneg, CIpos, CPneg, CPpos, Ganeg, Gapos, Heneg, Hepos, LCneg, LCpos, Relneg, Relpos, Recneg, Recpos, STneg, STpos, Spneg, Sppos, Weneg, Wepos;
+            AEneg = AEpos = Busneg = Buspos = CIneg = CIpos = CPneg = CPpos = Ganeg = Gapos = Heneg = Hepos = LCneg = LCpos = Relneg = Relpos = Recneg = Recpos = STneg = STpos = Spneg = Sppos = Weneg = Wepos = 0;
+
+            StringBuilder AEnegarr = new StringBuilder("");
+            StringBuilder AEposarr = new StringBuilder("");
+            StringBuilder Busnegarr = new StringBuilder("");
+            StringBuilder Busposarr = new StringBuilder("");
+            StringBuilder CInegarr = new StringBuilder("");
+            StringBuilder CIposarr = new StringBuilder("");
+            StringBuilder CPnegarr = new StringBuilder("");
+            StringBuilder CPposarr = new StringBuilder("");
+            StringBuilder Ganegarr = new StringBuilder("");
+            StringBuilder Gaposarr = new StringBuilder("");
+            StringBuilder Henegarr = new StringBuilder("");
+            StringBuilder Heposarr = new StringBuilder("");
+            StringBuilder LCnegarr = new StringBuilder("");
+            StringBuilder LCposarr = new StringBuilder("");
+            StringBuilder Relnegarr = new StringBuilder("");
+            StringBuilder Relposarr = new StringBuilder("");
+            StringBuilder Recnegarr = new StringBuilder("");
+            StringBuilder Recposarr = new StringBuilder("");
+            StringBuilder STnegarr = new StringBuilder("");
+            StringBuilder STposarr = new StringBuilder("");
+            StringBuilder Spnegarr = new StringBuilder("");
+            StringBuilder Spposarr = new StringBuilder("");
+            StringBuilder Wenegarr = new StringBuilder("");
+            StringBuilder Weposarr = new StringBuilder("");
+
+            for (int i = 0; i < parts.length; i++) {
+                if (parts[i].contains("\"arts_entertainment\"") && parts[i].contains("\"negative\"")) {
+                    AEnegarr.append(i).append("SPLITHERE");
+                    AEneg += 1;
+                }
+                if (parts[i].contains("\"arts_entertainment\"") && parts[i].contains("\"positive\"")) {
+                    AEposarr.append(i).append("SPLITHERE");
+                    AEpos += 1;
+                }
+                if (parts[i].contains("\"business\"") && parts[i].contains("\"negative\"")) {
+                    Busnegarr.append(i).append("SPLITHERE");
+                    Busneg += 1;
+                }
+
+                if (parts[i].contains("\"business\"") && parts[i].contains("\"positive\"")) {
+                    Busposarr.append(i).append("SPLITHERE");
+                    Buspos += 1;
+                }
+
+                if (parts[i].contains("\"computer_internet\"") && parts[i].contains("\"negative\"")) {
+                    CInegarr.append(i).append("SPLITHERE");
+                    CIneg += 1;
+                }
+                if (parts[i].contains("\"computer_internet\"") && parts[i].contains("\"positive\"")) {
+                    CIposarr.append(i).append("SPLITHERE");
+                    CIpos += 1;
+                }
+                if (parts[i].contains("\"culture_politics\"") && parts[i].contains("\"negative\"")) {
+                    CPnegarr.append(i).append("SPLITHERE");
+                    CPneg += 1;
+                }
+                if (parts[i].contains("\"culture_politics\"") && parts[i].contains("\"positive\"")) {
+                    CPposarr.append(i).append("SPLITHERE");
+                    CPpos += 1;
+                }
+                if (parts[i].contains("\"gaming\"") && parts[i].contains("\"negative\"")) {
+                    Ganegarr.append(i).append("SPLITHERE");
+                    Ganeg += 1;
+                }
+                if (parts[i].contains("\"gaming\"") && parts[i].contains("\"positive\"")) {
+                    Gaposarr.append(i).append("SPLITHERE");
+                    Gapos += 1;
+                }
+                if (parts[i].contains("\"health\"") && parts[i].contains("\"negative\"")) {
+                    Henegarr.append(i).append("SPLITHERE");
+                    Heneg += 1;
+                }
+                if (parts[i].contains("\"health\"") && parts[i].contains("\"positive\"")) {
+                    Heposarr.append(i).append("SPLITHERE");
+                    Hepos += 1;
+                }
+                if (parts[i].contains("\"law_crime\"") && parts[i].contains("\"negative\"")) {
+                    LCnegarr.append(i).append("SPLITHERE");
+                    LCneg += 1;
+                }
+                if (parts[i].contains("\"law_crime\"") && parts[i].contains("\"positive\"")) {
+                    LCposarr.append(i).append("SPLITHERE");
+                    LCpos += 1;
+                }
+                if (parts[i].contains("\"religion\"") && parts[i].contains("\"negative\"")) {
+                    Relnegarr.append(i).append("SPLITHERE");
+                    Relneg += 1;
+                }
+                if (parts[i].contains("\"religion\"") && parts[i].contains("\"positive\"")) {
+                    Relposarr.append(i).append("SPLITHERE");
+                    Relpos += 1;
+                }
+                if (parts[i].contains("\"recreation\"") && parts[i].contains("\"negative\"")) {
+                    Recnegarr.append(i).append("SPLITHERE");
+                    Recneg += 1;
+                }
+                if (parts[i].contains("\"recreation\"") && parts[i].contains("\"positive\"")) {
+                    Recposarr.append(i).append("SPLITHERE");
+                    Recpos += 1;
+                }
+                if (parts[i].contains("\"science_technology\"") && parts[i].contains("\"negative\"")) {
+                    STnegarr.append(i).append("SPLITHERE");
+                    STneg += 1;
+                }
+                if (parts[i].contains("\"science_technology\"") && parts[i].contains("\"positive\"")) {
+                    STposarr.append(i).append("SPLITHERE");
+                    STpos += 1;
+                }
+
+                if (parts[i].contains("\"sports\"") && parts[i].contains("\"negative\"")) {
+                    Spnegarr.append(i).append("SPLITHERE");
+                    Spneg += 1;
+                }
+                if (parts[i].contains("\"sports\"") && parts[i].contains("\"positive\"")) {
+                    Spposarr.append(i).append("SPLITHERE");
+                    Sppos += 1;
+                }
+                if (parts[i].contains("\"weather\"") && parts[i].contains("\"negative\"")) {
+                    Wenegarr.append(i).append("SPLITHERE");
+                    Weneg += 1;
+                }
+                if (parts[i].contains("\"weather\"") && parts[i].contains("\"positive\"")) {
+                    Weposarr.append(i).append("SPLITHERE");
+                    Wepos += 1;
+                }
+
+            }
+            int[] positive = new int[12];
+
+            positive[0] = AEpos;
+            positive[1] = Buspos;
+            positive[2] = CIpos;
+            positive[3] = CPpos;
+            positive[4] = Gapos;
+            positive[5] = Hepos;
+            positive[6] = LCpos;
+            positive[7] = Relpos;
+            positive[8] = Recpos;
+            positive[9] = STpos;
+            positive[10] = Sppos;
+            positive[11] = Wepos;
+
+            int maxpos = 0;
+            int mpc = 0;
+            maxpos = positive[0];
+            for (int i = 0; i < positive.length; i++) {
+                if (maxpos < positive[i]) {
+                    maxpos = positive[i];
+                    mpc = i;
+                }
+            }
+
+            switch (mpc) {
+                case 0:
+                    returns =mpcSwitch(AEposarr.toString(), parts);
+                    break;
+                case 1:
+                    returns =mpcSwitch(Busposarr.toString(), parts);
+                    break;
+                case 2:
+                    returns =mpcSwitch(CIposarr.toString(), parts);
+                    break;
+                case 3:
+                    returns =mpcSwitch(CPposarr.toString(), parts);
+                    break;
+                case 4:
+                    returns =mpcSwitch(Gaposarr.toString(), parts);
+                    break;
+                case 5:
+                    returns =mpcSwitch(Heposarr.toString(), parts);
+                    break;
+                case 6:
+                    returns =mpcSwitch(LCposarr.toString(), parts);
+                    break;
+                case 7:
+                    returns =mpcSwitch(Relposarr.toString(), parts);
+                    break;
+                case 8:
+                    returns =mpcSwitch(Recposarr.toString(), parts);
+                    break;
+                case 9:
+                    returns =mpcSwitch(STposarr.toString(), parts);
+                    break;
+                case 10:
+                    returns =mpcSwitch(Spposarr.toString(), parts);
+                    break;
+                case 11:
+                    returns =mpcSwitch(Weposarr.toString(), parts);
+                    break;
+                default:
+                    break;
+
+            }
+
+            return goToMPC(returns);
+
+        }
+
+        protected void onPostExecute(String message) {
+
+            Intent effortIntent = new Intent(DashboardActivity.this, DisplayMessageActivity.class);
+            effortIntent.putExtra(EXTRA_MESSAGE, message );
             startActivity(effortIntent);
 
         }
