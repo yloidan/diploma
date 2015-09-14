@@ -9,7 +9,7 @@
     <string name="about_button">About</string>
     <string name="warning">Please enable internet access to continue.</string>
 
-    <string name="button_most_positive">View</string>
+    <string name="button_most">View</string>
 
 
     <string name="action_settings">Settings</string>
@@ -45,6 +45,7 @@
     <string name="sbc_2">Here are some link that will probably interest you:\u0020 </string>
     <string name="sbc_3">The category with the most positive results is:\u0020 </string>
     <string name="sbc_4">Your results are:\u0020 </string>
+    <string name="sbc_5">The category with the most negative results is:\u0020 </string>
 
     <string name="title_activity_boot">BootActivity</string>
 

@@ -10,7 +10,7 @@
     <string name="about_button">Σχετικά με την εφαρμογή</string>
     <string name="warning">Παρακαλώ ενεργοποιήστε την πρόσβαση στο internet για να συνεχίσετε.</string>
 
-    <string name="button_most_positive">Προβολή.</string>
+    <string name="button_most">Προβολή.</string>
 
     <string name="action_settings">Ρυθμίσεις</string>
 
@@ -44,6 +44,7 @@
     <string name="sbc_2">Κάποιοι σύνδεσμοι που θα σας ενδιέφεραν είναι οι εξής:\u0020 </string>
     <string name="sbc_3">Η κατηγορία με τα περισσότερα θετικά αποτελέσματα είναι:\u0020 </string>
     <string name="sbc_4">Τα αποτελέσματά σας είναι:\u0020 </string>
+    <string name="sbc_5">Η κατηγορία με τα περισσότερα αρνητικά αποτελέσματα είναι:\u0020 </string>
 
     <string name="alert_dialog">Ανέβασμα στη βάση.</string>
     <string name="alert_dialog_title">Θέλετε να ανεβάσετε το ιστορικό του Chrome στη βάση? </string>

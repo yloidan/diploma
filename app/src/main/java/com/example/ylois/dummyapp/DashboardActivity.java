@@ -72,6 +72,8 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
         b6.setOnClickListener(this);
         Button b7 = (Button) findViewById(R.id.b7);
         b7.setOnClickListener(this);
+        Button b8 = (Button) findViewById(R.id.b8);
+        b8.setOnClickListener(this);
 
         barchart();
 
@@ -113,6 +115,14 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
             case R.id.b7:
                 if (isNetworkAvailable()) {
                     new LongRunningGetIO4().execute();
+                } else {
+                    DialogFragment alert = new NoInternetDialogFragment();
+                    alert.show(getSupportFragmentManager(), "alert");
+                }
+                break;
+            case R.id.b8:
+                if (isNetworkAvailable()) {
+                    new LongRunningGetIO5().execute();
                 } else {
                     DialogFragment alert = new NoInternetDialogFragment();
                     alert.show(getSupportFragmentManager(), "alert");
@@ -443,7 +453,19 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
         mpctext.setText(getApplicationContext().getResources().getString(R.string.sbc_3) + mCategories[mpc]);
 
 
+        //most negative category
+        int maxneg = 0;
+        int mnc= 0;
+        maxneg=negative[0];
+        for (int i=0; i <negative.length; i++) {
+            if (maxneg < negative[i]) {
+                maxneg=negative[i];
+                mnc = i;
+            }
+        }
 
+        TextView mnctext = (TextView) findViewById(R.id.MNegCat);
+        mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc_5) + mCategories[mnc]);
 
 
 
@@ -843,130 +865,93 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
 
             String[] parts = text.split("_id");
 
-            int AEneg, AEpos, Busneg, Buspos, CIneg, CIpos, CPneg, CPpos, Ganeg, Gapos, Heneg, Hepos, LCneg, LCpos, Relneg, Relpos, Recneg, Recpos, STneg, STpos, Spneg, Sppos, Weneg, Wepos;
-            AEneg = AEpos = Busneg = Buspos = CIneg = CIpos = CPneg = CPpos = Ganeg = Gapos = Heneg = Hepos = LCneg = LCpos = Relneg = Relpos = Recneg = Recpos = STneg = STpos = Spneg = Sppos = Weneg = Wepos = 0;
+            int  AEpos,  Buspos,  CIpos,  CPpos,  Gapos,  Hepos,  LCpos,  Relpos,  Recpos,  STpos,  Sppos, Wepos;
+             AEpos =  Buspos =  CIpos =  CPpos =  Gapos =  Hepos =  LCpos =  Relpos =  Recpos =  STpos =  Sppos = Wepos = 0;
 
-            StringBuilder AEnegarr = new StringBuilder("");
+
             StringBuilder AEposarr = new StringBuilder("");
-            StringBuilder Busnegarr = new StringBuilder("");
+
             StringBuilder Busposarr = new StringBuilder("");
-            StringBuilder CInegarr = new StringBuilder("");
+
             StringBuilder CIposarr = new StringBuilder("");
-            StringBuilder CPnegarr = new StringBuilder("");
+
             StringBuilder CPposarr = new StringBuilder("");
-            StringBuilder Ganegarr = new StringBuilder("");
+
             StringBuilder Gaposarr = new StringBuilder("");
-            StringBuilder Henegarr = new StringBuilder("");
+
             StringBuilder Heposarr = new StringBuilder("");
-            StringBuilder LCnegarr = new StringBuilder("");
+
             StringBuilder LCposarr = new StringBuilder("");
-            StringBuilder Relnegarr = new StringBuilder("");
+
             StringBuilder Relposarr = new StringBuilder("");
-            StringBuilder Recnegarr = new StringBuilder("");
+
             StringBuilder Recposarr = new StringBuilder("");
-            StringBuilder STnegarr = new StringBuilder("");
+
             StringBuilder STposarr = new StringBuilder("");
-            StringBuilder Spnegarr = new StringBuilder("");
+
             StringBuilder Spposarr = new StringBuilder("");
-            StringBuilder Wenegarr = new StringBuilder("");
+
             StringBuilder Weposarr = new StringBuilder("");
 
             for (int i = 0; i < parts.length; i++) {
-                if (parts[i].contains("\"arts_entertainment\"") && parts[i].contains("\"negative\"")) {
-                    AEnegarr.append(i).append("SPLITHERE");
-                    AEneg += 1;
-                }
+
                 if (parts[i].contains("\"arts_entertainment\"") && parts[i].contains("\"positive\"")) {
                     AEposarr.append(i).append("SPLITHERE");
                     AEpos += 1;
                 }
-                if (parts[i].contains("\"business\"") && parts[i].contains("\"negative\"")) {
-                    Busnegarr.append(i).append("SPLITHERE");
-                    Busneg += 1;
-                }
+
 
                 if (parts[i].contains("\"business\"") && parts[i].contains("\"positive\"")) {
                     Busposarr.append(i).append("SPLITHERE");
                     Buspos += 1;
                 }
 
-                if (parts[i].contains("\"computer_internet\"") && parts[i].contains("\"negative\"")) {
-                    CInegarr.append(i).append("SPLITHERE");
-                    CIneg += 1;
-                }
+
                 if (parts[i].contains("\"computer_internet\"") && parts[i].contains("\"positive\"")) {
                     CIposarr.append(i).append("SPLITHERE");
                     CIpos += 1;
                 }
-                if (parts[i].contains("\"culture_politics\"") && parts[i].contains("\"negative\"")) {
-                    CPnegarr.append(i).append("SPLITHERE");
-                    CPneg += 1;
-                }
+
                 if (parts[i].contains("\"culture_politics\"") && parts[i].contains("\"positive\"")) {
                     CPposarr.append(i).append("SPLITHERE");
                     CPpos += 1;
                 }
-                if (parts[i].contains("\"gaming\"") && parts[i].contains("\"negative\"")) {
-                    Ganegarr.append(i).append("SPLITHERE");
-                    Ganeg += 1;
-                }
+
                 if (parts[i].contains("\"gaming\"") && parts[i].contains("\"positive\"")) {
                     Gaposarr.append(i).append("SPLITHERE");
                     Gapos += 1;
                 }
-                if (parts[i].contains("\"health\"") && parts[i].contains("\"negative\"")) {
-                    Henegarr.append(i).append("SPLITHERE");
-                    Heneg += 1;
-                }
+
                 if (parts[i].contains("\"health\"") && parts[i].contains("\"positive\"")) {
                     Heposarr.append(i).append("SPLITHERE");
                     Hepos += 1;
                 }
-                if (parts[i].contains("\"law_crime\"") && parts[i].contains("\"negative\"")) {
-                    LCnegarr.append(i).append("SPLITHERE");
-                    LCneg += 1;
-                }
+
                 if (parts[i].contains("\"law_crime\"") && parts[i].contains("\"positive\"")) {
                     LCposarr.append(i).append("SPLITHERE");
                     LCpos += 1;
                 }
-                if (parts[i].contains("\"religion\"") && parts[i].contains("\"negative\"")) {
-                    Relnegarr.append(i).append("SPLITHERE");
-                    Relneg += 1;
-                }
+
                 if (parts[i].contains("\"religion\"") && parts[i].contains("\"positive\"")) {
                     Relposarr.append(i).append("SPLITHERE");
                     Relpos += 1;
                 }
-                if (parts[i].contains("\"recreation\"") && parts[i].contains("\"negative\"")) {
-                    Recnegarr.append(i).append("SPLITHERE");
-                    Recneg += 1;
-                }
+
                 if (parts[i].contains("\"recreation\"") && parts[i].contains("\"positive\"")) {
                     Recposarr.append(i).append("SPLITHERE");
                     Recpos += 1;
                 }
-                if (parts[i].contains("\"science_technology\"") && parts[i].contains("\"negative\"")) {
-                    STnegarr.append(i).append("SPLITHERE");
-                    STneg += 1;
-                }
+
                 if (parts[i].contains("\"science_technology\"") && parts[i].contains("\"positive\"")) {
                     STposarr.append(i).append("SPLITHERE");
                     STpos += 1;
                 }
 
-                if (parts[i].contains("\"sports\"") && parts[i].contains("\"negative\"")) {
-                    Spnegarr.append(i).append("SPLITHERE");
-                    Spneg += 1;
-                }
                 if (parts[i].contains("\"sports\"") && parts[i].contains("\"positive\"")) {
                     Spposarr.append(i).append("SPLITHERE");
                     Sppos += 1;
                 }
-                if (parts[i].contains("\"weather\"") && parts[i].contains("\"negative\"")) {
-                    Wenegarr.append(i).append("SPLITHERE");
-                    Weneg += 1;
-                }
+
                 if (parts[i].contains("\"weather\"") && parts[i].contains("\"positive\"")) {
                     Weposarr.append(i).append("SPLITHERE");
                     Wepos += 1;
@@ -1053,7 +1038,283 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
         }
     }
 
+    private class LongRunningGetIO5 extends AsyncTask<Void, Void, String> {
 
+        public String executeHttpGet(String url) throws Exception {
+            BufferedReader in = null;
+            String data = null;
+
+            try {
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(url));
+                HttpResponse response = client.execute(request);
+                response.getStatusLine().getStatusCode();
+
+                in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuilder sb = new StringBuilder("");
+                String l = "";
+                String nl = System.getProperty("line.separator");
+                while ((l = in.readLine()) !=null){
+                    sb.append(l + nl);
+                }
+                in.close();
+                data = sb.toString();
+                return data;
+            } finally{
+                if (in != null){
+                    try{
+                        in.close();
+                        return data;
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        //methodos retrieve Most Negative Category
+        private String mncSwitch (String message, String[] parts) {
+
+            String[] strarr = (message.split("SPLITHERE"));
+            int[] intarr = new int [strarr.length];
+            StringBuilder sb = new StringBuilder("");
+
+            for (int i=0; i<strarr.length; i++) {
+                if (strarr[i] != null && !strarr[i].isEmpty()) {
+                    intarr[i] = Integer.parseInt(strarr[i]);
+                    sb.append(parts[intarr[i]]).append("");
+                }
+            }
+
+            return sb.toString();
+        }
+
+        //methodos retrieve Most Negative Category URL
+        private String goToMNC(String MNCmessage){
+//"recreation"
+            String [] mncarr = MNCmessage.split("\"urlres\" :");
+            StringBuilder sb = new StringBuilder("");
+
+            String message="";
+
+            for (int i=0; i<mncarr.length; i++)
+            {
+                try {
+                    String urlres = "";
+                    JSONObject json = new JSONObject(mncarr[i]);
+                    urlres = json.getString("url");
+                    if (urlres!=null && !urlres.isEmpty()) {
+                        sb.append(urlres).append("\n");
+                    }
+
+                } catch (JSONException e) {
+                    System.err.println("JSONException " + e.getMessage());
+                }
+            }
+            if (sb.toString()!=null && !sb.toString().isEmpty()) {
+                message = sb.toString();
+            }
+            else {
+                message = getApplicationContext().getResources().getString(R.string.fail_flag);
+            }
+            return message;
+
+
+
+
+        }
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String returns = "";
+
+            String myself = "";
+            if(!Settings.Secure.ANDROID_ID.equals("android_id"))
+                myself=Settings.Secure.ANDROID_ID;
+
+            if(Settings.Secure.ANDROID_ID.equals("android_id"))
+                myself = android.os.Build.SERIAL;
+
+            String text="https://api.mongolab.com/api/1/databases/dummydb/collections/" + myself + "?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
+            try {
+                text = executeHttpGet(text);
+            } catch (Exception e9) {
+                return e9.getLocalizedMessage();
+            }
+
+            String[] parts = text.split("_id");
+
+            int AEneg,  Busneg,  CIneg,  CPneg,  Ganeg,  Heneg,  LCneg,  Relneg,  Recneg,  STneg,  Spneg,  Weneg;
+            AEneg =  Busneg =  CIneg =  CPneg =  Ganeg =  Heneg =  LCneg =  Relneg = Recneg =  STneg =  Spneg =  Weneg = 0;
+
+            StringBuilder AEnegarr = new StringBuilder("");
+
+            StringBuilder Busnegarr = new StringBuilder("");
+
+            StringBuilder CInegarr = new StringBuilder("");
+
+            StringBuilder CPnegarr = new StringBuilder("");
+
+            StringBuilder Ganegarr = new StringBuilder("");
+
+            StringBuilder Henegarr = new StringBuilder("");
+
+            StringBuilder LCnegarr = new StringBuilder("");
+
+            StringBuilder Relnegarr = new StringBuilder("");
+
+            StringBuilder Recnegarr = new StringBuilder("");
+
+            StringBuilder STnegarr = new StringBuilder("");
+
+            StringBuilder Spnegarr = new StringBuilder("");
+
+            StringBuilder Wenegarr = new StringBuilder("");
+
+
+            for (int i = 0; i < parts.length; i++) {
+                if (parts[i].contains("\"arts_entertainment\"") && parts[i].contains("\"negative\"")) {
+                    AEnegarr.append(i).append("SPLITHERE");
+                    AEneg += 1;
+                }
+
+                if (parts[i].contains("\"business\"") && parts[i].contains("\"negative\"")) {
+                    Busnegarr.append(i).append("SPLITHERE");
+                    Busneg += 1;
+                }
+
+                if (parts[i].contains("\"computer_internet\"") && parts[i].contains("\"negative\"")) {
+                    CInegarr.append(i).append("SPLITHERE");
+                    CIneg += 1;
+                }
+
+                if (parts[i].contains("\"culture_politics\"") && parts[i].contains("\"negative\"")) {
+                    CPnegarr.append(i).append("SPLITHERE");
+                    CPneg += 1;
+                }
+
+                if (parts[i].contains("\"gaming\"") && parts[i].contains("\"negative\"")) {
+                    Ganegarr.append(i).append("SPLITHERE");
+                    Ganeg += 1;
+                }
+
+                if (parts[i].contains("\"health\"") && parts[i].contains("\"negative\"")) {
+                    Henegarr.append(i).append("SPLITHERE");
+                    Heneg += 1;
+                }
+
+                if (parts[i].contains("\"law_crime\"") && parts[i].contains("\"negative\"")) {
+                    LCnegarr.append(i).append("SPLITHERE");
+                    LCneg += 1;
+                }
+
+                if (parts[i].contains("\"religion\"") && parts[i].contains("\"negative\"")) {
+                    Relnegarr.append(i).append("SPLITHERE");
+                    Relneg += 1;
+                }
+
+                if (parts[i].contains("\"recreation\"") && parts[i].contains("\"negative\"")) {
+                    Recnegarr.append(i).append("SPLITHERE");
+                    Recneg += 1;
+                }
+
+                if (parts[i].contains("\"science_technology\"") && parts[i].contains("\"negative\"")) {
+                    STnegarr.append(i).append("SPLITHERE");
+                    STneg += 1;
+                }
+
+
+                if (parts[i].contains("\"sports\"") && parts[i].contains("\"negative\"")) {
+                    Spnegarr.append(i).append("SPLITHERE");
+                    Spneg += 1;
+                }
+
+                if (parts[i].contains("\"weather\"") && parts[i].contains("\"negative\"")) {
+                    Wenegarr.append(i).append("SPLITHERE");
+                    Weneg += 1;
+                }
+
+
+            }
+            int[] negative = new int[12];
+
+            negative[0] = AEneg;
+            negative[1] = Busneg;
+            negative[2] = CIneg;
+            negative[3] = CPneg;
+            negative[4] = Ganeg;
+            negative[5] = Heneg;
+            negative[6] = LCneg;
+            negative[7] = Relneg;
+            negative[8] = Recneg;
+            negative[9] = STneg;
+            negative[10] = Spneg;
+            negative[11] = Weneg;
+
+            int maxneg = 0;
+            int mnc = 0;
+            maxneg = negative[0];
+            for (int i = 0; i < negative.length; i++) {
+                if (maxneg < negative[i]) {
+                    maxneg = negative[i];
+                    mnc = i;
+                }
+            }
+
+            switch (mnc) {
+                case 0:
+                    returns =mncSwitch(AEnegarr.toString(), parts);
+                    break;
+                case 1:
+                    returns =mncSwitch(Busnegarr.toString(), parts);
+                    break;
+                case 2:
+                    returns =mncSwitch(CInegarr.toString(), parts);
+                    break;
+                case 3:
+                    returns =mncSwitch(CPnegarr.toString(), parts);
+                    break;
+                case 4:
+                    returns =mncSwitch(Ganegarr.toString(), parts);
+                    break;
+                case 5:
+                    returns =mncSwitch(Henegarr.toString(), parts);
+                    break;
+                case 6:
+                    returns =mncSwitch(LCnegarr.toString(), parts);
+                    break;
+                case 7:
+                    returns =mncSwitch(Relnegarr.toString(), parts);
+                    break;
+                case 8:
+                    returns =mncSwitch(Recnegarr.toString(), parts);
+                    break;
+                case 9:
+                    returns =mncSwitch(STnegarr.toString(), parts);
+                    break;
+                case 10:
+                    returns =mncSwitch(Spnegarr.toString(), parts);
+                    break;
+                case 11:
+                    returns =mncSwitch(Wenegarr.toString(), parts);
+                    break;
+                default:
+                    break;
+
+            }
+
+            return goToMNC(returns);
+
+        }
+
+        protected void onPostExecute(String message) {
+
+            Intent effortIntent = new Intent(DashboardActivity.this, DisplayMessageActivity.class);
+            effortIntent.putExtra(EXTRA_MESSAGE, message );
+            startActivity(effortIntent);
+
+        }
+    }
 
 
 
