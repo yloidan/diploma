@@ -41,9 +41,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -332,12 +331,19 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
                     JSONObject json=new JSONObject(parts[i]);
                     JSONObject dateres =json.getJSONObject("dateres");
 
+                    Date date = new Date();
+                    date.setTime(Long.parseLong(dateres.getString("date")));
+                    String test=new SimpleDateFormat("dd/M/yyyy", Locale.ENGLISH).format(date);
+
+                    /*
                     int dayspassed = safeLongToInt(TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis()-(Long.parseLong(dateres.getString("date")))));
 
                     Calendar calendar = Calendar.getInstance();
                     calendar.add(Calendar.DAY_OF_MONTH, -dayspassed);
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy", Locale.ENGLISH);
                     String test = sdf.format(calendar.getTime());
+                    */
+
                     ondate.append(test).append("SPLITTING");
                 }
                 catch (Exception e1)
@@ -550,7 +556,7 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
 
             for (int k = 0; k < datesexperiment.length; k++) {
 
-                if (datesexperiment[k] != "SKIP") {
+                if (!datesexperiment[k].equals("SKIP")) {
                     String test = datesexperiment[k];
 
                     for (int i = 0; i < datesexperiment.length; i++) {
@@ -567,13 +573,21 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
 
             String[] date2 = sbd.toString().split("NEXT");
 
-            int[] totalpos = new int[date2.length];
-            int[] totalneg = new int[date2.length];
+            int[] totalpos = new int[dates.length];
+            int[] totalneg = new int[dates.length];
 
+            /*
+            String[] results= null;
+
+            for (int i=0; i<date2.length; i++) {
+                results = date2[i].split("SPLITTING");
+            }
+
+            */
 
             for (int i = 0; i < date2.length; i++) {
                 String[] date3 = date2[i].split("SPLITTING");
-                int[] date4 = new int[date3.length];
+                int[] date4= new int[date3.length];
 
                 for (int k = 0; k < date3.length; k++) {
 
@@ -583,7 +597,7 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
                         JSONObject json = new JSONObject(parts[dateint[date4[k]]]);
                         JSONObject sent = json.getJSONObject("sentimentres");
                         String sents = sent.getString("sentiment");
-                        if (sents == "positive")
+                        if (sents.contains("positive"))
                             morepositive += 1;
                         else {
                             morenegative += 1;
@@ -596,6 +610,8 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
 
                 totalneg[i] = morenegative;
                 totalpos[i] = morepositive;
+                morenegative=0;
+                morepositive=0;
 
             }
 
@@ -623,11 +639,17 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
 
             }
 
+            String[] resultneg = date2[totalnegcnt].split("SPLITTING");
+            int result2 =Integer.parseInt(resultneg[0]);
+
+            String[] resultpos = date2[totalposcnt].split("SPLITTING");
+            int result3 =Integer.parseInt(resultpos[0]);
+
             TextView dbstext = (TextView) findViewById(R.id.DBS);
-            dbstext.setText(getApplicationContext().getResources().getString(R.string.sbc_6) + dates[totalposcnt]);
+            dbstext.setText(getApplicationContext().getResources().getString(R.string.sbc_6) + dates[result2]);
 
             TextView dwstext = (TextView) findViewById(R.id.DWS);
-            dwstext.setText(getApplicationContext().getResources().getString(R.string.sbc_8) + dates[totalnegcnt]);
+            dwstext.setText(getApplicationContext().getResources().getString(R.string.sbc_8) + dates[result3]);
         }
         else {
             TextView dbstext = (TextView) findViewById(R.id.DBS);
