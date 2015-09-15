@@ -45,6 +45,9 @@
     <string name="sbc_3">Η κατηγορία με τα περισσότερα θετικά αποτελέσματα είναι:\u0020 </string>
     <string name="sbc_4">Τα αποτελέσματά σας είναι:\u0020 </string>
     <string name="sbc_5">Η κατηγορία με τα περισσότερα αρνητικά αποτελέσματα είναι:\u0020 </string>
+    <string name="sbc_6">Η ημέρα με τα περισσότερα θετικά αποτελέσματα είναι:\u0020 </string>
+    <string name="sbc_7">Δεν βρέθηκαν αποτελέσματα. </string>
+    <string name="sbc_8">Η ημέρα με τα περισσότερα αρνητικά αποτελέσματα είναι:\u0020 </string>
 
     <string name="alert_dialog">Ανέβασμα στη βάση.</string>
     <string name="alert_dialog_title">Θέλετε να ανεβάσετε το ιστορικό του Chrome στη βάση? </string>

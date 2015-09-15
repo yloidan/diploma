@@ -33,12 +33,17 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -88,7 +93,13 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
     }
 
 
-
+    public static int safeLongToInt(long l) {
+        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException
+                    (l + " cannot be cast to int without changing its value.");
+        }
+        return (int) l;
+    }
 
 
 
@@ -136,6 +147,9 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
         int AEneg, AEpos, Busneg, Buspos, CIneg, CIpos, CPneg, CPpos, Ganeg, Gapos, Heneg, Hepos, LCneg, LCpos, Relneg, Relpos, Recneg, Recpos, STneg, STpos, Spneg, Sppos, Weneg, Wepos;
         AEneg = AEpos = Busneg = Buspos = CIneg = CIpos = CPneg = CPpos = Ganeg = Gapos = Heneg = Hepos = LCneg = LCpos = Relneg = Relpos = Recneg = Recpos = STneg = STpos = Spneg = Sppos = Weneg = Wepos = 0;
 
+        StringBuilder dateexists=new StringBuilder("");
+        StringBuilder ondate = new StringBuilder("");
+
         View barChart;
         String[] mCategories = new String[]{"Arts", "Business",
                 "Computers", "Politics", "Gaming", "Health", "Law & Crime",
@@ -146,7 +160,32 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(MyActivity.EXTRA_MESSAGE);
-        String[] parts = message.split("_id");
+
+        String parts [] = null;
+
+
+
+        try {
+            JSONArray ja = new JSONArray(message);
+            parts = new String[ja.length()];
+
+            for (int i=0; i<ja.length(); i++)
+            {
+                JSONObject json = ja.getJSONObject(i);
+                parts[i]=json.toString();
+            }
+        }
+        catch (Exception e){
+            System.err.println("JSONException " + e.getMessage());
+        }
+
+
+
+
+
+
+
+//        String[] parts = message.split("_id");
 
 
 
@@ -286,6 +325,27 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
             if (parts[i].contains("\"weather\"") && parts[i].contains("\"positive\"")) {
  //               Weposarr.append(i).append("");
                 Wepos += 1;
+            }
+            if (parts[i].contains("\"dateres\"") ) {
+                dateexists.append(i).append("SPLITTING");
+                try {
+                    JSONObject json=new JSONObject(parts[i]);
+                    JSONObject dateres =json.getJSONObject("dateres");
+
+                    int dayspassed = safeLongToInt(TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis()-(Long.parseLong(dateres.getString("date")))));
+
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.add(Calendar.DAY_OF_MONTH, -dayspassed);
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy", Locale.ENGLISH);
+                    String test = sdf.format(calendar.getTime());
+                    ondate.append(test).append("SPLITTING");
+                }
+                catch (Exception e1)
+                {
+                    System.err.println("JSONException " + e1.getMessage());
+                }
+
+
             }
 
         }
@@ -466,6 +526,120 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
 
         TextView mnctext = (TextView) findViewById(R.id.MNegCat);
         mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc_5) + mCategories[mnc]);
+
+        //day with best sentiment and day with worst sentiment
+
+        if(dateexists!=null && !dateexists.toString().isEmpty()) {
+
+            String[] datescnt = dateexists.toString().split("SPLITTING");
+            int[] dateint = new int[datescnt.length];
+            for (int i = 0; i < datescnt.length; i++) {
+                dateint[i] = Integer.parseInt(datescnt[i]);
+            }
+
+            String[] dates = ondate.toString().split("SPLITTING");
+
+            String[] datesexperiment = new String[dates.length];
+            System.arraycopy(dates, 0, datesexperiment, 0, dates.length);
+
+            int morepositive = 0;
+            int morenegative = 0;
+
+            StringBuilder sbd = new StringBuilder("");
+
+
+            for (int k = 0; k < datesexperiment.length; k++) {
+
+                if (datesexperiment[k] != "SKIP") {
+                    String test = datesexperiment[k];
+
+                    for (int i = 0; i < datesexperiment.length; i++) {
+                        if (datesexperiment[i].equals(test)) {
+                            sbd.append(i).append("SPLITTING");
+                            datesexperiment[i] = "SKIP";
+                        }
+
+                    }
+                    sbd.append("NEXT");
+
+                }
+            }
+
+            String[] date2 = sbd.toString().split("NEXT");
+
+            int[] totalpos = new int[date2.length];
+            int[] totalneg = new int[date2.length];
+
+
+            for (int i = 0; i < date2.length; i++) {
+                String[] date3 = date2[i].split("SPLITTING");
+                int[] date4 = new int[date3.length];
+
+                for (int k = 0; k < date3.length; k++) {
+
+                    date4[k] = Integer.parseInt(date3[k]);
+
+                    try {
+                        JSONObject json = new JSONObject(parts[dateint[date4[k]]]);
+                        JSONObject sent = json.getJSONObject("sentimentres");
+                        String sents = sent.getString("sentiment");
+                        if (sents == "positive")
+                            morepositive += 1;
+                        else {
+                            morenegative += 1;
+                        }
+
+                    } catch (Exception e2) {
+                        System.err.println("JSONException " + e2.getMessage());
+                    }
+                }
+
+                totalneg[i] = morenegative;
+                totalpos[i] = morepositive;
+
+            }
+
+            int totalnegmax = totalneg[0];
+            int totalnegcnt = 0;
+
+
+            for (int i = 0; i < totalneg.length; i++) {
+                if (totalnegmax < totalneg[i]) {
+                    totalnegmax = totalneg[i];
+                    totalnegcnt = i;
+                }
+
+            }
+
+            int totalposmax = totalpos[0];
+            int totalposcnt = 0;
+
+
+            for (int i = 0; i < totalpos.length; i++) {
+                if (totalposmax < totalpos[i]) {
+                    totalposmax = totalpos[i];
+                    totalposcnt = i;
+                }
+
+            }
+
+            TextView dbstext = (TextView) findViewById(R.id.DBS);
+            dbstext.setText(getApplicationContext().getResources().getString(R.string.sbc_6) + dates[totalposcnt]);
+
+            TextView dwstext = (TextView) findViewById(R.id.DWS);
+            dwstext.setText(getApplicationContext().getResources().getString(R.string.sbc_8) + dates[totalnegcnt]);
+        }
+        else {
+            TextView dbstext = (TextView) findViewById(R.id.DBS);
+            dbstext.setText(getApplicationContext().getResources().getString(R.string.sbc_7));
+
+            TextView dwstext = (TextView) findViewById(R.id.DWS);
+            dwstext.setText(getApplicationContext().getResources().getString(R.string.sbc_7));
+        }
+
+
+
+
 
 
 
