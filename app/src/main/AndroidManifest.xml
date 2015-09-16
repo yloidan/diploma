@@ -25,17 +25,14 @@
         <activity
             android:name=".DisplayMessageActivity"
             android:label="@string/title_activity_display_message" >
-
         </activity>
         <activity
             android:name=".SentimentActivity"
             android:label="@string/title_activity_sentiment" >
-
         </activity>
         <activity
             android:name=".CategoryActivity"
             android:label="@string/title_activity_category" >
-
         </activity>
         <activity
             android:name=".AboutActivity"
@@ -50,6 +47,22 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.ylois.dummyapp.MyActivity" />
+        </activity>
+        <activity
+            android:name=".DashboardActivityToday"
+            android:label="@string/title_activity_dashboard_activity_today" >
+        </activity>
+        <activity
+            android:name=".SentimentActivityToday"
+            android:label="@string/title_activity_sentiment_activity_today" >
+        </activity>
+        <activity
+            android:name=".CategoryActivityToday"
+            android:label="@string/title_activity_category_activity_today" >
+        </activity>
+        <activity
+            android:name=".DisplayToday"
+            android:label="@string/title_activity_display_today" >
         </activity>
     </application>
 

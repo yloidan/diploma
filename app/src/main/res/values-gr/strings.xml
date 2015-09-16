@@ -57,6 +57,12 @@
 
     <string name="button_today">Μόνο σημερινά δεδομένα </string>
     <string name="button_week">Μόνο δεδομένα αυτής της εβδομάδας </string>
+    <string name="button_overall">Όλα τα δεδομένα </string>
+
+    <string name="title_activity_dashboard_activity_today">Πίνακας σημερινών δεδομένων</string>
+    <string name="title_activity_sentiment_activity_today">Ανάλυση αισθήματος σημερινών δεδομένων</string>
+    <string name="title_activity_category_activity_today">Ανάλυση κατηγορίας σημερινών δεδομένων</string>
+    <string name="title_activity_display_today">Αποτελέσματα σημερινών δεδομένων</string>
 
 
 

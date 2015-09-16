@@ -77,7 +77,20 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
     private static final String TAG_TEXT = "text";
     private static final String TAG_RELEVANCE = "relevance";
 
-
+    //class for not having any data stored alert dialog
+    public static class NoDataStored extends DialogFragment{
+        @Override
+        public Dialog onCreateDialog (Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.warning_2)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            return builder.create();
+        }
+    }
     //class for not connected to internet warning alert dialog
     public static class NoInternetDialogFragment extends DialogFragment{
         @Override
@@ -824,6 +837,27 @@ YAHOO TERM
             } catch (Exception e9) {
                 return e9.getLocalizedMessage();
             }
+
+            JSONArray ja=null;
+            try {
+                ja = new JSONArray(text);
+            }
+            catch (JSONException e){
+                System.err.println("JSONException " + e.getMessage());
+            }
+
+            if (ja!=null && ja.length()>0)  {
+                return text;
+            }
+            else {
+                return getApplicationContext().getResources().getString(R.string.no_data_fail);
+            }
+
+
+        }
+
+
+
 /*version2 not needed
             Pattern p = Pattern.compile("\"positive\"");
             Matcher m = p.matcher(text);
@@ -851,15 +885,20 @@ YAHOO TERM
 
             return new StringBuilder().append(cpos).append(" ").append(cneg).append(" ").append(cneut).toString();
 */
-            return text;
-        }
+
 
         protected void onPostExecute(String message) {
 
-          Intent effortIntent = new Intent(MyActivity.this, DashboardActivity.class);
-          effortIntent.putExtra(EXTRA_MESSAGE, message);
-          startActivity(effortIntent);
+            if (message.equals(getApplicationContext().getResources().getString(R.string.no_data_fail)))    {
+                DialogFragment alert = new NoDataStored();
+                alert.show(getSupportFragmentManager(), "alert");
+            }
 
+            else {
+                Intent effortIntent = new Intent(MyActivity.this, DashboardActivity.class);
+                effortIntent.putExtra(EXTRA_MESSAGE, message);
+                startActivity(effortIntent);
+            }
         }
     }
 

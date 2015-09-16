@@ -13,7 +13,7 @@ import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 
-public class SentimentActivity extends ActionBarActivity {
+public class SentimentActivityToday extends ActionBarActivity {
 
 
     private View mChart;
@@ -21,7 +21,7 @@ public class SentimentActivity extends ActionBarActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sentiment);
+        setContentView(R.layout.activity_sentiment_activity_today);
         openChart();
     }
 
@@ -36,7 +36,7 @@ public class SentimentActivity extends ActionBarActivity {
         String message= "";
 
 
-            message = intent.getStringExtra(DashboardActivity.EXTRA_MESSAGE);
+        message = intent.getStringExtra(DashboardActivityToday.EXTRA_MESSAGE);
 
 
 
@@ -120,21 +120,21 @@ public class SentimentActivity extends ActionBarActivity {
 
 
 
-        // Getting reference to the button btn_chart
+// Getting reference to the button btn_chart
 //        Button btnChart = (Button) findViewById(R.id.btn_chart);
 
-        // Defining click event listener for the button btn_chart
- //       OnClickListener clickListener = new OnClickListener() {
+// Defining click event listener for the button btn_chart
+//       OnClickListener clickListener = new OnClickListener() {
 
- //           @Override
+//           @Override
 //            public void onClick(View v) {
-                // Draw the pie Chart
- //
- //           }
+// Draw the pie Chart
+//
+//           }
 
-        // Setting event click listener for the button btn_chart of the
-        // MainActivity layout
- //       btnChart.setOnClickListener(clickListener);
+// Setting event click listener for the button btn_chart of the
+// MainActivity layout
+//       btnChart.setOnClickListener(clickListener);
 
 
 

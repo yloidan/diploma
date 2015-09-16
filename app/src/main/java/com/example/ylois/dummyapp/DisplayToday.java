@@ -3,30 +3,23 @@ package com.example.ylois.dummyapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Spannable;
 import android.text.method.ScrollingMovementMethod;
-import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 
-public class DisplayMessageActivity extends ActionBarActivity {
+public class DisplayToday extends ActionBarActivity {
 
 
-    private void setColor(TextView view, String fulltext, String subtext, int color) {
-        view.setText(fulltext, TextView.BufferType.SPANNABLE);
-        Spannable str = (Spannable) view.getText();
-        int i = fulltext.indexOf(subtext);
-        str.setSpan(new ForegroundColorSpan(color), i, i+subtext.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-    }
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_display_message);
+        setContentView(R.layout.activity_display_today);
         TextView textView = (TextView) findViewById(R.id.my_txt_view);
         textView.setMovementMethod(new ScrollingMovementMethod());
 
@@ -36,19 +29,19 @@ public class DisplayMessageActivity extends ActionBarActivity {
         String message="";
 
 
-            message = intent.getStringExtra(DashboardActivity.EXTRA_MESSAGE);
+        message = intent.getStringExtra(DashboardActivityToday.EXTRA_MESSAGE);
 
 
 
 
         if (!message.equals(getApplicationContext().getResources().getString(R.string.fail_flag))) {
-        String message2 [] = message.split("\n");
+            String message2 [] = message.split("\n");
 
-        sb.append(getApplicationContext().getResources().getString(R.string.sbc_4)).append("\n").append("\n");
-        for (int i=0; i<message2.length; i++)
-        {
-            sb.append(i+1).append(".").append(" ").append(message2[i]).append("\n");
-        }
+            sb.append(getApplicationContext().getResources().getString(R.string.sbc_4)).append("\n").append("\n");
+            for (int i=0; i<message2.length; i++)
+            {
+                sb.append(i+1).append(".").append(" ").append(message2[i]).append("\n");
+            }
         }
         else {
             sb.append(getApplicationContext().getResources().getString(R.string.sb_5));
@@ -59,7 +52,7 @@ public class DisplayMessageActivity extends ActionBarActivity {
 
     }
 
-        //OPENCLOUD remove text and replace with word cloud
+    //OPENCLOUD remove text and replace with word cloud
 /*
         String segments[]=message.split(getApplicationContext().getString(R.string.sb_2));
         String substring = segments[segments.length - 1];

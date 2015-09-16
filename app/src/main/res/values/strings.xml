@@ -10,6 +10,7 @@
     <string name="warning">Please enable internet access to continue.</string>
     <string name="warning_2">You have no data uploaded to database.</string>
 
+
     <string name="button_most">View</string>
 
 
@@ -55,6 +56,7 @@
 
     <string name="fail_flag">Failure</string>
     <string name="no_data_fail">NoDataAvailable</string>
+    <string name="no_today_data_fail">NoTodayDataAvailable</string>
 
     <string name="alert_dialog">Upload to database.</string>
     <string name="alert_dialog_title">Do you want to upload your Chrome history urls to database? </string>
@@ -63,6 +65,12 @@
 
     <string name="button_today">Today data only </string>
     <string name="button_week">This week data only </string>
+    <string name="button_overall">Overall data </string>
+
+    <string name="title_activity_dashboard_activity_today">Dashboard for Today</string>
+    <string name="title_activity_sentiment_activity_today">Sentiment Analysis for Today</string>
+    <string name="title_activity_category_activity_today">Category Analysis for Today</string>
+    <string name="title_activity_display_today">Display for Today</string>
 
 
 </resources>
