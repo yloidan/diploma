@@ -9,6 +9,7 @@
     <string name="button_category">Ανάλυση κατηγορίας</string>
     <string name="about_button">Σχετικά με την εφαρμογή</string>
     <string name="warning">Παρακαλώ ενεργοποιήστε την πρόσβαση στο internet για να συνεχίσετε.</string>
+    <string name="warning_2">Δεν έχετε ανεβάσει δεδομένα στη βάση.</string>
 
     <string name="button_most">Προβολή.</string>
 
@@ -51,6 +52,11 @@
 
     <string name="alert_dialog">Ανέβασμα στη βάση.</string>
     <string name="alert_dialog_title">Θέλετε να ανεβάσετε το ιστορικό του Chrome στη βάση? </string>
+
+    <string name="just_texts">Μπορείτε επίσης να δείτε ανάλυση σε διαφορετική χρονική περίοδο. </string>
+
+    <string name="button_today">Μόνο σημερινά δεδομένα </string>
+    <string name="button_week">Μόνο δεδομένα αυτής της εβδομάδας </string>
 
 
 

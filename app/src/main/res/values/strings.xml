@@ -8,6 +8,7 @@
     <string name="button_sentiment">Sentiment Analysis</string>
     <string name="about_button">About</string>
     <string name="warning">Please enable internet access to continue.</string>
+    <string name="warning_2">You have no data uploaded to database.</string>
 
     <string name="button_most">View</string>
 
@@ -53,9 +54,15 @@
     <string name="title_activity_boot">BootActivity</string>
 
     <string name="fail_flag">Failure</string>
+    <string name="no_data_fail">NoDataAvailable</string>
 
     <string name="alert_dialog">Upload to database.</string>
     <string name="alert_dialog_title">Do you want to upload your Chrome history urls to database? </string>
+
+    <string name="just_texts">You can also check your data analysed in a different time period. </string>
+
+    <string name="button_today">Today data only </string>
+    <string name="button_week">This week data only </string>
 
 
 </resources>
