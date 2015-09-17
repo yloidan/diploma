@@ -57,6 +57,7 @@
     <string name="fail_flag">Failure</string>
     <string name="no_data_fail">NoDataAvailable</string>
     <string name="no_today_data_fail">NoTodayDataAvailable</string>
+    <string name="sbc3_fail">No category matched the criteria.</string>
 
     <string name="alert_dialog">Upload to database.</string>
     <string name="alert_dialog_title">Do you want to upload your Chrome history urls to database? </string>
@@ -71,6 +72,12 @@
     <string name="title_activity_sentiment_activity_today">Sentiment Analysis for Today</string>
     <string name="title_activity_category_activity_today">Category Analysis for Today</string>
     <string name="title_activity_display_today">Display for Today</string>
+
+
+    <string name="title_activity_dashboard_activity_week">Dashboard for this Week</string>
+    <string name="title_activity_category_activity_week">Category Analysis for this Week</string>
+    <string name="title_activity_sentiment_activity_week">Sentiment Analysis for this Week</string>
+    <string name="title_activity_display_week">Display for this Week</string>
 
 
 </resources>

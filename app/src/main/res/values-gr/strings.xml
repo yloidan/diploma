@@ -64,6 +64,11 @@
     <string name="title_activity_category_activity_today">Ανάλυση κατηγορίας σημερινών δεδομένων</string>
     <string name="title_activity_display_today">Αποτελέσματα σημερινών δεδομένων</string>
 
+    <string name="title_activity_dashboard_activity_week">Πίνακας δεδομένων για αυτή την εβδομάδα</string>
+    <string name="title_activity_category_activity_week">Ανάλυση κατηγορίας για αυτή την εβδομάδα</string>
+    <string name="title_activity_sentiment_activity_week">Ανάλυση αισθήματος για αυτή την εβδομάδα</string>
+    <string name="title_activity_display_week">Αποτελέσματα για αυτή την εβδομάδα</string>
+
 
 
 </resources>

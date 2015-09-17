@@ -188,7 +188,7 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
                     alert.show(getSupportFragmentManager(), "alert");
                 }
                 break;
-/*            case R.id.b12:
+            case R.id.b12:
                 if (isNetworkAvailable()) {
                     new LongRunningGetIOWeek().execute();
                 } else {
@@ -196,7 +196,7 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
                     alert.show(getSupportFragmentManager(), "alert");
                 }
                 break;
-*/
+
             default:
                 break;
         }
@@ -578,33 +578,48 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
         }
 
         ///most positive category
-        int maxpos = 0;
+
         int mpc = 0;
-        maxpos = positive[0];
+        int nullcounter = 0;
+        int maxpos = positive[0];
         for (int i = 0; i < positive.length; i++) {
             if (maxpos < positive[i]) {
                 maxpos = positive[i];
                 mpc = i;
+                nullcounter+=1;
             }
         }
 
-        TextView mpctext = (TextView) findViewById(R.id.MPosCat);
-        mpctext.setText(getApplicationContext().getResources().getString(R.string.sbc_3) + mCategories[mpc]);
 
+        TextView mpctext = (TextView) findViewById(R.id.MPosCat);
+
+        if(nullcounter!=0) {
+            mpctext.setText(getApplicationContext().getResources().getString(R.string.sbc_3) + mCategories[mpc]);
+        }
+        else {
+            mpctext.setText(getApplicationContext().getResources().getString(R.string.sbc3_fail));
+        }
 
         //most negative category
-        int maxneg = 0;
+
         int mnc= 0;
-        maxneg=negative[0];
+        int nullcounter2 = 0;
+        int maxneg=negative[0];
         for (int i=0; i <negative.length; i++) {
             if (maxneg < negative[i]) {
                 maxneg=negative[i];
                 mnc = i;
+                nullcounter2+=1;
             }
         }
 
         TextView mnctext = (TextView) findViewById(R.id.MNegCat);
-        mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc_5) + mCategories[mnc]);
+        if(nullcounter2!=0) {
+            mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc_5) + mCategories[mnc]);
+        }
+        else {
+            mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc3_fail));
+        }
 
         //day with best sentiment and day with worst sentiment
 
@@ -2296,6 +2311,124 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
 
             else {
                 Intent effortIntent = new Intent(DashboardActivity.this, DashboardActivityToday.class);
+                effortIntent.putExtra(EXTRA_MESSAGE, message);
+                startActivity(effortIntent);
+            }
+        }
+    }
+
+
+    private class LongRunningGetIOWeek extends AsyncTask<Void, Void, String> {
+
+        public String executeHttpGet(String url) throws Exception {
+            BufferedReader in = null;
+            String data = null;
+
+            try {
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(url));
+                HttpResponse response = client.execute(request);
+                response.getStatusLine().getStatusCode();
+
+                in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuilder sb = new StringBuilder("");
+                String l = "";
+                String nl = System.getProperty("line.separator");
+                while ((l = in.readLine()) !=null){
+                    sb.append(l + nl);
+                }
+                in.close();
+                data = sb.toString();
+                return data;
+            } finally{
+                if (in != null){
+                    try{
+                        in.close();
+                        return data;
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String myself = "";
+            if(!Settings.Secure.ANDROID_ID.equals("android_id"))
+                myself=Settings.Secure.ANDROID_ID;
+
+            if(Settings.Secure.ANDROID_ID.equals("android_id"))
+                myself = android.os.Build.SERIAL;
+
+//https://api.mongolab.com/api/1/databases/dummydb/collections/099d79de06aa2350?q={%22dateres%22:%20{%22$exists%22:%20true}}&apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6
+            // =%3D  {%7B  }%7D
+            String text="https://api.mongolab.com/api/1/databases/dummydb/collections/" + myself + "?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
+
+            try {
+                text = executeHttpGet(text);
+            } catch (Exception e9) {
+                return e9.getLocalizedMessage();
+            }
+            StringBuilder sbtoday = new StringBuilder("[ ");
+            int null_counter=0;
+
+            if (text!=null && !text.isEmpty()) {
+
+                try {
+                    JSONArray ja = new JSONArray(text);
+                    boolean flag = false;
+
+
+                    for (int i = 0; i < ja.length(); i++) {
+                        JSONObject json = ja.getJSONObject(i);
+                        if (json.toString().contains("dateres")) {
+
+                            JSONObject dateres = json.getJSONObject("dateres");
+                            Long tocheck = Long.parseLong(dateres.getString("date"));
+
+                            long now = System.currentTimeMillis();
+                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
+
+                            if (tocheck > checkpoint) {
+                                if (flag) {
+                                    sbtoday.append(",");
+                                }
+                                sbtoday.append(json.toString()).append(" ");
+                                null_counter += 1;
+                                flag = true;
+                            }
+                        }
+                    }
+                    sbtoday.append("]");
+                }
+                catch (Exception e) {
+                    System.err.println("JSONException " + e.getMessage());
+                }
+                if (null_counter!=0) {
+                    return sbtoday.toString();
+                }
+                else {
+                    return getApplicationContext().getResources().getString(R.string.no_data_fail);
+                }
+
+            }
+            else {
+                return getApplicationContext().getResources().getString(R.string.no_data_fail);
+            }
+
+        }
+
+        protected void onPostExecute(String message) {
+
+            if (message.equals(getApplicationContext().getResources().getString(R.string.no_data_fail))) {
+                DialogFragment alert = new NoDataStored();
+                alert.show(getSupportFragmentManager(), "alert");
+            }
+
+            else {
+                Intent effortIntent = new Intent(DashboardActivity.this, DashboardActivityWeek.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }

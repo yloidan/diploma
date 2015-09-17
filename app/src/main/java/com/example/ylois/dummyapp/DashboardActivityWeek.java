@@ -47,7 +47,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DashboardActivityToday extends ActionBarActivity implements View.OnClickListener {
+public class DashboardActivityWeek extends ActionBarActivity implements View.OnClickListener {
 
     public final static String EXTRA_MESSAGE = "com.example.ylois.dummyapp.MESSAGE";
 
@@ -87,7 +87,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard_activity_today);
+        setContentView(R.layout.activity_dashboard_activity_week);
         Button b5 = (Button) findViewById(R.id.b5);
         b5.setOnClickListener(this);
         Button b6 = (Button) findViewById(R.id.b6);
@@ -181,7 +181,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
                 break;
             case R.id.b12:
                 if (isNetworkAvailable()) {
-                    new LongRunningGetIOWeek().execute();
+                    new LongRunningGetIOToday().execute();
                 } else {
                     DialogFragment alert = new NoInternetDialogFragment();
                     alert.show(getSupportFragmentManager(), "alert");
@@ -546,7 +546,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
 
         LinearLayout chartContainer = (LinearLayout) findViewById(R.id.barchart);
 
-        barChart = ChartFactory.getBarChartView(DashboardActivityToday.this, dataset, multiRenderer, BarChart.Type.STACKED);
+        barChart = ChartFactory.getBarChartView(DashboardActivityWeek.this, dataset, multiRenderer, BarChart.Type.STACKED);
         chartContainer.addView(barChart);
 
         //textview for most visited category
@@ -575,7 +575,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
 
         int mpc = 0;
         int nullcounter = 0;
-       int maxpos = positive[0];
+        int maxpos = positive[0];
         for (int i = 0; i < positive.length; i++) {
             if (maxpos < positive[i]) {
                 maxpos = positive[i];
@@ -598,7 +598,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
 
         int mnc= 0;
         int nullcounter2 = 0;
-       int maxneg=negative[0];
+        int maxneg=negative[0];
         for (int i=0; i <negative.length; i++) {
             if (maxneg < negative[i]) {
                 maxneg=negative[i];
@@ -614,6 +614,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
         else {
             mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc3_fail));
         }
+
 
         //day with best sentiment and day with worst sentiment
 
@@ -854,7 +855,11 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
                             JSONObject dateres = json.getJSONObject("dateres");
                             Long tocheck = Long.parseLong(dateres.getString("date"));
 
-                            if (DateUtils.isToday(tocheck)) {
+
+                            long now = System.currentTimeMillis();
+                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
+
+                            if (tocheck > checkpoint) {
                                 if (flag) {
                                     sbtoday.append(",");
                                 }
@@ -919,7 +924,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
                 alert.show(getSupportFragmentManager(), "alert");
             }
             else {
-                Intent effortIntent = new Intent(DashboardActivityToday.this, SentimentActivityToday.class);
+                Intent effortIntent = new Intent(DashboardActivityWeek.this, SentimentActivityWeek.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }
@@ -995,7 +1000,11 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
                             JSONObject dateres = json.getJSONObject("dateres");
                             Long tocheck = Long.parseLong(dateres.getString("date"));
 
-                            if (DateUtils.isToday(tocheck)) {
+
+                            long now = System.currentTimeMillis();
+                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
+
+                            if (tocheck > checkpoint) {
                                 if (flag) {
                                     sbtoday.append(",");
                                 }
@@ -1135,7 +1144,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
             }
             else {
 
-                Intent effortIntent = new Intent(DashboardActivityToday.this, CategoryActivityToday.class);
+                Intent effortIntent = new Intent(DashboardActivityWeek.this, CategoryActivityWeek.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }
@@ -1266,7 +1275,11 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
                             JSONObject dateres = json.getJSONObject("dateres");
                             Long tocheck = Long.parseLong(dateres.getString("date"));
 
-                            if (DateUtils.isToday(tocheck)) {
+
+                            long now = System.currentTimeMillis();
+                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
+
+                            if (tocheck > checkpoint) {
                                 if (flag) {
                                     sbtoday.append(",");
                                 }
@@ -1432,17 +1445,12 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
 
                 int mpc = 0;
                 int maxpos = positive[0];
-
                 for (int i = 0; i < positive.length; i++) {
                     if (maxpos < positive[i]) {
                         maxpos = positive[i];
                         mpc = i;
-
                     }
                 }
-
-
-
 
                 switch (mpc) {
                     case 0:
@@ -1501,7 +1509,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
             }
             else {
 
-                Intent effortIntent = new Intent(DashboardActivityToday.this, DisplayToday.class);
+                Intent effortIntent = new Intent(DashboardActivityWeek.this, DisplayWeek.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }
@@ -1628,7 +1636,11 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
                             JSONObject dateres = json.getJSONObject("dateres");
                             Long tocheck = Long.parseLong(dateres.getString("date"));
 
-                            if (DateUtils.isToday(tocheck)) {
+
+                            long now = System.currentTimeMillis();
+                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
+
+                            if (tocheck > checkpoint) {
                                 if (flag) {
                                     sbtoday.append(",");
                                 }
@@ -1853,7 +1865,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
             }
             else {
 
-                Intent effortIntent = new Intent(DashboardActivityToday.this, DisplayToday.class);
+                Intent effortIntent = new Intent(DashboardActivityWeek.this, DisplayWeek.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }
@@ -1938,7 +1950,11 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
                             JSONObject dateres = json.getJSONObject("dateres");
                             Long tocheck = Long.parseLong(dateres.getString("date"));
 
-                            if (DateUtils.isToday(tocheck)) {
+
+                            long now = System.currentTimeMillis();
+                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
+
+                            if (tocheck > checkpoint) {
                                 if (flag) {
                                     sbtoday.append(",");
                                 }
@@ -2146,7 +2162,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
             }
             else {
 
-                Intent effortIntent = new Intent(DashboardActivityToday.this, DisplayToday.class);
+                Intent effortIntent = new Intent(DashboardActivityWeek.this, DisplayWeek.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }
@@ -2231,7 +2247,11 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
                             JSONObject dateres = json.getJSONObject("dateres");
                             Long tocheck = Long.parseLong(dateres.getString("date"));
 
-                            if (DateUtils.isToday(tocheck)) {
+
+                            long now = System.currentTimeMillis();
+                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
+
+                            if (tocheck > checkpoint) {
                                 if (flag) {
                                     sbtoday.append(",");
                                 }
@@ -2438,7 +2458,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
             }
 
             else {
-                Intent effortIntent = new Intent(DashboardActivityToday.this, DisplayToday.class);
+                Intent effortIntent = new Intent(DashboardActivityWeek.this, DisplayWeek.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }
@@ -2522,15 +2542,14 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
                 alert.show(getSupportFragmentManager(), "alert");
             }
             else {
-                Intent effortIntent = new Intent(DashboardActivityToday.this, DashboardActivity.class);
+                Intent effortIntent = new Intent(DashboardActivityWeek.this, DashboardActivity.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }
         }
     }
 
-
-    private class LongRunningGetIOWeek extends AsyncTask<Void, Void, String> {
+    private class LongRunningGetIOToday extends AsyncTask<Void, Void, String> {
 
         public String executeHttpGet(String url) throws Exception {
             BufferedReader in = null;
@@ -2600,10 +2619,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
                             JSONObject dateres = json.getJSONObject("dateres");
                             Long tocheck = Long.parseLong(dateres.getString("date"));
 
-                            long now = System.currentTimeMillis();
-                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
-
-                            if (tocheck > checkpoint) {
+                            if (DateUtils.isToday(tocheck)) {
                                 if (flag) {
                                     sbtoday.append(",");
                                 }
@@ -2640,7 +2656,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
             }
 
             else {
-                Intent effortIntent = new Intent(DashboardActivityToday.this, DashboardActivityWeek.class);
+                Intent effortIntent = new Intent(DashboardActivityWeek.this, DashboardActivityToday.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }

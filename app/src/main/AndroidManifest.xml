@@ -64,6 +64,22 @@
             android:name=".DisplayToday"
             android:label="@string/title_activity_display_today" >
         </activity>
+        <activity
+            android:name=".DashboardActivityWeek"
+            android:label="@string/title_activity_dashboard_activity_week" >
+        </activity>
+        <activity
+            android:name=".CategoryActivityWeek"
+            android:label="@string/title_activity_category_activity_week" >
+        </activity>
+        <activity
+            android:name=".SentimentActivityWeek"
+            android:label="@string/title_activity_sentiment_activity_week" >
+        </activity>
+        <activity
+            android:name=".DisplayWeek"
+            android:label="@string/title_activity_display_week" >
+        </activity>
     </application>
 
 </manifest>
