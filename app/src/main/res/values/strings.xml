@@ -52,7 +52,7 @@
     <string name="sbc_7">No results were found. </string>
     <string name="sbc_8">The day with the most negative results is:\u0020 </string>
 
-    <string name="title_activity_boot">BootActivity</string>
+
 
     <string name="fail_flag">Failure</string>
     <string name="no_data_fail">NoDataAvailable</string>

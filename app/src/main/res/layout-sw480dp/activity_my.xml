@@ -17,7 +17,7 @@
         android:text="@string/button_send"
         android:id="@+id/b1"
         android:background="@drawable/blue_button"
-        style="@style/blue_button"
+        style="@style/blue_button_medium"
 
         />
 <!--   den xreiazetai me OnClickListener     android:onClick="sendMessage"    -->
@@ -27,8 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@drawable/blue_button"
-        style="@style/blue_button"
-        android:text="@string/button_sentiment"
+        style="@style/blue_button_medium"
+        android:text="@string/button_dashboard"
         android:id="@+id/b2"
         />
     <!--   android:layout_centerInParent="true"  -->
@@ -54,7 +54,7 @@
             android:text="@string/about_button"
             android:id="@+id/b4"
             android:background="@drawable/blue_button"
-            style="@style/blue_button"
+            style="@style/blue_button_medium"
             />
         <!--    android:layout_centerInParent="true"  -->
 

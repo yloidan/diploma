@@ -28,7 +28,7 @@
         android:layout_centerInParent="true"
         android:background="@drawable/blue_button"
         style="@style/blue_button_small"
-        android:text="@string/button_sentiment"
+        android:text="@string/button_dashboard"
         android:id="@+id/b2"
         />
     <!--   android:layout_centerInParent="true"  -->

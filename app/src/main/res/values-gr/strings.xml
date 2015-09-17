@@ -50,6 +50,11 @@
     <string name="sbc_7">Δεν βρέθηκαν αποτελέσματα. </string>
     <string name="sbc_8">Η ημέρα με τα περισσότερα αρνητικά αποτελέσματα είναι:\u0020 </string>
 
+    <string name="fail_flag">Failure</string>
+    <string name="no_data_fail">NoDataAvailable</string>
+    <string name="no_today_data_fail">NoTodayDataAvailable</string>
+    <string name="sbc3_fail">Καμία κατηγορία δεν ταιριάζει με τα δεδομένα.</string>
+
     <string name="alert_dialog">Ανέβασμα στη βάση.</string>
     <string name="alert_dialog_title">Θέλετε να ανεβάσετε το ιστορικό του Chrome στη βάση? </string>
 
