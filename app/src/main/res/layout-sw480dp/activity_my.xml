@@ -7,13 +7,22 @@
     android:background="@drawable/b1"
     >
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/logo"
+        android:src="@drawable/try3"
+        android:layout_centerHorizontal="true"
+
+        />
 
     <Button
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_above="@+id/b2"
-        android:layout_marginBottom="50dp"
+        android:layout_below="@+id/logo"
+        android:layout_marginTop="40dp"
         android:text="@string/button_send"
         android:id="@+id/b1"
         android:background="@drawable/blue_button"
@@ -26,6 +35,8 @@
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_below="@+id/b1"
+        android:layout_marginTop="50dp"
         android:background="@drawable/blue_button"
         style="@style/blue_button_medium"
         android:text="@string/button_dashboard"
