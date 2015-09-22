@@ -551,7 +551,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
 
         //textview for most visited category
         TextView mvctext = (TextView) findViewById(R.id.MVCat);
-        mvctext.setText(getApplicationContext().getResources().getString(R.string.sbc_1) + mCategories[counter]);
+        mvctext.setText(getApplicationContext().getResources().getString(R.string.sbc_1) + ("\n")+ mCategories[counter]);
 
         //finding main sentiment
         int sumpos = 0;
@@ -588,10 +588,10 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
         TextView mpctext = (TextView) findViewById(R.id.MPosCat);
 
         if(nullcounter!=0) {
-            mpctext.setText(getApplicationContext().getResources().getString(R.string.sbc_3) + mCategories[mpc]);
+            mpctext.setText(getApplicationContext().getResources().getString(R.string.sbc_3)+ ("\n") + mCategories[mpc]);
         }
         else {
-            mpctext.setText(getApplicationContext().getResources().getString(R.string.sbc3_fail));
+            mpctext.setText(getApplicationContext().getResources().getString(R.string.sbc3_fail)+ ("\n"));
         }
 
         //most negative category
@@ -609,10 +609,10 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
 
         TextView mnctext = (TextView) findViewById(R.id.MNegCat);
         if(nullcounter2!=0) {
-            mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc_5) + mCategories[mnc]);
+            mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc_5) + ("\n")+ mCategories[mnc]);
         }
         else {
-            mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc3_fail));
+            mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc3_fail)+ ("\n"));
         }
 
         //day with best sentiment and day with worst sentiment
