@@ -9,6 +9,7 @@
     <string name="about_button">About</string>
     <string name="warning">Please enable internet access to continue.</string>
     <string name="warning_2">You have no data uploaded to database.</string>
+    <string name="warning_3">Please have Chrome running in the background.</string>
 
 
     <string name="button_most">View</string>
@@ -21,6 +22,7 @@
     <string name="title_activity_sentiment">Sentiment Analysis</string>
     <string name="title_activity_category">Category Analysis</string>
     <string name="title_activity_about">About</string>
+    <string name="title_dashboard">Categories Diagram with stacked Sentiments</string>
 
     <string name="about_content">Dummy App is an application for Android OS, created by Lolis Vasileios for his Diploma Thesis
     at the Department of Electrical and Computer Engineering of the Aristotle University of Thessaloniki (AUTH), under the

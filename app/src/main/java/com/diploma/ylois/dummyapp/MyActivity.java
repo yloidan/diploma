@@ -1,5 +1,6 @@
 package com.diploma.ylois.dummyapp;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -40,6 +41,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,11 +50,12 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.util.List;
 
 
 public class MyActivity extends ActionBarActivity implements OnClickListener {
 
-    public final static String EXTRA_MESSAGE = "com.example.ylois.dummyapp.MESSAGE";
+    public final static String EXTRA_MESSAGE = "com.diploma.ylois.dummyapp.MESSAGE";
 //    ProgressBar pb;
     ProgressDialog progressDialog;
 
@@ -106,6 +109,21 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
         }
     }
 
+    //class for chrome not running warning alert dialog
+    public static class NoChromeRunningFragment extends DialogFragment{
+        @Override
+        public Dialog onCreateDialog (Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.warning_3)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            return builder.create();
+        }
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,15 +158,30 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.b1:
-                if (isNetworkAvailable())
+                ActivityManager activityManager = (ActivityManager) this.getSystemService( ACTIVITY_SERVICE );
+                List<ActivityManager.RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
+                int counterchr = 0;
+                for(int i = 0; i < procInfos.size(); i++)
                 {
-                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                    new LongRunningGetIO().execute();
+                    if(procInfos.get(i).processName.equals("com.android.chrome"))
+                    {
+                        if (isNetworkAvailable()) {
+                            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                            counterchr+=1;
+                            new LongRunningGetIO().execute();
+                        }
+                     else {
+                        DialogFragment alert = new NoInternetDialogFragment();
+                        alert.show(getSupportFragmentManager(), "alert");
+                    }
+                    }
                 }
-                else {
-                    DialogFragment alert = new NoInternetDialogFragment();
+                if (counterchr==0)
+                {
+                    DialogFragment alert = new NoChromeRunningFragment();
                     alert.show(getSupportFragmentManager(), "alert");
                 }
+
                 break;
             case R.id.b2:
                 if (isNetworkAvailable())
@@ -287,9 +320,12 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             String dateCompare = "";
 
             try {
-                InputStream inputStream = openFileInput("lastDate.txt");
 
-                if ( inputStream != null ) {
+                File file = new File("data/data/com.diploma.ylois.dummyapp/files/lastDate.txt");
+
+
+                if ( file.exists() ) {
+                    InputStream inputStream = openFileInput("lastDate.txt");
                     InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                     BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                     String receiveString = "";
@@ -303,6 +339,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                     dateCompare = stringBuilder.toString();
                 }
                 else {
+
                     dateCompare = "0";
                 }
             }

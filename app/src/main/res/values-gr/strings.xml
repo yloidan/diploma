@@ -10,6 +10,7 @@
     <string name="about_button">Σχετικά με την εφαρμογή</string>
     <string name="warning">Παρακαλώ ενεργοποιήστε την πρόσβαση στο internet για να συνεχίσετε.</string>
     <string name="warning_2">Δεν έχετε ανεβάσει δεδομένα στη βάση.</string>
+    <string name="warning_3">Παρακαλώ, αφήστε τον Chrome ανοιχτό.</string>
 
     <string name="button_most">Προβολή.</string>
 
@@ -20,6 +21,7 @@
     <string name="title_activity_sentiment">Ανάλυση αισθήματος</string>
     <string name="title_activity_category">Ανάλυση κατηγορίας</string>
     <string name="title_activity_about">Σχετικά με την εφαρμογή</string>
+    <string name="title_dashboard">Ιστόγραμμα κατηγοριών με συναισθήματα</string>
 
     <string name="about_content">Το Dummy App είναι μια εφαρμογή για Android OS. Δημιουργήθηκε από το Λώλη Βασίλειο στα πλαίσια της διπλωματικής του εργασίας
     στο τμήμα των Ηλεκτρολόγων Μηχανικών και Μηχανικών Η/Υ του Αριστοτελείου Πανεπιστημίου Θεσσαλονίκης (ΑΠΘ), υπό την επίβλεψη του

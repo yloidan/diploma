@@ -49,7 +49,7 @@ import java.util.regex.Pattern;
 
 public class DashboardActivityWeek extends ActionBarActivity implements View.OnClickListener {
 
-    public final static String EXTRA_MESSAGE = "com.example.ylois.dummyapp.MESSAGE";
+    public final static String EXTRA_MESSAGE = "com.diploma.ylois.dummyapp.MESSAGE";
 
     //class for not having any data stored alert dialog
     public static class NoDataStored extends DialogFragment{
