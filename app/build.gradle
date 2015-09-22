@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.example.ylois.dummyapp"
+        applicationId "com.diploma.ylois.dummyapp"
         minSdkVersion 15
         targetSdkVersion 21
         versionCode 1

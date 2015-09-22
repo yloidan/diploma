@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:background="@drawable/b1"
-    tools:context="com.example.ylois.dummyapp.DisplayMessageActivity"
+    tools:context="com.diploma.ylois.dummyapp.DisplayMessageActivity"
     android:orientation="vertical">
 
 

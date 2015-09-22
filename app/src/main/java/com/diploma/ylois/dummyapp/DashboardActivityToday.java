@@ -1,4 +1,4 @@
-package com.example.ylois.dummyapp;
+package com.diploma.ylois.dummyapp;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

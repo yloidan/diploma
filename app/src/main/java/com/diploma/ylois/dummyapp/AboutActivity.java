@@ -1,4 +1,4 @@
-package com.example.ylois.dummyapp;
+package com.diploma.ylois.dummyapp;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;

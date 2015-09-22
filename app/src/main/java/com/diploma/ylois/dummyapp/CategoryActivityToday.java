@@ -1,4 +1,4 @@
-package com.example.ylois.dummyapp;
+package com.diploma.ylois.dummyapp;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,14 +14,14 @@ import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 
-public class CategoryActivity extends ActionBarActivity {
+public class CategoryActivityToday extends ActionBarActivity {
 
     private View mChart;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category);
+        setContentView(R.layout.activity_category_activity_today);
 
         openChart();
 
@@ -39,7 +39,7 @@ public class CategoryActivity extends ActionBarActivity {
         String message = "";
 
 
-            message = intent.getStringExtra(DashboardActivity.EXTRA_MESSAGE);
+        message = intent.getStringExtra(DashboardActivityToday.EXTRA_MESSAGE);
 
 
 

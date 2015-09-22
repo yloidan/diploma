@@ -1,4 +1,4 @@
-package com.example.ylois.dummyapp;
+package com.diploma.ylois.dummyapp;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -47,7 +47,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DashboardActivityWeek extends ActionBarActivity implements View.OnClickListener {
+public class DashboardActivity extends ActionBarActivity implements View.OnClickListener {
 
     public final static String EXTRA_MESSAGE = "com.example.ylois.dummyapp.MESSAGE";
 
@@ -87,7 +87,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard_activity_week);
+        setContentView(R.layout.activity_dashboard);
         Button b5 = (Button) findViewById(R.id.b5);
         b5.setOnClickListener(this);
         Button b6 = (Button) findViewById(R.id.b6);
@@ -118,6 +118,15 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
     }
 
 
+    public static int safeLongToInt(long l) {
+        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException
+                    (l + " cannot be cast to int without changing its value.");
+        }
+        return (int) l;
+    }
+
+
 
 
     @Override
@@ -125,7 +134,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
         switch (v.getId()) {
             case R.id.b5:
                 if (isNetworkAvailable()) {
-                    new LongRunningGetIO3().execute();      //category analysis
+                    new LongRunningGetIO3().execute();
                 } else {
                     DialogFragment alert = new NoInternetDialogFragment();
                     alert.show(getSupportFragmentManager(), "alert");
@@ -133,7 +142,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 break;
             case R.id.b6:
                 if (isNetworkAvailable()) {
-                    new LongRunningGetIO2().execute();      //sentiment analysis
+                    new LongRunningGetIO2().execute();
                 } else {
                     DialogFragment alert = new NoInternetDialogFragment();
                     alert.show(getSupportFragmentManager(), "alert");
@@ -141,7 +150,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 break;
             case R.id.b7:
                 if (isNetworkAvailable()) {
-                    new LongRunningGetIO4().execute();      //most positive category + urls
+                    new LongRunningGetIO4().execute();
                 } else {
                     DialogFragment alert = new NoInternetDialogFragment();
                     alert.show(getSupportFragmentManager(), "alert");
@@ -149,7 +158,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 break;
             case R.id.b8:
                 if (isNetworkAvailable()) {
-                    new LongRunningGetIO5().execute();      //most negative category + urls
+                    new LongRunningGetIO5().execute();
                 } else {
                     DialogFragment alert = new NoInternetDialogFragment();
                     alert.show(getSupportFragmentManager(), "alert");
@@ -157,7 +166,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 break;
             case R.id.b9:
                 if (isNetworkAvailable()) {
-                    new LongRunningGetIO6().execute();      //day with most positive
+                    new LongRunningGetIO6().execute();
                 } else {
                     DialogFragment alert = new NoInternetDialogFragment();
                     alert.show(getSupportFragmentManager(), "alert");
@@ -165,7 +174,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 break;
             case R.id.b10:
                 if (isNetworkAvailable()) {
-                    new LongRunningGetIO7().execute();      //day with most negative
+                    new LongRunningGetIO7().execute();
                 } else {
                     DialogFragment alert = new NoInternetDialogFragment();
                     alert.show(getSupportFragmentManager(), "alert");
@@ -173,7 +182,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 break;
             case R.id.b11:
                 if (isNetworkAvailable()) {
-                    new LongRunningGetIOOverall().execute();
+                    new LongRunningGetIOToday().execute();
                 } else {
                     DialogFragment alert = new NoInternetDialogFragment();
                     alert.show(getSupportFragmentManager(), "alert");
@@ -181,7 +190,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 break;
             case R.id.b12:
                 if (isNetworkAvailable()) {
-                    new LongRunningGetIOToday().execute();
+                    new LongRunningGetIOWeek().execute();
                 } else {
                     DialogFragment alert = new NoInternetDialogFragment();
                     alert.show(getSupportFragmentManager(), "alert");
@@ -226,7 +235,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 parts[i]=json.toString();
             }
         }
-        catch (JSONException e){
+        catch (Exception e){
             System.err.println("JSONException " + e.getMessage());
         }
 
@@ -270,7 +279,6 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
         JSONObject sentiment=null;
 
         for (int i = 0; i < parts.length; i++) {
-
             try {
                 JSONObject json = new JSONObject(parts[i]);
                 category = json.getJSONObject("categoryres");
@@ -280,8 +288,6 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
             catch (JSONException e){
                 System.err.println("JSONException " + e.getMessage());
             }
-
-
 
             if (category.toString().contains("\"arts_entertainment\"") && sentiment.toString().contains("\"negative\"")) {
                 //               AEnegarr.append(i).append("");
@@ -546,12 +552,12 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
 
         LinearLayout chartContainer = (LinearLayout) findViewById(R.id.barchart);
 
-        barChart = ChartFactory.getBarChartView(DashboardActivityWeek.this, dataset, multiRenderer, BarChart.Type.STACKED);
+        barChart = ChartFactory.getBarChartView(DashboardActivity.this, dataset, multiRenderer, BarChart.Type.STACKED);
         chartContainer.addView(barChart);
 
         //textview for most visited category
         TextView mvctext = (TextView) findViewById(R.id.MVCat);
-        mvctext.setText(getApplicationContext().getResources().getString(R.string.sbc_1) + ("\n")+ mCategories[counter]);
+        mvctext.setText(getApplicationContext().getResources().getString(R.string.sbc_1) + ("\n") + mCategories[counter]);
 
         //finding main sentiment
         int sumpos = 0;
@@ -588,7 +594,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
         TextView mpctext = (TextView) findViewById(R.id.MPosCat);
 
         if(nullcounter!=0) {
-            mpctext.setText(getApplicationContext().getResources().getString(R.string.sbc_3) + ("\n")+ mCategories[mpc]);
+            mpctext.setText(getApplicationContext().getResources().getString(R.string.sbc_3) + ("\n") + mCategories[mpc]);
         }
         else {
             mpctext.setText(getApplicationContext().getResources().getString(R.string.sbc3_fail)+ ("\n"));
@@ -609,12 +615,11 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
 
         TextView mnctext = (TextView) findViewById(R.id.MNegCat);
         if(nullcounter2!=0) {
-            mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc_5)+ ("\n") + mCategories[mnc]);
+            mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc_5) + ("\n")+ mCategories[mnc]);
         }
         else {
             mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc3_fail)+ ("\n"));
         }
-
 
         //day with best sentiment and day with worst sentiment
 
@@ -837,53 +842,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 return e9.getLocalizedMessage();
             }
 
-
-            StringBuilder sbtoday = new StringBuilder("[ ");
-            int null_counter=0;
-
             if (text!=null && !text.isEmpty()) {
-
-                try {
-                    JSONArray ja = new JSONArray(text);
-                    boolean flag = false;
-
-
-                    for (int i = 0; i < ja.length(); i++) {
-                        JSONObject json = ja.getJSONObject(i);
-                        if (json.toString().contains("dateres")) {
-
-                            JSONObject dateres = json.getJSONObject("dateres");
-                            Long tocheck = Long.parseLong(dateres.getString("date"));
-
-
-                            long now = System.currentTimeMillis();
-                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
-
-                            if (tocheck > checkpoint) {
-                                if (flag) {
-                                    sbtoday.append(",");
-                                }
-                                sbtoday.append(json.toString()).append(" ");
-                                null_counter += 1;
-                                flag = true;
-                            }
-                        }
-                    }
-                    sbtoday.append("]");
-                }
-                catch (Exception e) {
-                    System.err.println("JSONException " + e.getMessage());
-                }
-                if (null_counter!=0) {
-                    text=sbtoday.toString();
-                }
-                else {
-                    return getApplicationContext().getResources().getString(R.string.no_data_fail);
-                }
-
-
-
-
 
 
                 Pattern p = Pattern.compile("\"positive\"");
@@ -924,7 +883,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 alert.show(getSupportFragmentManager(), "alert");
             }
             else {
-                Intent effortIntent = new Intent(DashboardActivityWeek.this, SentimentActivityWeek.class);
+                Intent effortIntent = new Intent(DashboardActivity.this, SentimentActivity.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }
@@ -983,52 +942,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 return e9.getLocalizedMessage();
             }
 
-            StringBuilder sbtoday = new StringBuilder("[ ");
-            int null_counter=0;
-
             if (text!=null && !text.isEmpty()) {
-
-                try {
-                    JSONArray ja = new JSONArray(text);
-                    boolean flag = false;
-
-
-                    for (int i = 0; i < ja.length(); i++) {
-                        JSONObject json = ja.getJSONObject(i);
-                        if (json.toString().contains("dateres")) {
-
-                            JSONObject dateres = json.getJSONObject("dateres");
-                            Long tocheck = Long.parseLong(dateres.getString("date"));
-
-
-                            long now = System.currentTimeMillis();
-                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
-
-                            if (tocheck > checkpoint) {
-                                if (flag) {
-                                    sbtoday.append(",");
-                                }
-                                sbtoday.append(json.toString()).append(" ");
-                                null_counter += 1;
-                                flag = true;
-                            }
-                        }
-                    }
-                    sbtoday.append("]");
-                }
-                catch (Exception e) {
-                    System.err.println("JSONException " + e.getMessage());
-                }
-                if (null_counter!=0) {
-                    text = sbtoday.toString();
-                }
-                else {
-                    return getApplicationContext().getResources().getString(R.string.no_data_fail);
-                }
-
-
-
-
 
                 Pattern p = Pattern.compile("\"arts_entertainment\"");
                 Matcher m = p.matcher(text);
@@ -1144,7 +1058,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
             }
             else {
 
-                Intent effortIntent = new Intent(DashboardActivityWeek.this, CategoryActivityWeek.class);
+                Intent effortIntent = new Intent(DashboardActivity.this, CategoryActivity.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }
@@ -1197,11 +1111,11 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
             for (int i=0; i<strarr.length; i++) {
                 if (strarr[i] != null && !strarr[i].isEmpty()) {
                     intarr[i] = Integer.parseInt(strarr[i]);
-                    sb.append(parts[intarr[i]]).append(" ").append(",").append(" ");
+
+                        sb.append(parts[intarr[i]]).append(" ").append(",").append(" ");
 
                 }
             }
-
             return sb.append("]").toString();
         }
 
@@ -1216,11 +1130,13 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
 
                 for (int i = 0; i < ja.length(); i++) {
                     JSONObject json = ja.getJSONObject(i);
+                    if (json.toString().contains("urlres")){
                     JSONObject urlress = json.getJSONObject("urlres");
                     String urlres = urlress.getString("url");
                     if (urlres!=null && !urlres.isEmpty()) {
                         sb.append(urlres).append("\n");
                     }
+                }
                 }
             }
             catch (JSONException e){
@@ -1258,52 +1174,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 return e9.getLocalizedMessage();
             }
 
-            StringBuilder sbtoday = new StringBuilder("[ ");
-            int null_counter=0;
-
             if (text!=null && !text.isEmpty()) {
-
-                try {
-                    JSONArray ja = new JSONArray(text);
-                    boolean flag = false;
-
-
-                    for (int i = 0; i < ja.length(); i++) {
-                        JSONObject json = ja.getJSONObject(i);
-                        if (json.toString().contains("dateres")) {
-
-                            JSONObject dateres = json.getJSONObject("dateres");
-                            Long tocheck = Long.parseLong(dateres.getString("date"));
-
-
-                            long now = System.currentTimeMillis();
-                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
-
-                            if (tocheck > checkpoint) {
-                                if (flag) {
-                                    sbtoday.append(",");
-                                }
-                                sbtoday.append(json.toString()).append(" ");
-                                null_counter += 1;
-                                flag = true;
-                            }
-                        }
-                    }
-                    sbtoday.append("]");
-                }
-                catch (Exception e) {
-                    System.err.println("JSONException " + e.getMessage());
-                }
-                if (null_counter!=0) {
-                    text = sbtoday.toString();
-                }
-                else {
-                    return getApplicationContext().getResources().getString(R.string.no_data_fail);
-                }
-
-
-
-
 
                 String[] parts =null; // text.split("_id");
                 try {
@@ -1317,9 +1188,6 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 } catch (Exception e) {
                     System.err.println("JSONException " + e.getMessage());
                 }
-
-
-
 
                 int AEpos, Buspos, CIpos, CPpos, Gapos, Hepos, LCpos, Relpos, Recpos, STpos, Sppos, Wepos;
                 AEpos = Buspos = CIpos = CPpos = Gapos = Hepos = LCpos = Relpos = Recpos = STpos = Sppos = Wepos = 0;
@@ -1396,7 +1264,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                         Hepos += 1;
                     }
 
-                    if (category.toString().contains("\"law_crime\"") &&sentiment.toString().contains("\"positive\"")) {
+                    if (category.toString().contains("\"law_crime\"") && sentiment.toString().contains("\"positive\"")) {
                         LCposarr.append(i).append("SPLITHERE");
                         LCpos += 1;
                     }
@@ -1509,7 +1377,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
             }
             else {
 
-                Intent effortIntent = new Intent(DashboardActivityWeek.this, DisplayWeek.class);
+                Intent effortIntent = new Intent(DashboardActivity.this, DisplayMessageActivity.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }
@@ -1567,6 +1435,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
             return sb.append("]").toString();
         }
 
+        //methodos retrieve Most Negative Category URL
         private String goToMNC(String MNCmessage){
 //"recreation"
             StringBuilder sb = new StringBuilder("");
@@ -1577,11 +1446,13 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
 
                 for (int i = 0; i < ja.length(); i++) {
                     JSONObject json = ja.getJSONObject(i);
+                    if (json.toString().contains("urlres")){
                     JSONObject urlress = json.getJSONObject("urlres");
                     String urlres = urlress.getString("url");
                     if (urlres!=null && !urlres.isEmpty()) {
                         sb.append(urlres).append("\n");
                     }
+                }
                 }
             }
             catch (JSONException e){
@@ -1619,48 +1490,8 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 return e9.getLocalizedMessage();
             }
 
-            StringBuilder sbtoday = new StringBuilder("[ ");
-            int null_counter=0;
-
             if (text!=null && !text.isEmpty()) {
 
-                try {
-                    JSONArray ja = new JSONArray(text);
-                    boolean flag = false;
-
-
-                    for (int i = 0; i < ja.length(); i++) {
-                        JSONObject json = ja.getJSONObject(i);
-                        if (json.toString().contains("dateres")) {
-
-                            JSONObject dateres = json.getJSONObject("dateres");
-                            Long tocheck = Long.parseLong(dateres.getString("date"));
-
-
-                            long now = System.currentTimeMillis();
-                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
-
-                            if (tocheck > checkpoint) {
-                                if (flag) {
-                                    sbtoday.append(",");
-                                }
-                                sbtoday.append(json.toString()).append(" ");
-                                null_counter += 1;
-                                flag = true;
-                            }
-                        }
-                    }
-                    sbtoday.append("]");
-                }
-                catch (Exception e) {
-                    System.err.println("JSONException " + e.getMessage());
-                }
-                if (null_counter!=0) {
-                    text = sbtoday.toString();
-                }
-                else {
-                    return getApplicationContext().getResources().getString(R.string.no_data_fail);
-                }
 
                 String[] parts =null; // text.split("_id");
                 try {
@@ -1716,8 +1547,6 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                     catch (JSONException e){
                         System.err.println("JSONException " + e.getMessage());
                     }
-
-
 
                     if (category.toString().contains("\"arts_entertainment\"") && sentiment.toString().contains("\"negative\"")) {
                         AEnegarr.append(i).append("SPLITHERE");
@@ -1865,7 +1694,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
             }
             else {
 
-                Intent effortIntent = new Intent(DashboardActivityWeek.this, DisplayWeek.class);
+                Intent effortIntent = new Intent(DashboardActivity.this, DisplayMessageActivity.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }
@@ -1931,53 +1760,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 return e9.getLocalizedMessage();
             }
 
-
-
-            StringBuilder sbtoday = new StringBuilder("[ ");
-            int null_counter=0;
-
-            if (text!=null && !text.isEmpty()) {
-
-                try {
-                    JSONArray ja = new JSONArray(text);
-                    boolean flag = false;
-
-
-                    for (int i = 0; i < ja.length(); i++) {
-                        JSONObject json = ja.getJSONObject(i);
-                        if (json.toString().contains("dateres")) {
-
-                            JSONObject dateres = json.getJSONObject("dateres");
-                            Long tocheck = Long.parseLong(dateres.getString("date"));
-
-
-                            long now = System.currentTimeMillis();
-                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
-
-                            if (tocheck > checkpoint) {
-                                if (flag) {
-                                    sbtoday.append(",");
-                                }
-                                sbtoday.append(json.toString()).append(" ");
-                                null_counter += 1;
-                                flag = true;
-                            }
-                        }
-                    }
-                    sbtoday.append("]");
-                }
-                catch (Exception e) {
-                    System.err.println("JSONException " + e.getMessage());
-                }
-                if (null_counter!=0) {
-                    text = sbtoday.toString();
-                }
-                else {
-                    return getApplicationContext().getResources().getString(R.string.no_data_fail);
-                }
-
-
-
+            if (text != null && !text.isEmpty()) {
 
                 String parts[] = null;
 
@@ -2149,9 +1932,9 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 }
             }
 
-            else {
-                return getApplicationContext().getResources().getString(R.string.no_data_fail);
-            }
+        else {
+            return getApplicationContext().getResources().getString(R.string.no_data_fail);
+        }
         }
 
         protected void onPostExecute(String message) {
@@ -2162,7 +1945,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
             }
             else {
 
-                Intent effortIntent = new Intent(DashboardActivityWeek.this, DisplayWeek.class);
+                Intent effortIntent = new Intent(DashboardActivity.this, DisplayMessageActivity.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }
@@ -2229,53 +2012,7 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
                 return e9.getLocalizedMessage();
             }
 
-
-            StringBuilder sbtoday = new StringBuilder("[ ");
-            int null_counter=0;
-
-            if (text!=null && !text.isEmpty()) {
-
-                try {
-                    JSONArray ja = new JSONArray(text);
-                    boolean flag = false;
-
-
-                    for (int i = 0; i < ja.length(); i++) {
-                        JSONObject json = ja.getJSONObject(i);
-                        if (json.toString().contains("dateres")) {
-
-                            JSONObject dateres = json.getJSONObject("dateres");
-                            Long tocheck = Long.parseLong(dateres.getString("date"));
-
-
-                            long now = System.currentTimeMillis();
-                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
-
-                            if (tocheck > checkpoint) {
-                                if (flag) {
-                                    sbtoday.append(",");
-                                }
-                                sbtoday.append(json.toString()).append(" ");
-                                null_counter += 1;
-                                flag = true;
-                            }
-                        }
-                    }
-                    sbtoday.append("]");
-                }
-                catch (Exception e) {
-                    System.err.println("JSONException " + e.getMessage());
-                }
-                if (null_counter!=0) {
-                    text = sbtoday.toString();
-                }
-                else {
-                    return getApplicationContext().getResources().getString(R.string.no_data_fail);
-                }
-
-
-
-
+            if (text != null && !text.isEmpty()) {
 
                 String parts[] = null;
 
@@ -2458,94 +2195,11 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
             }
 
             else {
-                Intent effortIntent = new Intent(DashboardActivityWeek.this, DisplayWeek.class);
+                Intent effortIntent = new Intent(DashboardActivity.this, DisplayMessageActivity.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }
 
-        }
-    }
-
-    private class LongRunningGetIOOverall extends AsyncTask<Void, Void, String> {
-
-        public String executeHttpGet(String url) throws Exception {
-            BufferedReader in = null;
-            String data = null;
-
-            try {
-                HttpClient client = new DefaultHttpClient();
-                HttpGet request = new HttpGet();
-                request.setURI(new URI(url));
-                HttpResponse response = client.execute(request);
-                response.getStatusLine().getStatusCode();
-
-                in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                StringBuilder sb = new StringBuilder("");
-                String l = "";
-                String nl = System.getProperty("line.separator");
-                while ((l = in.readLine()) !=null){
-                    sb.append(l + nl);
-                }
-                in.close();
-                data = sb.toString();
-                return data;
-            } finally{
-                if (in != null){
-                    try{
-                        in.close();
-                        return data;
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        @Override
-        protected String doInBackground(Void... params) {
-
-            String myself = "";
-            if(!Settings.Secure.ANDROID_ID.equals("android_id"))
-                myself=Settings.Secure.ANDROID_ID;
-
-            if(Settings.Secure.ANDROID_ID.equals("android_id"))
-                myself = android.os.Build.SERIAL;
-
-            String text="https://api.mongolab.com/api/1/databases/dummydb/collections/" + myself + "?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
-            try {
-                text = executeHttpGet(text);
-            } catch (Exception e9) {
-                return e9.getLocalizedMessage();
-            }
-
-            JSONArray ja=null;
-
-            try {
-                ja=new JSONArray(text);
-            }
-            catch (JSONException e){
-                System.err.println("JSONException " + e.getMessage());
-            }
-
-            if (ja!=null && ja.length()>0)  {
-                return text;
-            }
-            else {
-                return getApplicationContext().getResources().getString(R.string.no_data_fail);
-            }
-
-        }
-
-        protected void onPostExecute(String message) {
-
-            if (message.equals(getApplicationContext().getResources().getString(R.string.no_data_fail))) {
-                DialogFragment alert = new NoDataStored();
-                alert.show(getSupportFragmentManager(), "alert");
-            }
-            else {
-                Intent effortIntent = new Intent(DashboardActivityWeek.this, DashboardActivity.class);
-                effortIntent.putExtra(EXTRA_MESSAGE, message);
-                startActivity(effortIntent);
-            }
         }
     }
 
@@ -2656,7 +2310,125 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
             }
 
             else {
-                Intent effortIntent = new Intent(DashboardActivityWeek.this, DashboardActivityToday.class);
+                Intent effortIntent = new Intent(DashboardActivity.this, DashboardActivityToday.class);
+                effortIntent.putExtra(EXTRA_MESSAGE, message);
+                startActivity(effortIntent);
+            }
+        }
+    }
+
+
+    private class LongRunningGetIOWeek extends AsyncTask<Void, Void, String> {
+
+        public String executeHttpGet(String url) throws Exception {
+            BufferedReader in = null;
+            String data = null;
+
+            try {
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(url));
+                HttpResponse response = client.execute(request);
+                response.getStatusLine().getStatusCode();
+
+                in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuilder sb = new StringBuilder("");
+                String l = "";
+                String nl = System.getProperty("line.separator");
+                while ((l = in.readLine()) !=null){
+                    sb.append(l + nl);
+                }
+                in.close();
+                data = sb.toString();
+                return data;
+            } finally{
+                if (in != null){
+                    try{
+                        in.close();
+                        return data;
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String myself = "";
+            if(!Settings.Secure.ANDROID_ID.equals("android_id"))
+                myself=Settings.Secure.ANDROID_ID;
+
+            if(Settings.Secure.ANDROID_ID.equals("android_id"))
+                myself = android.os.Build.SERIAL;
+
+//https://api.mongolab.com/api/1/databases/dummydb/collections/099d79de06aa2350?q={%22dateres%22:%20{%22$exists%22:%20true}}&apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6
+            // =%3D  {%7B  }%7D
+            String text="https://api.mongolab.com/api/1/databases/dummydb/collections/" + myself + "?apiKey=sWm3hnnxTlUTHiT2r45aaqQkFltSauc6";
+
+            try {
+                text = executeHttpGet(text);
+            } catch (Exception e9) {
+                return e9.getLocalizedMessage();
+            }
+            StringBuilder sbtoday = new StringBuilder("[ ");
+            int null_counter=0;
+
+            if (text!=null && !text.isEmpty()) {
+
+                try {
+                    JSONArray ja = new JSONArray(text);
+                    boolean flag = false;
+
+
+                    for (int i = 0; i < ja.length(); i++) {
+                        JSONObject json = ja.getJSONObject(i);
+                        if (json.toString().contains("dateres")) {
+
+                            JSONObject dateres = json.getJSONObject("dateres");
+                            Long tocheck = Long.parseLong(dateres.getString("date"));
+
+                            long now = System.currentTimeMillis();
+                            long checkpoint = now - DateUtils.WEEK_IN_MILLIS;
+
+                            if (tocheck > checkpoint) {
+                                if (flag) {
+                                    sbtoday.append(",");
+                                }
+                                sbtoday.append(json.toString()).append(" ");
+                                null_counter += 1;
+                                flag = true;
+                            }
+                        }
+                    }
+                    sbtoday.append("]");
+                }
+                catch (Exception e) {
+                    System.err.println("JSONException " + e.getMessage());
+                }
+                if (null_counter!=0) {
+                    return sbtoday.toString();
+                }
+                else {
+                    return getApplicationContext().getResources().getString(R.string.no_data_fail);
+                }
+
+            }
+            else {
+                return getApplicationContext().getResources().getString(R.string.no_data_fail);
+            }
+
+        }
+
+        protected void onPostExecute(String message) {
+
+            if (message.equals(getApplicationContext().getResources().getString(R.string.no_data_fail))) {
+                DialogFragment alert = new NoDataStored();
+                alert.show(getSupportFragmentManager(), "alert");
+            }
+
+            else {
+                Intent effortIntent = new Intent(DashboardActivity.this, DashboardActivityWeek.class);
                 effortIntent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(effortIntent);
             }
