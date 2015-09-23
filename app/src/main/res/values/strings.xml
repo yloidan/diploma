@@ -13,6 +13,8 @@
 
 
     <string name="button_most">View</string>
+    <string name="button_res">View these results URLs</string>
+    <string name="button_day">View URLs of that day</string>
 
 
     <string name="action_settings">Settings</string>
@@ -24,13 +26,13 @@
     <string name="title_activity_about">About</string>
     <string name="title_dashboard">Categories Diagram with stacked Sentiments</string>
 
-    <string name="about_content">Dummy App is an application for Android OS, created by Lolis Vasileios for his Diploma Thesis
+    <string name="about_content">C.H.A.T. is an application for Android OS, created by Lolis Vasileios for his Diploma Thesis
     at the Department of Electrical and Computer Engineering of the Aristotle University of Thessaloniki (AUTH), under the
     supervision of Assistant Professor, Andreas L. Symeonidis.</string>
 
     <string name="no_title">Browser did not have enough time to save title in history.</string>
     <string name="no_history">Browser history is empty.</string>
-    <string name="no_new_history">Browser history is already analysed.</string>
+    <string name="no_new_history">Browser history is already analyzed.</string>
 
     <string name="pdone">Please wait.</string>
     <string name="pdtwo">Uploading to database...</string>
@@ -64,7 +66,7 @@
     <string name="alert_dialog">Upload to database.</string>
     <string name="alert_dialog_title">Do you want to upload your Chrome history urls to database? </string>
 
-    <string name="just_texts">You can also check your data analysed in a different time period. </string>
+    <string name="just_texts">You can also check your data analyzed in a different time period. </string>
 
     <string name="button_today">Today data only </string>
     <string name="button_week">This week data only </string>

@@ -12,7 +12,9 @@
     <string name="warning_2">Δεν έχετε ανεβάσει δεδομένα στη βάση.</string>
     <string name="warning_3">Παρακαλώ, αφήστε τον Chrome ανοιχτό.</string>
 
-    <string name="button_most">Προβολή.</string>
+    <string name="button_most">Προβολή</string>
+    <string name="button_res">Προβολή των URLs</string>
+    <string name="button_day">Προβολή URLs της ημέρας</string>
 
     <string name="action_settings">Ρυθμίσεις</string>
 
@@ -23,7 +25,7 @@
     <string name="title_activity_about">Σχετικά με την εφαρμογή</string>
     <string name="title_dashboard">Ιστόγραμμα κατηγοριών με συναισθήματα</string>
 
-    <string name="about_content">Το Dummy App είναι μια εφαρμογή για Android OS. Δημιουργήθηκε από το Λώλη Βασίλειο στα πλαίσια της διπλωματικής του εργασίας
+    <string name="about_content">Το C.H.A.T. είναι μια εφαρμογή για Android OS. Δημιουργήθηκε από το Λώλη Βασίλειο στα πλαίσια της διπλωματικής του εργασίας
     στο τμήμα των Ηλεκτρολόγων Μηχανικών και Μηχανικών Η/Υ του Αριστοτελείου Πανεπιστημίου Θεσσαλονίκης (ΑΠΘ), υπό την επίβλεψη του
     Αναπληρωτή Καθηγητή, Ανδρέα Λ. Συμεωνίδη.</string>
 

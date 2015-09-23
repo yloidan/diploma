@@ -45,26 +45,48 @@ public class CategoryActivityWeek extends ActionBarActivity {
 
         String[] parts = message.split(" ");
         double[] distribution = new double[parts.length];
+        int[] empty = new int[distribution.length];
+        int newlength=distribution.length;
+
         for (int n = 0; n < parts.length; n++) {
             distribution[n] = Double.parseDouble(parts[n]);
         }
+        for (int i=0; i<distribution.length; i++){
+            if ((int)Math.round(distribution[i])==0){
+                empty[i]=0;
+                newlength-=1;
+            }
+            else
+                empty[i]=1;
+        }
+        String[] codenew = new String[newlength];
+        double[] distributionnew = new double[newlength];
+        int z=0;
+
+
+        for (int i=0; i<empty.length; i++)
+            if (empty[i]==1){
+                codenew[z]=code[i];
+                distributionnew[z]=distribution[i];
+                z+=1;
+            }
 
 //renamed      double[] distribution = {};
 
         // Color of each Pie Chart Sections
-        int[] colors = { Color.BLUE, Color.GREEN, Color.RED, Color.MAGENTA, Color.CYAN, Color.YELLOW,Color.WHITE, Color.GRAY, Color.RED,Color.GREEN, Color.BLUE, Color.MAGENTA};
+        int[] colors = { Color.BLUE, Color.GREEN, Color.RED, Color.MAGENTA, Color.CYAN, Color.YELLOW, Color.BLUE, Color.GREEN, Color.RED, Color.MAGENTA, Color.CYAN, Color.YELLOW};
 
         // Instantiating CategorySeries to plot Pie Chart
         CategorySeries distributionSeries = new CategorySeries(
                 " Category Analysis");
-        for (int i = 0; i < distribution.length; i++) {
+        for (int i = 0; i < newlength; i++) {
             // Adding a slice with its values and name to the Pie Chart
-            distributionSeries.add(code[i], distribution[i]);
+            distributionSeries.add(codenew[i], distributionnew[i]);
         }
 
         // Instantiating a renderer for the Pie Chart
         DefaultRenderer defaultRenderer = new DefaultRenderer();
-        for (int i = 0; i < distribution.length; i++) {
+        for (int i = 0; i < newlength; i++) {
             SimpleSeriesRenderer seriesRenderer = new SimpleSeriesRenderer();
             seriesRenderer.setColor(colors[i]);
             seriesRenderer.setDisplayChartValues(true);

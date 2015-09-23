@@ -15,7 +15,10 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Spannable;
 import android.text.format.DateUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -116,7 +119,14 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-
+    //methodos gia xrwmatismo kai allagh megethous kathgoriwn
+    private void setColor(TextView view, String fulltext, String subtext, int color) {
+        view.setText(fulltext, TextView.BufferType.SPANNABLE);
+        Spannable str = (Spannable) view.getText();
+        int i = fulltext.indexOf(subtext);
+        str.setSpan(new ForegroundColorSpan(color), i, i+subtext.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        str.setSpan(new RelativeSizeSpan(1.2f), i, i+subtext.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
 
 
 
@@ -467,19 +477,46 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
 
         int max = maximum[0];
         int counter = 0;
+        int[] empty = new int[maximum.length];  //0 xwris data i katigoria, 1 exei data
+        int newlength =maximum.length;          //neo length
+
         for (int i = 0; i < maximum.length; i++) {
             if (max < maximum[i]) {
                 max = maximum[i];
                 counter = i;
             }
+            if (maximum[i]==0) {
+                empty[i] = 0;
+                newlength-=1;
+            }
+            else
+                empty[i]=1;
         }
+
+        //kratame mono ta mh-mhdenika stoixeia twn pinakwn
+
+        int[]positivenew = new int[newlength];
+        int[]negativenew = new int[newlength];
+        String[] mCategoriesnew = new String[newlength];
+        int z=0;
+
+        for (int i=0; i<empty.length; i++){
+            if (empty[i]==1){
+                positivenew[z]=positive[i];
+                negativenew[z]=negative[i];
+                mCategoriesnew[z]=mCategories[i];
+                z+=1;
+            }
+        }
+
+
 
         XYSeries positiveSeries = new XYSeries("Positive");
         XYSeries negativeSeries = new XYSeries("Negative");
-        for (int i = 0; i < x.length; i++) {
+        for (int i = 0; i < newlength; i++) {
 
-            positiveSeries.add(i, positive[i]);
-            negativeSeries.add(i, negative[i]);
+            positiveSeries.add(i, positivenew[i]);
+            negativeSeries.add(i, negativenew[i]);
         }
         XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
         dataset.addSeries(positiveSeries);
@@ -528,7 +565,7 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
         // if you use dynamic values then get the max y value and set here
         multiRenderer.setYAxisMax(max);
         multiRenderer.setXAxisMin(-0.5);
-        multiRenderer.setXAxisMax(12);
+        multiRenderer.setXAxisMax(newlength);
         multiRenderer.setBarSpacing(0.5);
 //        multiRenderer.setBackgroundColor(Color.TRANSPARENT);
 //error        multiRenderer.setMarginsColor(getResources().getColor(R.color.transparent_background));
@@ -536,8 +573,8 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
         //setting the margin size for the graph in the order top, left, bottom, right
         multiRenderer.setMargins(new int[]{30, 30, 30, 30});
 
-        for (int i = 0; i < x.length; i++) {
-            multiRenderer.addXTextLabel(i, mCategories[i]);
+        for (int i = 0; i < newlength; i++) {
+            multiRenderer.addXTextLabel(i, mCategoriesnew[i]);
 
         }
 
@@ -551,7 +588,8 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
 
         //textview for most visited category
         TextView mvctext = (TextView) findViewById(R.id.MVCat);
-        mvctext.setText(getApplicationContext().getResources().getString(R.string.sbc_1) + ("\n")+ mCategories[counter]);
+        String text1 = getApplicationContext().getResources().getString(R.string.sbc_1) + ("\n") + mCategories[counter];
+        setColor(mvctext, text1, mCategories[counter], Color.RED);
 
         //finding main sentiment
         int sumpos = 0;
@@ -588,7 +626,8 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
         TextView mpctext = (TextView) findViewById(R.id.MPosCat);
 
         if(nullcounter!=0) {
-            mpctext.setText(getApplicationContext().getResources().getString(R.string.sbc_3)+ ("\n") + mCategories[mpc]);
+            String text2 =getApplicationContext().getResources().getString(R.string.sbc_3) + ("\n") + mCategories[mpc];
+            setColor(mpctext, text2, mCategories[mpc], Color.BLUE);
         }
         else {
             mpctext.setText(getApplicationContext().getResources().getString(R.string.sbc3_fail)+ ("\n"));
@@ -609,7 +648,9 @@ public class DashboardActivityToday extends ActionBarActivity implements View.On
 
         TextView mnctext = (TextView) findViewById(R.id.MNegCat);
         if(nullcounter2!=0) {
-            mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc_5) + ("\n")+ mCategories[mnc]);
+
+            String text3=getApplicationContext().getResources().getString(R.string.sbc_5) + ("\n")+ mCategories[mnc];
+            setColor(mnctext, text3, mCategories[mnc], Color.MAGENTA);
         }
         else {
             mnctext.setText(getApplicationContext().getResources().getString(R.string.sbc3_fail)+ ("\n"));
