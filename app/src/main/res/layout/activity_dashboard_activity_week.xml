@@ -11,6 +11,18 @@
     android:weightSum="1"
     android:orientation="vertical"
     >
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".1"
+        android:gravity="center"
+        android:id="@+id/gen_title"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="28dp"
+        android:text="@string/title_dashboard"
+
+        />
 
 
     <LinearLayout
@@ -26,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight=".6"
+        android:layout_weight=".5"
         >
         <ImageView
             android:layout_width="300dp"
@@ -48,7 +60,7 @@
             android:layout_alignParentStart="true"
             android:text="@string/button_sentiment"
             android:id="@+id/b6"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/blue_button"
             style="@style/blue_button_dashboard_sw600"
 
@@ -67,7 +79,7 @@
             android:id="@+id/MVCat"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="21dp"
             android:gravity="center"
             />
 
@@ -97,7 +109,7 @@
             android:id="@+id/MPosCat"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="21dp"
             android:gravity="center"
             />
         <Button
@@ -107,7 +119,7 @@
             android:layout_marginTop="20dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:text="@string/button_most"
+            android:text="@string/button_res"
             android:id="@+id/b7"
             android:layout_toRightOf="@+id/sentImage"
             android:layout_toEndOf="@+id/sentImage"
@@ -126,7 +138,7 @@
             android:id="@+id/MNegCat"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="21dp"
             android:gravity="center"
             />
         <Button
@@ -136,7 +148,7 @@
             android:layout_marginTop="20dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:text="@string/button_most"
+            android:text="@string/button_res"
             android:id="@+id/b8"
             android:layout_toRightOf="@+id/sentImage"
             android:layout_toEndOf="@+id/sentImage"
@@ -147,7 +159,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="95dp"
             android:layout_below="@+id/b6"
             android:layout_toLeftOf="@+id/MID"
             android:layout_toStartOf="@+id/MID"
@@ -157,7 +169,7 @@
             android:id="@+id/DBS"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="21dp"
             android:gravity="center"
             />
 
@@ -170,7 +182,7 @@
             android:layout_toLeftOf="@+id/MID2"
             android:layout_toStartOf="@+id/MID2"
 
-            android:text="@string/button_most"
+            android:text="@string/button_day"
             android:id="@+id/b9"
             android:layout_marginTop="20dp"
             android:background="@drawable/blue_button"
@@ -205,7 +217,7 @@
             android:id="@+id/DWS"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="21dp"
             android:gravity="center"
             />
 
@@ -217,7 +229,7 @@
             android:layout_alignParentEnd="true"
             android:layout_toRightOf="@+id/MID2"
             android:layout_toEndOf="@+id/MID2"
-            android:text="@string/button_most"
+            android:text="@string/button_day"
             android:id="@+id/b10"
             android:layout_marginTop="20dp"
             android:background="@drawable/blue_button"
@@ -234,15 +246,14 @@
             android:text="@string/just_texts"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="22dp"
             android:gravity="center"
             />
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/just_text"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_centerHorizontal="true"
             android:text="@string/button_overall"
             android:id="@+id/b11"
             android:layout_marginTop="20dp"
@@ -250,11 +261,10 @@
             style="@style/blue_button_dashboard_sw600"
             />
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/just_text"
-            android:layout_toRightOf="@+id/b11"
-            android:layout_toEndOf="@+id/b11"
+            android:layout_below="@+id/b11"
+            android:layout_centerHorizontal="true"
             android:text="@string/button_today"
             android:id="@+id/b12"
             android:layout_marginTop="20dp"
