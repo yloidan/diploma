@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Spannable;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -25,6 +28,15 @@ public class CategoryActivityToday extends ActionBarActivity {
 
         openChart();
 
+    }
+
+    //methodos gia xrwmatismo kai allagh megethous kathgoriwn
+    private void setColor(TextView view, String fulltext, String subtext, int color) {
+        view.setText(fulltext, TextView.BufferType.SPANNABLE);
+        Spannable str = (Spannable) view.getText();
+        int i = fulltext.indexOf(subtext);
+        str.setSpan(new ForegroundColorSpan(color), i, i + subtext.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        str.setSpan(new RelativeSizeSpan(1.2f), i, i + subtext.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     private void openChart() {
@@ -152,6 +164,18 @@ public class CategoryActivityToday extends ActionBarActivity {
                 cnt=i;
             }
         }
+
+        //antistoixia dedomenwn me mhdenika, me ta antistoixa nea dedomena xwris mhdenika
+
+        int cnt2 = 0;
+        for (int i=0; i<cnt; i++){
+            if (empty[i]==0){
+                cnt2+=1;        //metraw posa mhdenika exei o pinakas mexri thn megisth kathgoria
+            }
+        }
+
+        int categfinal = cnt - cnt2;
+
         //finding equal to max value; WILL NOT USE IT
 /*        int m=0;
 
@@ -255,8 +279,7 @@ public class CategoryActivityToday extends ActionBarActivity {
         sb.append(getApplicationContext().getString(R.string.sbc_1)).append(category).append(".\n").append(getApplicationContext().getString(R.string.sbc_2)).append("\n").append(url1).append("\n").append(url2).append("\n").append(url3);
 
         TextView text = (TextView) findViewById(R.id.btn_chart);
-
-        text.setText(sb.toString());
+        setColor(text, sb.toString(), category, colors[categfinal]);
 
         return;
     }

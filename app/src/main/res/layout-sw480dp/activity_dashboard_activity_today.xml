@@ -118,8 +118,7 @@
             android:layout_marginTop="15dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:text="@string/button_res
-            "
+            android:text="@string/button_res"
             android:id="@+id/b7"
             android:layout_toRightOf="@+id/sentImage"
             android:layout_toEndOf="@+id/sentImage"

@@ -14,10 +14,12 @@
     <TextView android:id="@+id/my_txt_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         android:textStyle="bold"
         android:textSize="16dp"
         android:autoLink="web"
+        android:textColorLink="#0645AD"
+        android:background="@android:color/white"
         />
 
  <!-- kumo try  <ImageView

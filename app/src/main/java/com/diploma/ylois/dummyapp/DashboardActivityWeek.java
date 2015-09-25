@@ -770,10 +770,12 @@ public class DashboardActivityWeek extends ActionBarActivity implements View.OnC
             int result3 =Integer.parseInt(resultpos[0]);
 
             TextView dbstext = (TextView) findViewById(R.id.DBS);
-            dbstext.setText(getApplicationContext().getResources().getString(R.string.sbc_6) + dates[result2] + " with a score of: " + totalposmax + ".");
+            String text3 =getApplicationContext().getResources().getString(R.string.sbc_6) + dates[result2] + " with a score of: " + totalposmax + ".";
+            setColor(dbstext, text3, dates[result2], Color.BLUE);
 
             TextView dwstext = (TextView) findViewById(R.id.DWS);
-            dwstext.setText(getApplicationContext().getResources().getString(R.string.sbc_8) + dates[result3] + " with a score of: " + totalnegmax + ".");
+            String text4 =getApplicationContext().getResources().getString(R.string.sbc_8) + dates[result3] + " with a score of: " + totalnegmax + ".";
+            setColor(dwstext, text4, dates[result3], Color.MAGENTA);
         }
         else {
             TextView dbstext = (TextView) findViewById(R.id.DBS);
