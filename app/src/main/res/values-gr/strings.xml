@@ -11,6 +11,8 @@
     <string name="warning">Παρακαλώ ενεργοποιήστε την πρόσβαση στο internet για να συνεχίσετε.</string>
     <string name="warning_2">Δεν έχετε ανεβάσει δεδομένα στη βάση.</string>
     <string name="warning_3">Παρακαλώ, αφήστε τον Chrome ανοιχτό.</string>
+    <string name="first_time">Επειδή τρέχετε για πρώτη φορά το CHAT, σας ενημερώνουμε ότι όσο περισσότερα URL έχει το ιστορικό του Chrome,
+        τόση περισσότερη ώρα θα κάνει το ανέβασμά τους στη βάση.</string>
 
     <string name="button_most">Προβολή</string>
     <string name="button_res">Προβολή των URLs</string>
@@ -28,6 +30,8 @@
     <string name="about_content">Το C.H.A.T. είναι μια εφαρμογή για Android OS. Δημιουργήθηκε από το Λώλη Βασίλειο στα πλαίσια της διπλωματικής του εργασίας
     στο τμήμα των Ηλεκτρολόγων Μηχανικών και Μηχανικών Η/Υ του Αριστοτελείου Πανεπιστημίου Θεσσαλονίκης (ΑΠΘ), υπό την επίβλεψη του
     Αναπληρωτή Καθηγητή, Ανδρέα Λ. Συμεωνίδη.</string>
+    <string name="about_content_2">Για να βοηθήσετε στην αξιολόγηση, παρακαλώ συμπληρώστε τη φόρμα
+        που βρίσκεται εδώ: https://docs.google.com/forms/d/1ZGz5tSvbXYC1t9RVTqNPaMTTlDXOxDvn9lkz_hWD0IU/viewform</string>
 
     <string name="no_title">Ο φυλλομετρητής δεν πρόλαβε να αποθηκεύσει τον τίτλο.</string>
     <string name="no_history">Το ιστορικό του φυλλομετρητή είναι άδειο.</string>

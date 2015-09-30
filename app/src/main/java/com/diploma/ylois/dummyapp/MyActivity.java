@@ -19,7 +19,6 @@ import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -124,12 +123,32 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
         }
     }
 
+    //class for first time running warning
+    public static class FirstTimeFragment extends DialogFragment{
+        @Override
+        public Dialog onCreateDialog (Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.first_time)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            return builder.create();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
+        //warning for first time running CHAT
+        File file = new File("data/data/com.diploma.ylois.dummyapp/files/lastDate.txt");
+        if (!file.exists()){
+            DialogFragment alert = new FirstTimeFragment();
+            alert.show(getSupportFragmentManager(), "alert");
+        }
 
 //        pb = (ProgressBar) findViewById(R.id.progressBar);
         Button b1 = (Button) findViewById(R.id.b1);
@@ -213,12 +232,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
     }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_my, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -356,8 +370,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
 //            String message2= "";
             String returns = "";
             JSONObject combined = null;
-            String text = "";
-            String text2="";
+ //fffff           String text = "";
+ //fffff           String text2="";
             String date="";
             String date2="";
             int control=0;
@@ -420,7 +434,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
             }
 
  */
-
+/*fffff
                         String termAlchemy = "http://access.alchemyapi.com/calls/url/URLGetRankedKeywords?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" + url + "&outputMode=json&keywordExtractMode=strict";
                         HttpGet httpGet = new HttpGet(termAlchemy);
 
@@ -435,6 +449,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                         } catch (Exception e) {
                             return e.getLocalizedMessage();
                         }
+
+                        */
 
                         String alchemy = "http://access.alchemyapi.com/calls/url/URLGetTextSentiment?apikey=7af70ab4d132580daebfd7d69d35873cb6860fc1&url=" + url + "&outputMode=json";
                         HttpGet httpGet2 = new HttpGet(alchemy);
@@ -483,6 +499,8 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                                 System.err.println("JSONException " + e1.getMessage());
                             }
                         }
+
+/*fffff
 //refining text results for 70% relativity
 
                         StringBuilder sb = new StringBuilder();
@@ -514,6 +532,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                         } catch (JSONException e6) {
                             System.err.println("JSONException " + e6.getMessage());
                         }
+                        */
 
 //refining category results
                         StringBuilder sb3 = new StringBuilder();
@@ -557,21 +576,21 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                         }
 //merge the json objects to one
                         try {
-                            JSONObject obj1 = new JSONObject(text2);
+                      //      JSONObject obj1 = new JSONObject(text2);
                             JSONObject obj2 = new JSONObject(sentiment);
                             JSONObject obj3 = new JSONObject(categories);
                             JSONObject obj4 = new JSONObject(title);
                             JSONObject obj5 = new JSONObject(date2);
                             JSONObject obj6 = new JSONObject(message);
                             combined = new JSONObject();
-                            combined.put("textres", obj1);
+                     //       combined.put("textres", obj1);
                             combined.put("sentimentres", obj2);
                             combined.put("categoryres", obj3);
                             combined.put("titleres", obj4);
                             combined.put("dateres", obj5);
                             combined.put("urlres", obj6);
-                        } catch (Exception e) {
-                            return e.getLocalizedMessage();
+                        } catch (JSONException e18) {
+                            System.err.println("JSONException " + e18.getMessage());
                         }
 
 //upload json obj to mongolab -> executeHttpPut
@@ -581,7 +600,7 @@ public class MyActivity extends ActionBarActivity implements OnClickListener {
                         try {
                             returns = executeHttpPost(myuri, combined);
                         } catch (Exception e9) {
-                            return e9.getLocalizedMessage();
+                            return  combined.toString();
                         }
 
                         //PROGRESS BAR
@@ -776,6 +795,7 @@ YAHOO TERM
                 returns = String.valueOf(control);
             }
             return returns;
+
         }
 
         @Override
@@ -806,8 +826,15 @@ YAHOO TERM
 
                     Toast.makeText(getApplicationContext(), R.string.no_new_history, Toast.LENGTH_SHORT).show();
                 } else {
+                     try {
+                         int ints =Integer.parseInt(s);
+                         Toast.makeText(getApplicationContext(), ints + getApplicationContext().getResources().getString(R.string.upload_complete), Toast.LENGTH_SHORT).show();
+                     }
+                     catch (NumberFormatException e19){
+                         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                     }
 
-                    Toast.makeText(getApplicationContext(), s + getApplicationContext().getResources().getString(R.string.upload_complete), Toast.LENGTH_SHORT).show();
+
 
                 }
             }

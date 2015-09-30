@@ -19,6 +19,7 @@
         android:textColor="@android:color/white"
         android:textStyle="bold"
         android:textSize="30dp"
+        android:autoLink="web"
         />
 
 </RelativeLayout>

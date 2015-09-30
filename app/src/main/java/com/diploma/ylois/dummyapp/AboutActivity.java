@@ -1,8 +1,7 @@
 package com.diploma.ylois.dummyapp;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
+import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -14,9 +13,11 @@ public class AboutActivity extends ActionBarActivity {
         setContentView(R.layout.activity_about);
 
         TextView text = (TextView) findViewById(R.id.about_txt);
-        text.setText(getApplicationContext().getString(R.string.about_content));
+        text.setText(getApplicationContext().getString(R.string.about_content) + "\n"+ "\n" + getApplicationContext().getString(R.string.about_content_2));
 
     }
+
+    /*
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -24,7 +25,7 @@ public class AboutActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_about, menu);
         return true;
     }
-
+*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

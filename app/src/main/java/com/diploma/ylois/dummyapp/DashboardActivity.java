@@ -19,7 +19,6 @@ import android.text.Spannable;
 import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -529,13 +528,13 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
         XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
         multiRenderer.setOrientation(XYMultipleSeriesRenderer.Orientation.HORIZONTAL);
         multiRenderer.setXLabels(0);
-        multiRenderer.setChartTitle("Categories with stacked Sentiments chart");
+        multiRenderer.setChartTitle("");
         multiRenderer.setXTitle("Categories");
-        multiRenderer.setYTitle("Stacked sentiment score");
+        multiRenderer.setYTitle("Sentiment");
 
-        multiRenderer.setChartTitleTextSize(28);
-        multiRenderer.setAxisTitleTextSize(24);
-        multiRenderer.setLabelsTextSize(24);
+        multiRenderer.setChartTitleTextSize(10);
+        multiRenderer.setAxisTitleTextSize(12);
+        multiRenderer.setLabelsTextSize(12);
         multiRenderer.setZoomButtonsVisible(false);
         multiRenderer.setPanEnabled(false, false);
         multiRenderer.setClickEnabled(false);
@@ -548,12 +547,12 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
         multiRenderer.setExternalZoomEnabled(false);
         multiRenderer.setAntialiasing(true);
         multiRenderer.setInScroll(false);
-        multiRenderer.setLegendHeight(30);
-        multiRenderer.setLegendTextSize(24);
+        multiRenderer.setLegendHeight(12);
+        multiRenderer.setLegendTextSize(10);
         multiRenderer.setXLabelsAlign(Paint.Align.CENTER); //diff
         multiRenderer.setYLabelsAlign(Paint.Align.LEFT);    //diff
         multiRenderer.setTextTypeface("sans_serif", Typeface.NORMAL);
-        multiRenderer.setYLabels(10);
+        multiRenderer.setYLabels(2);
         // if you use dynamic values then get the max y value and set here
         multiRenderer.setYAxisMax(max);
         multiRenderer.setXAxisMin(-0.5);
@@ -563,7 +562,7 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
 //error        multiRenderer.setMarginsColor(getResources().getColor(R.color.transparent_background));
 //        multiRenderer.setApplyBackgroundColor(true);
         //setting the margin size for the graph in the order top, left, bottom, right
-        multiRenderer.setMargins(new int[]{30, 30, 30, 30});
+        multiRenderer.setMargins(new int[]{10, 10, 10, 10});
 
         for (int i = 0; i < newlength; i++) {
             multiRenderer.addXTextLabel(i, mCategoriesnew[i]);
@@ -797,12 +796,7 @@ public class DashboardActivity extends ActionBarActivity implements View.OnClick
 
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

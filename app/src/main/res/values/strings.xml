@@ -10,6 +10,7 @@
     <string name="warning">Please enable internet access to continue.</string>
     <string name="warning_2">You have no data uploaded to database.</string>
     <string name="warning_3">Please have Chrome running in the background.</string>
+    <string name="first_time">Since its your first time running CHAT, please be aware that the more chrome history items you have, the more time it takes to upload them to the database.</string>
 
 
     <string name="button_most">View</string>
@@ -29,6 +30,8 @@
     <string name="about_content">C.H.A.T. is an application for Android OS, created by Lolis Vasileios for his Diploma Thesis
     at the Department of Electrical and Computer Engineering of the Aristotle University of Thessaloniki (AUTH), under the
     supervision of Assistant Professor, Andreas L. Symeonidis.</string>
+        <string name="about_content_2">For evaluation purposes, please fill in the form found
+        here: https://docs.google.com/forms/d/1ZGz5tSvbXYC1t9RVTqNPaMTTlDXOxDvn9lkz_hWD0IU/viewform </string>
 
     <string name="no_title">Browser did not have enough time to save title in history.</string>
     <string name="no_history">Browser history is empty.</string>
