@@ -6,7 +6,7 @@
     android:paddingRight="5dp"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
-    tools:context="com.diploma.ylois.dummyapp.DashboardActivity"
+    tools:context="com.diploma.ylois.dummyapp.DashboardActivityWeek"
     android:background="@drawable/b1"
     android:weightSum="1"
     android:orientation="vertical"
