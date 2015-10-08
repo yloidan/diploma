@@ -13,7 +13,10 @@ public class AboutActivity extends ActionBarActivity {
         setContentView(R.layout.activity_about);
 
         TextView text = (TextView) findViewById(R.id.about_txt);
-        text.setText(getApplicationContext().getString(R.string.about_content) + "\n"+ "\n" + getApplicationContext().getString(R.string.about_content_2));
+        TextView text2 = (TextView) findViewById(R.id.about_2_txt);
+        text.setText(getApplicationContext().getString(R.string.about_content) + "\n"+ "\n" +
+                getApplicationContext().getString(R.string.about_content_2) + "\n"+ "\n");
+        text2.setText(getApplicationContext().getString(R.string.about_content_3));
 
     }
 

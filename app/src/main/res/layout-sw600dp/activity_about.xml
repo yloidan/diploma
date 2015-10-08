@@ -20,6 +20,21 @@
         android:textStyle="bold"
         android:textSize="40dp"
         android:autoLink="web"
+
         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/about_2_txt"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/about_txt"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="40dp"
+        android:autoLink="email"
+
+        />
+
+
 
 </RelativeLayout>
